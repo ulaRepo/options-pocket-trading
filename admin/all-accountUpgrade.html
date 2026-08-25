@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Account Upgrades</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<section class="content">
+
+  <div id="a-notification" class="notification gone d-flex justify-content-start">
+    <div class="d-flex flex-column"></div>
+  </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU" /></a>
+    </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph">
+          <img src="../public/assetss/img/pers.svg" alt="PROFILE" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <div id="upg-loading" class="text-center text-secondary mt-4">Loading upgrades...</div>
+
+    <table id="upg-table" class="table table-striped table-sm" style="display:none;">
+      <thead>
+        <tr>
+          <th scope="col">S/N</th>
+          <th scope="col">Upgrade amount</th>
+          <th scope="col">Payment method</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody id="upg-tbody"></tbody>
+    </table>
+
+    <h1 id="upg-empty" class="text-center text-secondary mt-5" style="display:none;">
+      No upgrade request yet!
+    </h1>
+  </div>
+
+</section>
+
+<footer class="main-footer text-center">
+  <strong>  Copyrights 2023 @ <a href="#"> pocketoptions </a>.</strong> All Rights Reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+
+<script>
+(function () {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderUpgrades(upgrade) {
+    var loading = document.getElementById('upg-loading');
+    var table = document.getElementById('upg-table');
+    var tbody = document.getElementById('upg-tbody');
+    var empty = document.getElementById('upg-empty');
+
+    if (loading) loading.style.display = 'none';
+
+    if (!upgrade || !upgrade.length) {
+      if (table) table.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    tbody.innerHTML = upgrade.map(function (element, index) {
+      var id = escapeHtml(element._id);
+      return (
+        '<tr class="align-middle">' +
+          '<td><h5 class="text-white">' + index + '</h5></td>' +
+          '<td><h5 class="text-white">' + escapeHtml(element.amount) + '</h5></td>' +
+          '<td><h5 class="text-white">' + escapeHtml(element.method) + '</h5></td>' +
+          '<td><h5 class="text-white">' + escapeHtml(element.status) + '</h5></td>' +
+          '<td class="text-end">' +
+            '<div class="d-flex flex-row justify-content-end gap-2">' +
+              '<a href="./viewallAccountsUpgrade.html?id=' + id + '" type="button" class="btn btn-primary btn-small">' +
+                '<i class="bi bi-eye"></i>' +
+              '</a>' +
+              '<a href="./editallAccountsUpgrade.html?id=' + id + '" type="button" class="btn btn-warning btn-small">' +
+                '<i class="bi bi-pencil"></i>' +
+              '</a>' +
+              '<button type="button" class="btn btn-danger btn-small btn-delete-upgrade" data-id="' + id + '">' +
+                '<i class="bi bi-trash"></i>' +
+              '</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    if (empty) empty.style.display = 'none';
+    if (table) table.style.display = 'table';
+
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-delete-upgrade'), function (btn) {
+      btn.addEventListener('click', async function () {
+        var upgradeId = btn.getAttribute('data-id');
+        if (!upgradeId) return;
+        if (!window.confirm('Delete this upgrade request permanently?')) return;
+        try {
+          var res = await api.post('/admin/deleteUpgrade/' + upgradeId);
+          if (res.data && res.data.success) {
+            btn.closest('tr').remove();
+            if (!tbody.children.length) {
+              table.style.display = 'none';
+              if (empty) empty.style.display = 'block';
+            }
+          } else {
+            alert((res.data && res.data.error) || 'Delete failed');
+          }
+        } catch (err) {
+          console.error(err);
+          if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+            localStorage.removeItem('user');
+            window.location.href = '../login.html';
+            return;
+          }
+          alert(
+            (err.response && err.response.data && err.response.data.error) ||
+            err.message ||
+            'Delete failed'
+          );
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      var res = await api.get('/admin/all-accountUpgrade/data');
+      var data = res.data;
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load upgrades');
+      }
+      renderUpgrades(data.upgrade || []);
+    } catch (err) {
+      console.error(err);
+      var loading = document.getElementById('upg-loading');
+      if (loading) loading.style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var empty = document.getElementById('upg-empty');
+      if (empty) {
+        empty.style.display = 'block';
+        empty.textContent =
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to load upgrades';
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

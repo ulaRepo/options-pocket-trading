@@ -1,30 +1,1461 @@
+here is my admin.route.js file
+
+const mongoose = require('mongoose');
+const router = require('express').Router();
+
+const User = require('../models/user.model');
+const Deposit = require('../models/depositSchema');
+const Widthdraw = require('../models/widthdrawSchema');
+const Trade = require('../models/livetradingSchema');
+const Upgrade = require('../models/upgradeSchema');
+const Verify = require('../models/verifySchema');
+const CopyTrade = require('../models/CopyTrade');
+const Affliate = require('../models/affiliate');
+const Wallet = require('../models/walletAddress');
+
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+function cloudUrl(file) {
+  if (!file) return null;
+  return file.path || file.secure_url || file.url || null;
+}
+
+const copyTraderStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'pocket/copytraders',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    public_id: (req, file) => `copytrader_${Date.now()}`
+  }
+});
+const uploadCopyTrader = multer({ storage: copyTraderStorage });
+
+const walletStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'pocket/wallets',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    public_id: (req, file) => `wallet_${file.fieldname}_${Date.now()}`
+  }
+});
+const uploadWallet = multer({ storage: walletStorage });
+
+const frontendUrl = () =>
+  (process.env.FRONTEND_URL || '').replace(/\/$/, '');
+
+// ===================== ADMIN DASHBOARD =====================
+
+router.get('/adminRoute', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend admin dashboard page',
+    redirect: `${frontendUrl()}/admin/adminDashboard.html`
+  });
+});
+
+router.get('/adminRoute/data', async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const users = await User.find()
+      .select('-password')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    return res.json({
+      success: true,
+      users: users || []
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load users' });
+  }
+});
+
+router.get('/viewUser/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view user page',
+    redirect: `${frontendUrl()}/admin/viewUser.html?id=${req.params.id}`
+  });
+});
+
+router.get('/viewUser/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const user = await User.findById(id).select('-password').lean();
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.json({ success: true, user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load user' });
+  }
+});
+
+router.get('/editUser/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit user page',
+    redirect: `${frontendUrl()}/admin/editUser.html?id=${req.params.id}`
+  });
+});
+
+router.get('/editUser/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const user = await User.findById(id).select('-password').lean();
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    return res.json({ success: true, user });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load user' });
+  }
+});
+
+router.post('/editUser/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        role: req.body.role,
+        balance: req.body.balance,
+        widthdrawBalance: req.body.widthdrawBalance,
+        bonus: req.body.bonus,
+        email: req.body.email,
+        available: req.body.available,
+        session: req.body.session,
+        profit: req.body.profit,
+        totalDeposit: req.body.totalDeposit,
+        verifiedStatus: req.body.verifiedStatus,
+        totalWidthdraw: req.body.totalWidthdraw,
+        account: req.body.account
+      },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: `Updated details for ${user.email}`,
+      user
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update user' });
+  }
+});
+
+router.post('/deleteUser/:id', async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    await User.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'User deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
+// ===================== DEPOSITS =====================
+
+router.get('/allFunding', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all funding page',
+    redirect: `${frontendUrl()}/admin/allFunding.html`
+  });
+});
+
+router.get('/allFunding/data', async (req, res) => {
+  try {
+    const deposits = await Deposit.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, deposits: deposits || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load deposits' });
+  }
+});
+
+router.get('/viewDeposit/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view deposit page',
+    redirect: `${frontendUrl()}/admin/viewDeposit.html?id=${req.params.id}`
+  });
+});
+
+router.get('/viewDeposit/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const deposit = await Deposit.findById(id).lean();
+    if (!deposit) {
+      return res.status(404).json({ error: 'Deposit not found' });
+    }
+    return res.json({ success: true, deposit });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load deposit' });
+  }
+});
+
+router.get('/editDeposit/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit deposit page',
+    redirect: `${frontendUrl()}/admin/editDeposit.html?id=${req.params.id}`
+  });
+});
+
+router.get('/editDeposit/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const deposit = await Deposit.findById(id).lean();
+    if (!deposit) {
+      return res.status(404).json({ error: 'Deposit not found' });
+    }
+    return res.json({ success: true, deposit });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load deposit' });
+  }
+});
+
+router.post('/editDeposit/:id', async (req, res) => {
+  try {
+    const deposit = await Deposit.findByIdAndUpdate(
+      req.params.id,
+      {
+        type: req.body.type,
+        amount: req.body.amount,
+        status: req.body.status,
+        narration: req.body.narration
+      },
+      { new: true }
+    );
+
+    if (!deposit) {
+      return res.status(404).json({ error: 'Deposit not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: `Updated deposit ${deposit._id} successfully`,
+      deposit
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update deposit' });
+  }
+});
+
+router.post('/deleteDeposit/:id', async (req, res) => {
+  try {
+    await Deposit.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'Deposit deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete deposit' });
+  }
+});
+
+// ===================== WITHDRAWALS =====================
+
+router.get('/allWidthdrawals', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all withdrawals page',
+    redirect: `${frontendUrl()}/admin/allWidthdrawals.html`
+  });
+});
+
+router.get('/allWidthdrawals/data', async (req, res) => {
+  try {
+    const widthdraws = await Widthdraw.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, widthdraws: widthdraws || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load withdrawals' });
+  }
+});
+
+router.get('/viewWidthdrawals/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view withdrawal page',
+    redirect: `${frontendUrl()}/admin/viewWidthdrawals.html?id=${req.params.id}`
+  });
+});
+
+router.get('/viewWidthdrawals/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const widthdraw = await Widthdraw.findById(id).lean();
+    if (!widthdraw) {
+      return res.status(404).json({ error: 'Withdrawal not found' });
+    }
+    return res.json({ success: true, widthdraw });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load withdrawal' });
+  }
+});
+
+router.get('/editWidthdrawals/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit withdrawal page',
+    redirect: `${frontendUrl()}/admin/editWidthdrawals.html?id=${req.params.id}`
+  });
+});
+
+router.get('/editWidthdrawals/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const widthdraw = await Widthdraw.findById(id).lean();
+    if (!widthdraw) {
+      return res.status(404).json({ error: 'Withdrawal not found' });
+    }
+    return res.json({ success: true, widthdraw });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load withdrawal' });
+  }
+});
+
+router.post('/editWidthdrawals/:id', async (req, res) => {
+  try {
+    const widthdraw = await Widthdraw.findByIdAndUpdate(
+      req.params.id,
+      {
+        amount: req.body.amount,
+        type: req.body.type,
+        status: req.body.status,
+        narration: req.body.narration
+      },
+      { new: true }
+    );
+
+    if (!widthdraw) {
+      return res.status(404).json({ error: 'Withdrawal not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: `Updated withdrawal ${widthdraw._id} successfully`,
+      widthdraw
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update withdrawal' });
+  }
+});
+
+router.post('/deleteWidthdrawal/:id', async (req, res) => {
+  try {
+    await Widthdraw.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'Withdrawal deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete withdrawal' });
+  }
+});
+
+// ===================== VERIFICATIONS =====================
+
+router.get('/allVerify', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all verifications page',
+    redirect: `${frontendUrl()}/admin/allVerify.html`
+  });
+});
+
+router.get('/allVerify/data', async (req, res) => {
+  try {
+    const verifys = await Verify.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, verifys: verifys || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load verifications' });
+  }
+});
+
+router.get('/viewVerify/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view verification page',
+    redirect: `${frontendUrl()}/admin/viewVerification.html?id=${req.params.id}`
+  });
+});
+
+router.get('/viewVerify/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const verify = await Verify.findById(id).lean();
+    if (!verify) {
+      return res.status(404).json({ error: 'Verification not found' });
+    }
+    return res.json({ success: true, verify });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load verification' });
+  }
+});
+
+router.get('/editVerification/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit verification page',
+    redirect: `${frontendUrl()}/admin/editVerification.html?id=${req.params.id}`
+  });
+});
+
+router.get('/editVerification/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const verify = await Verify.findById(id).lean();
+    if (!verify) {
+      return res.status(404).json({ error: 'Verification not found' });
+    }
+    return res.json({ success: true, verify });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load verification' });
+  }
+});
+
+router.post('/editVerification/:id', async (req, res) => {
+  try {
+    const verify = await Verify.findByIdAndUpdate(
+      req.params.id,
+      {
+        email: req.body.email,
+        username: req.body.username,
+        fullname: req.body.fullname,
+        city: req.body.city,
+        gender: req.body.gender,
+        dateofBirth: req.body.dateofBirth,
+        marital: req.body.marital,
+        age: req.body.age,
+        address: req.body.address
+      },
+      { new: true }
+    );
+
+    if (!verify) {
+      return res.status(404).json({ error: 'Verification not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: `Updated verification ${verify._id} successfully`,
+      verify
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update verification' });
+  }
+});
+
+router.post('/deleteVerification/:id', async (req, res) => {
+  try {
+    await Verify.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'Verification deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete verification' });
+  }
+});
+
+// ===================== LIVE TRADES =====================
+
+router.get('/all-livetrade', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all live trades page',
+    redirect: `${frontendUrl()}/admin/allliveTrades.html`
+  });
+});
+
+router.get('/all-livetrade/data', async (req, res) => {
+  try {
+    const livetrade = await Trade.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, livetrade: livetrade || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load live trades' });
+  }
+});
+
+router.get('/view-livetrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view live trade page',
+    redirect: `${frontendUrl()}/admin/viewallliveTrades.html?id=${req.params.id}`
+  });
+});
+
+router.get('/view-livetrade/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const livetrade = await Trade.findById(id).lean();
+    if (!livetrade) {
+      return res.status(404).json({ error: 'Live trade not found' });
+    }
+    return res.json({ success: true, livetrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load live trade' });
+  }
+});
+
+router.get('/edit-livetrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit live trade page',
+    redirect: `${frontendUrl()}/admin/editallliveTrades.html?id=${req.params.id}`
+  });
+});
+
+router.get('/edit-livetrade/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const livetrade = await Trade.findById(id).lean();
+    if (!livetrade) {
+      return res.status(404).json({ error: 'Live trade not found' });
+    }
+    return res.json({ success: true, livetrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load live trade' });
+  }
+});
+
+router.post('/edit-livetrade/:id', async (req, res) => {
+  try {
+    const trade = await Trade.findByIdAndUpdate(
+      req.params.id,
+      {
+        type: req.body.type,
+        currencypair: req.body.currencypair,
+        lotsize: req.body.lotsize,
+        entryPrice: req.body.entryPrice,
+        stopLoss: req.body.stopLoss,
+        takeProfit: req.body.takeProfit,
+        action: req.body.action
+      },
+      { new: true }
+    );
+
+    if (!trade) {
+      return res.status(404).json({ error: 'Live trade not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Updated livetrade successfully',
+      trade
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update live trade' });
+  }
+});
+
+router.post('/deletelivetrade/:id', async (req, res) => {
+  try {
+    await Trade.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'Live trade deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete live trade' });
+  }
+});
+
+// ===================== ACCOUNT UPGRADES =====================
+
+router.get('/all-accountUpgrade', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all account upgrades page',
+    redirect: `${frontendUrl()}/admin/allAccountsUpgrade.html`
+  });
+});
+
+router.get('/all-accountUpgrade/data', async (req, res) => {
+  try {
+    const upgrade = await Upgrade.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, upgrade: upgrade || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load upgrades' });
+  }
+});
+
+router.get('/viewUpgrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend view upgrade page',
+    redirect: `${frontendUrl()}/admin/viewallAccountsUpgrade.html?id=${req.params.id}`
+  });
+});
+
+router.get('/viewUpgrade/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const upgrade = await Upgrade.findById(id).lean();
+    if (!upgrade) {
+      return res.status(404).json({ error: 'Upgrade not found' });
+    }
+    return res.json({ success: true, upgrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load upgrade' });
+  }
+});
+
+router.get('/editUpgrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit upgrade page',
+    redirect: `${frontendUrl()}/admin/editallAccountsUpgrade.html?id=${req.params.id}`
+  });
+});
+
+router.get('/editUpgrade/:id/data', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+    const upgrade = await Upgrade.findById(id).lean();
+    if (!upgrade) {
+      return res.status(404).json({ error: 'Upgrade not found' });
+    }
+    return res.json({ success: true, upgrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load upgrade' });
+  }
+});
+
+router.post('/editUpgrade/:id', async (req, res) => {
+  try {
+    const upgrade = await Upgrade.findByIdAndUpdate(
+      req.params.id,
+      {
+        amount: req.body.amount,
+        method: req.body.method,
+        status: req.body.status
+      },
+      { new: true }
+    );
+
+    if (!upgrade) {
+      return res.status(404).json({ error: 'Upgrade not found' });
+    }
+
+    return res.json({
+      success: true,
+      message: `Updated account-upgrade ${upgrade._id} successfully`,
+      upgrade
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update upgrade' });
+  }
+});
+
+router.post('/deleteUpgrade/:id', async (req, res) => {
+  try {
+    await Upgrade.deleteOne({ _id: req.params.id });
+    return res.json({ success: true, message: 'Upgrade deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete upgrade' });
+  }
+});
+
+// ===================== AFFILIATES =====================
+
+router.get('/all-affiliates', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all affiliates page',
+    redirect: `${frontendUrl()}/admin/allAffiliates.html`
+  });
+});
+
+router.get('/all-affiliates/data', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10;
+    const sort = req.query.sort || 'createdAt';
+    const order = req.query.order === 'asc' ? 1 : -1;
+    const sortOptions = {};
+    sortOptions[sort] = order;
+
+    const totalAffiliates = await Affliate.countDocuments();
+    const affiliates = await Affliate.find()
+      .populate('owner')
+      .sort(sortOptions)
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .lean();
+
+    const totalPages = Math.ceil(totalAffiliates / perPage) || 1;
+
+    return res.json({
+      success: true,
+      affiliates: affiliates || [],
+      page,
+      totalPages,
+      sort,
+      order: req.query.order || 'desc'
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load affiliates' });
+  }
+});
+
+router.post('/deleteAffiliate/:id', async (req, res) => {
+  try {
+    const affiliate = await Affliate.findById(req.params.id);
+
+    if (!affiliate) {
+      return res.status(404).json({ error: 'Affiliate not found' });
+    }
+
+    await User.updateMany(
+      { affliates: affiliate._id },
+      { $pull: { affliates: affiliate._id } }
+    );
+
+    await Affliate.findByIdAndDelete(req.params.id);
+
+    return res.json({ success: true, message: 'Affiliate deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete affiliate' });
+  }
+});
+
+// ===================== COPY TRADES (TEMPLATES) =====================
+
+router.get('/all-copytrades', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all copy trades page',
+    redirect: `${frontendUrl()}/admin/allCopyTrades.html`
+  });
+});
+
+router.get('/all-copytrades/data', async (req, res) => {
+  try {
+    const copyTrades = await CopyTrade.find({ owner: null })
+      .sort({ createdAt: -1 })
+      .lean();
+    return res.json({ success: true, copyTrades: copyTrades || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load copy trades' });
+  }
+});
+
+router.get('/add-copytrader', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend add copy trader page',
+    redirect: `${frontendUrl()}/admin/addCopytrader.html`
+  });
+});
+
+router.post('/add-copytrader', uploadCopyTrader.single('traderImage'), async (req, res) => {
+  try {
+    const traderImage = cloudUrl(req.file) || '';
+    const { traderName, profitShare, winRate } = req.body;
+
+    const copyTrade = new CopyTrade({
+      traderName,
+      traderImage: traderImage || '',
+      profitShare: parseFloat(profitShare),
+      winRate: parseFloat(winRate)
+    });
+
+    await copyTrade.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Copy Trader created successfully!',
+      copyTrade
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to create Copy Trader.' });
+  }
+});
+
+router.get('/edit-copytrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit copy trader page',
+    redirect: `${frontendUrl()}/admin/editCopytrader.html?id=${req.params.id}`
+  });
+});
+
+router.get('/edit-copytrade/:id/data', async (req, res) => {
+  try {
+    const copyTrade = await CopyTrade.findById(req.params.id).lean();
+    if (!copyTrade) {
+      return res.status(404).json({ error: 'Copy trader not found' });
+    }
+    return res.json({ success: true, copyTrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load copy trader' });
+  }
+});
+
+router.post('/edit-copytrader/:id', uploadCopyTrader.single('traderImage'), async (req, res) => {
+  try {
+    const copyTrade = await CopyTrade.findById(req.params.id);
+
+    if (!copyTrade) {
+      return res.status(404).json({ error: 'Copy trader not found' });
+    }
+
+    if (req.file) {
+      const imageUrl = cloudUrl(req.file);
+      if (imageUrl) {
+        copyTrade.traderImage = imageUrl;
+      }
+    }
+
+    copyTrade.traderName = req.body.traderName;
+    copyTrade.profitShare = parseFloat(req.body.profitShare);
+    copyTrade.winRate = parseFloat(req.body.winRate);
+
+    await copyTrade.save();
+
+    return res.json({
+      success: true,
+      message: 'Copy trader updated successfully',
+      copyTrade
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update copy trader' });
+  }
+});
+
+router.post('/delete-copytrade/:id', async (req, res) => {
+  try {
+    await CopyTrade.findByIdAndDelete(req.params.id);
+    return res.json({ success: true, message: 'Copy trade deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete copy trade' });
+  }
+});
+
+// ===================== USER COPY TRADES =====================
+
+router.get('/user-copytrades', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend user copy trades page',
+    redirect: `${frontendUrl()}/admin/allUserCopyTrades.html`
+  });
+});
+
+router.get('/user-copytrades/data', async (req, res) => {
+  try {
+    const users = await User.find({
+      copyTrades: { $exists: true, $ne: [] }
+    })
+      .populate('copyTrades')
+      .select('-password')
+      .lean();
+
+    return res.json({
+      success: true,
+      userCopyTrades: users || []
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Unable to fetch user copy trades' });
+  }
+});
+
+router.get('/edit-user-copytrade/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit user copy trade page',
+    redirect: `${frontendUrl()}/admin/editUserCopyTrade.html?id=${req.params.id}`
+  });
+});
+
+router.get('/edit-user-copytrade/:id/data', async (req, res) => {
+  try {
+    const copyTrade = await CopyTrade.findById(req.params.id)
+      .populate('owner')
+      .lean();
+    if (!copyTrade) {
+      return res.status(404).json({ error: 'Copy trade not found' });
+    }
+    return res.json({ success: true, copyTrade });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load user copy trade' });
+  }
+});
+
+router.post('/edit-user-copytrade/:id', async (req, res) => {
+  try {
+    const copyTrade = await CopyTrade.findById(req.params.id);
+
+    if (!copyTrade) {
+      return res.status(404).json({ error: 'Copy trade not found' });
+    }
+
+    copyTrade.amount = req.body.amount;
+    copyTrade.duration = req.body.duration;
+    copyTrade.status = req.body.status;
+
+    await copyTrade.save();
+
+    return res.json({
+      success: true,
+      message: 'Copy trade updated successfully',
+      copyTrade
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to update copy trade' });
+  }
+});
+
+router.post('/delete-user-copytrade/:id', async (req, res) => {
+  try {
+    await CopyTrade.findByIdAndDelete(req.params.id);
+    return res.json({ success: true, message: 'User copy trade deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete user copy trade' });
+  }
+});
+
+// ===================== WALLETS =====================
+
+router.get('/all-wallets', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend all wallets page',
+    redirect: `${frontendUrl()}/admin/wallets.html`
+  });
+});
+
+router.get('/all-wallets/data', async (req, res) => {
+  try {
+    const wallets = await Wallet.find().sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, wallets: wallets || [] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load wallets' });
+  }
+});
+
+router.get('/add-wallet', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend add wallet page',
+    redirect: `${frontendUrl()}/admin/add-wallet.html`
+  });
+});
+
+router.post(
+  '/add-wallet',
+  uploadWallet.fields([
+    { name: 'btc_image', maxCount: 1 },
+    { name: 'eth_image', maxCount: 1 },
+    { name: 'usdt_image', maxCount: 1 },
+    { name: 'usdc_image', maxCount: 1 },
+    { name: 'cashapp_image', maxCount: 1 },
+    { name: 'paypal_image', maxCount: 1 }
+  ]),
+  async (req, res) => {
+    try {
+      const {
+        btc_address,
+        eth_address,
+        usdt_address,
+        usdc_address,
+        cashapp,
+        paypal
+      } = req.body;
+
+      const walletData = {
+        btc_address,
+        eth_address,
+        usdt_address,
+        usdc_address,
+        cashapp,
+        paypal
+      };
+
+      if (req.files) {
+        if (req.files.btc_image && req.files.btc_image[0]) {
+          walletData.btc_image = cloudUrl(req.files.btc_image[0]);
+        }
+        if (req.files.eth_image && req.files.eth_image[0]) {
+          walletData.eth_image = cloudUrl(req.files.eth_image[0]);
+        }
+        if (req.files.usdt_image && req.files.usdt_image[0]) {
+          walletData.usdt_image = cloudUrl(req.files.usdt_image[0]);
+        }
+        if (req.files.usdc_image && req.files.usdc_image[0]) {
+          walletData.usdc_image = cloudUrl(req.files.usdc_image[0]);
+        }
+        if (req.files.cashapp_image && req.files.cashapp_image[0]) {
+          walletData.cashapp_image = cloudUrl(req.files.cashapp_image[0]);
+        }
+        if (req.files.paypal_image && req.files.paypal_image[0]) {
+          walletData.paypal_image = cloudUrl(req.files.paypal_image[0]);
+        }
+      }
+
+      const wallet = new Wallet(walletData);
+      await wallet.save();
+
+      return res.json({
+        success: true,
+        message: 'Wallet added successfully',
+        wallet
+      });
+    } catch (error) {
+      console.error('ADD WALLET ERROR:', error);
+      return res.status(500).json({ error: 'Failed to add wallet' });
+    }
+  }
+);
+
+router.get('/edit-wallet/:id', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Use the frontend edit wallet page',
+    redirect: `${frontendUrl()}/admin/edit-wallet.html?id=${req.params.id}`
+  });
+});
+
+router.get('/edit-wallet/:id/data', async (req, res) => {
+  try {
+    const wallet = await Wallet.findById(req.params.id).lean();
+    if (!wallet) {
+      return res.status(404).json({ error: 'Wallet not found' });
+    }
+    return res.json({ success: true, wallet });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to load wallet' });
+  }
+});
+
+router.post(
+  '/edit-wallet/:id',
+  uploadWallet.fields([
+    { name: 'btc_image', maxCount: 1 },
+    { name: 'eth_image', maxCount: 1 },
+    { name: 'usdt_image', maxCount: 1 },
+    { name: 'usdc_image', maxCount: 1 },
+    { name: 'cashapp_image', maxCount: 1 },
+    { name: 'paypal_image', maxCount: 1 }
+  ]),
+  async (req, res) => {
+    try {
+      const wallet = await Wallet.findById(req.params.id);
+
+      if (!wallet) {
+        return res.status(404).json({ error: 'Wallet not found' });
+      }
+
+      const {
+        btc_address,
+        eth_address,
+        usdt_address,
+        usdc_address,
+        cashapp,
+        paypal
+      } = req.body;
+
+      wallet.btc_address = btc_address || wallet.btc_address;
+      wallet.eth_address = eth_address || wallet.eth_address;
+      wallet.usdt_address = usdt_address || wallet.usdt_address;
+      wallet.usdc_address = usdc_address || wallet.usdc_address;
+      wallet.cashapp = cashapp || wallet.cashapp;
+      wallet.paypal = paypal || wallet.paypal;
+
+      if (req.files) {
+        if (req.files.btc_image && req.files.btc_image[0]) {
+          const url = cloudUrl(req.files.btc_image[0]);
+          if (url) wallet.btc_image = url;
+        }
+        if (req.files.eth_image && req.files.eth_image[0]) {
+          const url = cloudUrl(req.files.eth_image[0]);
+          if (url) wallet.eth_image = url;
+        }
+        if (req.files.usdt_image && req.files.usdt_image[0]) {
+          const url = cloudUrl(req.files.usdt_image[0]);
+          if (url) wallet.usdt_image = url;
+        }
+        if (req.files.usdc_image && req.files.usdc_image[0]) {
+          const url = cloudUrl(req.files.usdc_image[0]);
+          if (url) wallet.usdc_image = url;
+        }
+        if (req.files.cashapp_image && req.files.cashapp_image[0]) {
+          const url = cloudUrl(req.files.cashapp_image[0]);
+          if (url) wallet.cashapp_image = url;
+        }
+        if (req.files.paypal_image && req.files.paypal_image[0]) {
+          const url = cloudUrl(req.files.paypal_image[0]);
+          if (url) wallet.paypal_image = url;
+        }
+      }
+
+      await wallet.save();
+
+      return res.json({
+        success: true,
+        message: 'Wallet updated successfully',
+        wallet
+      });
+    } catch (error) {
+      console.error('Error updating wallet:', error);
+      return res.status(500).json({ error: 'Error updating wallet' });
+    }
+  }
+);
+
+router.post('/delete-wallet/:id', async (req, res) => {
+  try {
+    await Wallet.findByIdAndDelete(req.params.id);
+    return res.json({ success: true, message: 'Wallet deleted' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete wallet' });
+  }
+});
+
+module.exports = router;
+
+here is my adminDashboard.html for reference
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<section class="content">
+
+  <div id="a-notification" class="notification gone d-flex justify-content-start">
+    <div class="d-flex flex-column"></div>
+  </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+    </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph">
+          <img src="../public/assetss/img/pers.svg" alt="account" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="table-responsive mt-4">
+    <div id="admin-loading" class="text-center text-secondary mt-4">Loading users...</div>
+
+    <table id="admin-users-table" class="table table-striped table-sm" style="display:none;">
+      <thead>
+        <tr>
+          <th scope="col">S/N</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Role</th>
+          <th scope="col" class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody id="admin-users-tbody"></tbody>
+    </table>
+
+    <h1 id="admin-empty" class="text-center text-secondary mt-5" style="display:none;">
+      No users found in the database!
+    </h1>
+  </div>
+
+</section>
+
+<footer class="main-footer text-center">
+  <strong>Copyrights 2023 @ <a href="#">pocketoptions</a>.</strong> All Rights Reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+
+<script>
+(function () {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderUsers(users) {
+    var loading = document.getElementById('admin-loading');
+    var table = document.getElementById('admin-users-table');
+    var tbody = document.getElementById('admin-users-tbody');
+    var empty = document.getElementById('admin-empty');
+
+    if (loading) loading.style.display = 'none';
+
+    if (!users || !users.length) {
+      if (table) table.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    tbody.innerHTML = users.map(function (element, index) {
+      var id = escapeHtml(element._id);
+      return (
+        '<tr class="align-middle">' +
+          '<td><h5>' + index + '</h5></td>' +
+          '<td><h5>' + escapeHtml(element.email) + '</h5></td>' +
+          '<td><h5>' + escapeHtml(element.tel || '') + '</h5></td>' +
+          '<td><h5>' + escapeHtml(element.role || '') + '</h5></td>' +
+          '<td class="text-end">' +
+            '<div class="d-flex flex-row justify-content-end gap-2">' +
+              '<a href="./viewUser.html?id=' + id + '" class="btn btn-primary btn-small" title="View">' +
+                '<i class="bi bi-eye"></i>' +
+              '</a>' +
+              '<a href="./editUser.html?id=' + id + '" class="btn btn-warning btn-small" title="Edit">' +
+                '<i class="bi bi-pencil"></i>' +
+              '</a>' +
+              '<button type="button" class="btn btn-danger btn-small btn-delete-user" data-id="' + id + '" title="Delete">' +
+                '<i class="bi bi-person-x"></i>' +
+              '</button>' +
+            '</div>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    if (empty) empty.style.display = 'none';
+    if (table) table.style.display = 'table';
+
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-delete-user'), function (btn) {
+      btn.addEventListener('click', async function () {
+        var userId = btn.getAttribute('data-id');
+        if (!userId) return;
+        if (!window.confirm('Delete this user permanently?')) return;
+        try {
+          var res = await api.post('/admin/deleteUser/' + userId);
+          if (res.data && res.data.success) {
+            btn.closest('tr').remove();
+            if (!tbody.children.length) {
+              table.style.display = 'none';
+              if (empty) empty.style.display = 'block';
+            }
+          } else {
+            alert((res.data && res.data.error) || 'Delete failed');
+          }
+        } catch (err) {
+          console.error(err);
+          alert(
+            (err.response && err.response.data && err.response.data.error) ||
+            err.message ||
+            'Delete failed'
+          );
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      var res = await api.get('/admin/adminRoute/data');
+      var data = res.data;
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load users');
+      }
+      renderUsers(data.users || []);
+    } catch (err) {
+      console.error(err);
+      var loading = document.getElementById('admin-loading');
+      if (loading) loading.style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var empty = document.getElementById('admin-empty');
+      if (empty) {
+        empty.style.display = 'block';
+        empty.textContent =
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to load users';
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
+```
+here is the viewWidthdrawals.html file
+```
+
 <!DOCTYPE html>
 <html>
 
+
+
 <head>
-	<title>MENU</title>
+	<title>view Widthdrawals</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
-
-
 <link rel="stylesheet" href="/assetss/index.css"> 
+<link rel="stylesheet" href="/assets0/notify.css">
 
 </head>
 <body>
+
+<section class="content" style="background-color: black;">
     
+    <div id="a-notification" class="notification  gone   d-flex justify-content-start ">
+		<div class="d-flex flex-column">
+ 
+		</div>
+	</div>
 
-<section class="content">
-
-<div class="d-flex justify-content-between  from-top ">
-	<div class="menu">
-		MENU
-	</div> 
-	<div id="google_translate_element"></div>
+<div class="d-flex justify-content-between from-top">
+	<div>
+		<a href="/user/navbarPage"><img src="/assetss/img/ham.svg" alt="MENU" /></a>
+	</div>
+	<div class="d-flex flex-column">
+	    <div id="google_translate_element"></div>
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
@@ -33,309 +1464,124 @@ function googleTranslateElementInit() {
 </script>
 
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<!-- <div class="d-flex justify-content-center align-items-center">
+				<div class="uname">Web developer</div>
+			</div> -->
+			</div>
 	<div>
-		<a class="btn1" href="/auth/logout">logout</a>
-	</div>
-</div>
-<div style="padding: 20px;"></div>
-
-<div class="d-flex justify-content-start ">
-	<a href="#"><a href="/user/account" class="ph">
-    <img src="/assetss/img/pers.svg" alt="PROFILE" /> </a>
-	<div class="sl">
-		<div class="name">
-		<%=user.fullname%></div>
-		<div class="email">
-		<%=user.email%></div>
+		<a href="/user/account"><div class="ph">
+    <img src="/assetss/img/pers.svg" alt="PROFILE" /> </div></a>
 	</div>
 </div>
 
 
-<div style="padding: 10px;"> </div>
-<div class="mycard " style="padding-top: 3%;">
-	<table>
-		<tr>
-			<td class="lsi">your email:</td>
-			<td><h5><%=user.email%></h5></td>
-		</tr>
-		<tr>
-			<td class="lsi">Join Date:</td>
-			<td><h6><%=user.createdAt%></h6></td>
-		</tr>
-		<tr>
-			<td class="lsi">Kyc Status:</td>
-			<td class="desc text-light">
-		<span style="color:red;"><h6><%=user.verifiedStatus%></h6></span></td>
-                                                                </td>
-		</tr>
-		<tr>
-			<td class="lsi">Account Type:</td>
-			<td><h6><%=user.role%></h6></td>
-		</tr>
-	</table>
-</div>
- 
-<div class="d-flex flex-column " style="padding-top: 3%;">
-	<% if (user) { %>
-		<a class="div-btn" href="/user/dashboard">
-			<span class="linkcss">Dashboard</span>
-		</a>
-			<a class="div-btn" href="/user/verify">
-			<span class="linkcss">Verify Account</span>
-		</a>
-			 <a class="div-btn" href="/user/deposit">
-			<span class="linkcss">Deposit</span>
-		</a>
-		<a class="div-btn" href="/user/withdrawal">
-			<span class="linkcss">Withdrawal</span>
-		</a>
-		<!--<a class="div-btn" href="signal-package">
-			<span class="linkcss">Signal Subscribtion</span>
-		</a>-->
-		<a class="div-btn" href="/user/trading-live">
-			<span class="linkcss">Live Trades</span>
-		</a>
-		
-		<a class="div-btn" href="/user/accountUpgrade">
-			<span class="linkcss">Account Upgrade</span>
-		</a>
-	
-		<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
-			<span class="linkcss">Livetrade History</span>
 
-		</a>
+<div class="d-flex justify-content-evenly flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"></h1>
+    <div class="btn-toolbar mb-2 mb-md 0">
+    </div>
+  
+    </div>
 
-		<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
-			<span class="linkcss">Deposit History</span>
-		</a>
-	
-		<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
-			<span class="linkcss">Widthdraw History</span>
-		</a>
-		<!-- <a class="div-btn" href="/transactions/user._id%>">
-			<span class="linkcss">Transaction History</span>
-		</a> -->
 
-		<% if (user.role === 'ADMIN') { %>
-			<a class="div-btn" href="/adminRoute">
-				<span class="linkcss">Dashboard</span>
-			</a>
-				<a class="div-btn" href="/allVerify">
-				<span class="linkcss">All Verifications</span>
-			</a>
-				 <a class="div-btn" href="/allFunding">
-				<span class="linkcss">All Deposits</span>
-			</a>
-			<a class="div-btn" href="/allWidthdrawals">
-				<span class="linkcss">All Withdrawals</span>
-			</a>
-			<!--<a class="div-btn" href="signal-package">
-				<span class="linkcss">Signal Subscribtion</span>
-			</a>-->
-			<a class="div-btn" href="/all-livetrade">
-				<span class="linkcss">All Live Trades</span>
-			</a>
-			<!-- <a class="div-btn" href="/all-stocktrade">
-				<span class="linkcss">All Stock Trades</span>
-			</a> -->
-			<a class="div-btn" href="/all-accountUpgrade">
-				<span class="linkcss">All Accounts Upgrade</span>
-			</a>
-			<% } %>
+<div class="col py-3">
 
-			<% } else { %>
-				
-				<% } %>
-	
-</div>
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active text-black"><%=widthdraw.user%></li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col text-end fw-lighter">
+        <!-- <b>Last Updated</b> -->
+        <b>WidthdrawId:</b>  <b class="text-white"><%=widthdraw._id%></b>
+      </div>
+    </div>
+  
+  </div>
+  
+  <ul class="list-group">
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b>Widthdrawal Method</b></div>
+        <div class="col">  <%=widthdraw.type%>  </div>
+      </div>
+    </li>
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Amount:</b></div>
+        <div class="col"  style="color: black;">  <%=widthdraw.amount%> </div>
+      </div>
+    </li>
 
-</div>
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Photo:</b></div>
+        <!-- <div class="col"  style="color: black;">  deposit.photo </div> -->
+        <img src="<%=widthdraw.image%>" alt="Deposit Image" width="100px" height="100px" class="img-thumbnail">
+      </div>
+    </li>
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Deposit Status:</b></div>
+        <div class="col"  style="color: black;"> <%=widthdraw.status%> </div>
+      </div>
+    </li>
+
+    
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Deposit Narration:</b></div>
+        <div class="col"  style="color: black;"> <%=widthdraw.narration%> </div>
+      </div>
+    </li>
+  
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Date Created:</b></div>
+        <div class="col"  style="color: black;"> <%= widthdraw.createdAt %></div>
+      </div>
+    </li>
+  
+    <li class="list-group-item"> 
+      <div class="row">
+        <div class="col" style="max-width: 140px"> <b  style="color: black;">Date Modified:</b></div>
+        <div class="col"  style="color: black;"><%= widthdraw.updatedAt %></div>
+      </div>
+    </li>
+  
+  </ul>
 
 
 </section>
 
-  
 <footer class="main-footer text-center">
-	<strong style="color: white;">  Copyrights 2024  @ <a href="#">pocketoptions </a>. All Rights Reserved</strong> 
-	
-  </footer>
+  <strong>  Copyrights 2023 @ <a href="#"> pocketoptions </a>.</strong> All Rights Reserved
+</footer>
+<!-- Copyright © 2021 Globalflextyips, All Rights Reserved -->
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="assets0/notify.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/theme.min.js"></script>
+<script src="plugins/js/datatables.min.js"></script>
+<script src="plugins/js/summernote-bs4.min.js"></script>
+<script src="plugins/js/croppie.min.js"></script>
+<script src="plugins/js/loadingoverlay.min.js"></script>
+<script src="plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="plugins/js/bootstrap-datepicker.min.js"></script>
 
-
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-  <script src="/assets0/notify.js"></script>
-  <script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/theme.min.js"></script>
-<script src="/plugins/js/datatables.min.js"></script>
-<script src="/plugins/js/summernote-bs4.min.js"></script>
-<script src="/plugins/js/croppie.min.js"></script>
- <script src="/plugins/js/loadingoverlay.min.js"></script>
-<script src="/plugins/js/bootstrap4-toggle.min.js"></script>
-<script src="/plugins/js/bootstrap-datepicker.min.js"></script>
-
-
-<a class="div-btn" href="/adminRoute">
-	<span class="linkcss">Dashboard</span>
-</a>
-	<a class="div-btn" href="/allVerify">
-	<span class="linkcss">All Verifications</span>
-</a>
-	 <a class="div-btn" href="/allFunding">
-	<span class="linkcss">All Deposits</span>
-</a>
-<a class="div-btn" href="/allWidthdrawals">
-	<span class="linkcss">All Withdrawals</span>
-</a>
-<!--<a class="div-btn" href="signal-package">
-	<span class="linkcss">Signal Subscribtion</span>
-</a>-->
-<a class="div-btn" href="/all-livetrade">
-	<span class="linkcss">All Live Trades</span>
-</a>
-<!-- <a class="div-btn" href="/all-stocktrade">
-	<span class="linkcss">All Stock Trades</span>
-</a> -->
-<a class="div-btn" href="/all-accountUpgrade">
-	<span class="linkcss">All Accounts Upgrade</span>
-</a>
-
-
-
-
-<a class="div-btn" href="/user/dashboard">
-	<span class="linkcss">Dashboard</span>
-</a>
-	<a class="div-btn" href="/user/verify">
-	<span class="linkcss">Verify Account</span>
-</a>
-	 <a class="div-btn" href="/user/deposit">
-	<span class="linkcss">Deposit</span>
-</a>
-<a class="div-btn" href="/user/withdrawal">
-	<span class="linkcss">Withdrawal</span>
-</a>
-<!--<a class="div-btn" href="signal-package">
-	<span class="linkcss">Signal Subscribtion</span>
-</a>-->
-<a class="div-btn" href="/user/trading-live">
-	<span class="linkcss">Live Trades</span>
-</a>
-
-<a class="div-btn" href="/user/accountUpgrade">
-	<span class="linkcss">Account Upgrade</span>
-</a>
-
-<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
-	<span class="linkcss">Livetrade History</span>
-
-</a>
-
-<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
-	<span class="linkcss">Deposit History</span>
-</a>
-
-<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
-	<span class="linkcss">Widthdraw History</span>
-</a>
-<!-- <a class="div-btn" href="/transactions/user._id%>">
-	<span class="linkcss">Transaction History</span>
-</a> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<% if (user) { %>
-	<a class="div-btn" href="/user/dashboard">
-		<span class="linkcss">Dashboard</span>
-	</a>
-		<a class="div-btn" href="/user/verify">
-		<span class="linkcss">Verify Account</span>
-	</a>
-		 <a class="div-btn" href="/user/deposit">
-		<span class="linkcss">Deposit</span>
-	</a>
-	<a class="div-btn" href="/user/withdrawal">
-		<span class="linkcss">Withdrawal</span>
-	</a>
-	<!--<a class="div-btn" href="signal-package">
-		<span class="linkcss">Signal Subscribtion</span>
-	</a>-->
-	<a class="div-btn" href="/user/trading-live">
-		<span class="linkcss">Live Trades</span>
-	</a>
-	
-	<a class="div-btn" href="/user/accountUpgrade">
-		<span class="linkcss">Account Upgrade</span>
-	</a>
-	
-	<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
-		<span class="linkcss">Livetrade History</span>
-	
-	</a>
-	
-	<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
-		<span class="linkcss">Deposit History</span>
-	</a>
-	
-	<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
-		<span class="linkcss">Widthdraw History</span>
-	</a>
-	<!-- <a class="div-btn" href="/transactions/user._id%>">
-		<span class="linkcss">Transaction History</span>
-	</a> -->
-	<% if (user.role === 'ADMIN') { %>
-		<a class="div-btn" href="/admin/adminRoute">
-			<span class="linkcss">Dashboard</span>
-		</a>
-			<a class="div-btn" href="/admin/allVerify">
-			<span class="linkcss">All Verifications</span>
-		</a>
-			 <a class="div-btn" href="/admin/allFunding">
-			<span class="linkcss">All Deposits</span>
-		</a>
-		<a class="div-btn" href="/admin/allWidthdrawals">
-			<span class="linkcss">All Withdrawals</span>
-		</a>
-		<!--<a class="div-btn" href="signal-package">
-			<span class="linkcss">Signal Subscribtion</span>
-		</a>-->
-		<a class="div-btn" href="/admin/all-livetrade">
-			<span class="linkcss">All Live Trades</span>
-		</a>
-		<!-- <a class="div-btn" href="/all-stocktrade">
-			<span class="linkcss">All Stock Trades</span>
-		</a> -->
-		<a class="div-btn" href="/admin/all-accountUpgrade">
-			<span class="linkcss">All Accounts Upgrade</span>
-		</a>
-		
-	<% } %>
-	<!-- <li><a href="/auth/logout">Logout</a></li> -->
-	<% } else { %>
-	<li><a href="/auth/register">Register</a></li>
-	<li><a href="/auth/login">Login</a></li>
-	<% } %>
-	
-  </body>
+  
+</body>
 </html>
- 
+
+```
+just like the adminDashboard.html let it display all dynamic data fetched from the backend also with inline html in js and bring out the whole page code with no line  of code skipped, commented or left to be filled in manually(placeholder)

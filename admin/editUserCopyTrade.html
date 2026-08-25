@@ -2,24 +2,25 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
-    <link rel="stylesheet" href="/assetss/index.css">
-    <link rel="stylesheet" href="/assets0/notify.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
 <section class="content">
-    
-    <!-- Top Navigation Bar -->
+
     <div class="d-flex justify-content-between from-top">
         <div>
-            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
+            <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU" /></a>
         </div>
         <div class="d-flex flex-column">
             <div id="google_translate_element"></div>
@@ -31,14 +32,15 @@
             <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         </div>
         <div>
-            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
+            <a href="../user/account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="PROFILE" /> </div></a>
         </div>
     </div>
 
-    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
     <div class="main-content" id="main-content">
-       
+
         <div class="container-fluid py-4">
+
+    <div id="uct-loading" class="text-center text-white mb-3">Loading copy trade...</div>
 
     <div class="card shadow-lg border-0"
          style="background:#171717;border-radius:20px;">
@@ -51,143 +53,12 @@
             </h3>
         </div>
 
-        <div class="card-body">
-
-            <form action="/admin/edit-user-copytrade/<%= copyTrade._id %>"
-                  method="POST">
-
-                <div class="row">
-
-                    <!-- User Fullname -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            User Fullname
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control bg-dark text-white"
-                            value="<%= copyTrade.owner.fullname %>"
-                            disabled>
-                    </div>
-
-                    <!-- User Email -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            User Email
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control bg-dark text-white"
-                            value="<%= copyTrade.owner.email %>"
-                            disabled>
-                    </div>
-
-                    <!-- Trader Name -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            Trader Name
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control bg-dark text-white"
-                            value="<%= copyTrade.traderName %>"
-                            disabled>
-                    </div>
-
-                    <!-- Amount -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            Amount ($)
-                        </label>
-
-                        <input
-                            type="number"
-                            name="amount"
-                            id="amount"
-                            class="form-control"
-                            value="<%= copyTrade.amount %>"
-                            required
-                            min="0"
-                            step="0.01">
-                    </div>
-
-                    <!-- Duration -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            Duration (Days)
-                        </label>
-
-                        <input
-                            type="number"
-                            name="duration"
-                            id="duration"
-                            class="form-control"
-                            value="<%= copyTrade.duration %>"
-                            required
-                            min="1">
-                    </div>
-
-                    <!-- Status -->
-                    <div class="col-md-6 mb-3">
-                        <label class="text-white">
-                            Status
-                        </label>
-
-                        <select
-                            name="status"
-                            id="status"
-                            class="form-control"
-                            required>
-
-                            <option value="ongoing"
-                                <%= copyTrade.status === 'ongoing' ? 'selected' : '' %>>
-                                Ongoing
-                            </option>
-
-                            <option value="completed"
-                                <%= copyTrade.status === 'completed' ? 'selected' : '' %>>
-                                Completed
-                            </option>
-
-                            <option value="cancelled"
-                                <%= copyTrade.status === 'cancelled' ? 'selected' : '' %>>
-                                Cancelled
-                            </option>
-
-                        </select>
-                    </div>
-
-                </div>
-
-                <div class="mt-4 d-flex flex-wrap gap-2">
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary mr-2">
-                        <i class="bi bi-check-circle"></i>
-                        Update Copy Trade
-                    </button>
-
-                    <a href="/user-copytrades"
-                       class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i>
-                        Back
-                    </a>
-
-                </div>
-
-            </form>
-
-        </div>
+        <div class="card-body" id="uct-form-wrap" style="display:none;"></div>
 
     </div>
 
 </div>
     </div>
-    <!-- ================================================================ -->
 
 </section>
 
@@ -196,40 +67,198 @@
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="assets0/notify.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/theme.min.js"></script>
-<script src="plugins/js/datatables.min.js"></script>
-<script src="plugins/js/summernote-bs4.min.js"></script>
-<script src="plugins/js/croppie.min.js"></script>
-<script src="plugins/js/loadingoverlay.min.js"></script>
-<script src="plugins/js/bootstrap4-toggle.min.js"></script>
-<script src="plugins/js/bootstrap-datepicker.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
 
 <script>
-const params = new URLSearchParams(window.location.search);
+(function () {
+  var currentId = '';
 
-const success = params.get('success');
-const error = params.get('error');
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
-if (success) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: success
+  function attrValue(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
+
+  function getIdFromQuery() {
+    var params = new URLSearchParams(window.location.search);
+    return params.get('id') || '';
+  }
+
+  function ownerName(copyTrade) {
+    var owner = copyTrade.owner || {};
+    return owner.fullname || owner.username || copyTrade.userFullname || 'N/A';
+  }
+
+  function ownerEmail(copyTrade) {
+    var owner = copyTrade.owner || {};
+    return owner.email || copyTrade.userEmail || 'N/A';
+  }
+
+  function statusSelected(current, value) {
+    var cur = String(current || '').toLowerCase();
+    return cur === value ? ' selected' : '';
+  }
+
+  function renderForm(copyTrade) {
+    return (
+      '<form id="edit-user-copytrade-form">' +
+        '<div class="row">' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">User Fullname</label>' +
+            '<input type="text" class="form-control bg-dark text-white" value="' + attrValue(ownerName(copyTrade)) + '" disabled>' +
+          '</div>' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">User Email</label>' +
+            '<input type="text" class="form-control bg-dark text-white" value="' + attrValue(ownerEmail(copyTrade)) + '" disabled>' +
+          '</div>' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">Trader Name</label>' +
+            '<input type="text" class="form-control bg-dark text-white" value="' + attrValue(copyTrade.traderName) + '" disabled>' +
+          '</div>' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">Amount ($)</label>' +
+            '<input type="number" name="amount" id="amount" class="form-control" value="' + attrValue(copyTrade.amount) + '" required min="0" step="0.01">' +
+          '</div>' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">Duration (Days)</label>' +
+            '<input type="number" name="duration" id="duration" class="form-control" value="' + attrValue(copyTrade.duration) + '" required min="1">' +
+          '</div>' +
+          '<div class="col-md-6 mb-3">' +
+            '<label class="text-white">Status</label>' +
+            '<select name="status" id="status" class="form-control" required>' +
+              '<option value="ongoing"' + statusSelected(copyTrade.status, 'ongoing') + '>Ongoing</option>' +
+              '<option value="completed"' + statusSelected(copyTrade.status, 'completed') + '>Completed</option>' +
+              '<option value="cancelled"' + statusSelected(copyTrade.status, 'cancelled') + '>Cancelled</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mt-4 d-flex flex-wrap gap-2">' +
+          '<button type="submit" class="btn btn-primary mr-2" id="update-uct-btn">' +
+            '<i class="bi bi-check-circle"></i> Update Copy Trade' +
+          '</button>' +
+          '<a href="./allUserCopyTrades.html" class="btn btn-secondary">' +
+            '<i class="bi bi-arrow-left"></i> Back' +
+          '</a>' +
+        '</div>' +
+      '</form>'
+    );
+  }
+
+  function bindForm(id) {
+    var form = document.getElementById('edit-user-copytrade-form');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('update-uct-btn');
+      btn.disabled = true;
+      try {
+        var res = await api.post('/admin/edit-user-copytrade/' + encodeURIComponent(id), {
+          amount: document.getElementById('amount').value,
+          duration: document.getElementById('duration').value,
+          status: document.getElementById('status').value
+        });
+        if (res.data && res.data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: res.data.message || 'Copy trade updated successfully',
+            confirmButtonColor: '#28a745'
+          });
+          if (res.data.copyTrade) {
+            document.getElementById('uct-form-wrap').innerHTML = renderForm(res.data.copyTrade);
+            bindForm(id);
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: (res.data && res.data.error) || 'Failed to update copy trade',
+            confirmButtonColor: '#dc3545'
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('user');
+          window.location.href = '../login.html';
+          return;
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: (err.response && err.response.data && err.response.data.error) || err.message || 'Failed to update copy trade',
+          confirmButtonColor: '#dc3545'
+        });
+      } finally {
+        var updateBtn = document.getElementById('update-uct-btn');
+        if (updateBtn) updateBtn.disabled = false;
+      }
     });
-}
+  }
 
-if (error) {
-    Swal.fire({
+  document.addEventListener('DOMContentLoaded', async function () {
+    var loading = document.getElementById('uct-loading');
+    var wrap = document.getElementById('uct-form-wrap');
+    currentId = getIdFromQuery();
+
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      if (!currentId) {
+        throw new Error('Missing copy trade id');
+      }
+
+      var res = await api.get('/admin/edit-user-copytrade/' + encodeURIComponent(currentId) + '/data');
+      var data = res.data;
+      if (!data.success || !data.copyTrade) {
+        throw new Error(data.error || 'Failed to load copy trade');
+      }
+
+      wrap.innerHTML = renderForm(data.copyTrade);
+      bindForm(currentId);
+      loading.style.display = 'none';
+      wrap.style.display = 'block';
+    } catch (err) {
+      console.error(err);
+      loading.style.display = 'none';
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+      Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: error
-    });
-}
+        text: (err.response && err.response.data && err.response.data.error) || err.message || 'Failed to load copy trade',
+        confirmButtonColor: '#dc3545'
+      });
+    }
+  });
+})();
 </script>
 
 </body>

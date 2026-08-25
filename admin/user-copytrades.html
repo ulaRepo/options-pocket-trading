@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+.copytrade-card{
+    background:#171717;
+    border-radius:12px;
+    padding:20px;
+    margin-top:20px;
+    color:#fff;
+}
+
+.copytrade-card .table{
+    color:#fff;
+    margin-bottom:0;
+}
+
+.copytrade-card .table thead th{
+    border-top:none;
+    border-bottom:1px solid rgba(255,255,255,.15);
+    white-space:nowrap;
+}
+
+.copytrade-card .table td{
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.btn-edit{
+    background:#007bff;
+    color:#fff;
+    border:none;
+}
+
+.btn-delete{
+    background:#dc3545;
+    color:#fff;
+    border:none;
+}
+
+.table-responsive::-webkit-scrollbar{
+    height:6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb{
+    background:#444;
+    border-radius:20px;
+}
+    </style>
+</head>
+<body>
+
+<section class="content">
+
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="../user/account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="PROFILE" /> </div></a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+
+<div class="copytrade-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 text-white">
+            All User Copy Trades
+        </h4>
+    </div>
+
+    <div id="uct-loading" class="text-center text-secondary mb-3">Loading user copy trades...</div>
+
+    <div class="table-responsive">
+
+        <table class="table table-dark table-bordered">
+
+            <thead>
+                <tr>
+                    <th>User Fullname</th>
+                    <th>User Email</th>
+                    <th>Trader Name</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody id="uct-tbody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+    </div>
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+
+<script>
+(function () {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function displayValue(value, fallback) {
+    if (value == null || value === '') return fallback;
+    return escapeHtml(value);
+  }
+
+  function confirmDelete(tradeId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This will permanently delete the user copy trade.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Delete'
+    }).then(async function (result) {
+      if (!result.isConfirmed) return;
+      try {
+        var res = await api.post('/admin/delete-user-copytrade/' + encodeURIComponent(tradeId));
+        if (res.data && res.data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: res.data.message || 'User copy trade deleted',
+            confirmButtonColor: '#28a745'
+          }).then(function () {
+            loadUserCopyTrades();
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: (res.data && res.data.error) || 'Delete failed',
+            confirmButtonColor: '#dc3545'
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('user');
+          window.location.href = '../login.html';
+          return;
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: (err.response && err.response.data && err.response.data.error) || err.message || 'Delete failed',
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+  }
+
+  function renderUserCopyTrades(userCopyTrades) {
+    var tbody = document.getElementById('uct-tbody');
+    var rows = [];
+
+    if (userCopyTrades && userCopyTrades.length > 0) {
+      userCopyTrades.forEach(function (user) {
+        if (user.copyTrades && user.copyTrades.length > 0) {
+          user.copyTrades.forEach(function (trade) {
+            var tradeId = escapeHtml(trade._id);
+            var fullname = displayValue(user.userFullname || user.fullname, 'N/A');
+            var email = displayValue(user.userEmail || user.email, 'N/A');
+            var traderName = displayValue(trade.traderName, 'N/A');
+            var amount = trade.amount == null || trade.amount === '' ? 'N/A' : escapeHtml(trade.amount);
+            var duration = displayValue(trade.duration, 'N/A');
+            var status = displayValue(trade.status, 'Pending');
+
+            rows.push(
+              '<tr>' +
+                '<td>' + fullname + '</td>' +
+                '<td>' + email + '</td>' +
+                '<td>' + traderName + '</td>' +
+                '<td>$' + amount + '</td>' +
+                '<td>' + duration + ' days</td>' +
+                '<td>' + status + '</td>' +
+                '<td>' +
+                  '<a href="./editUserCopyTrade.html?id=' + tradeId + '" class="btn btn-edit btn-sm">Edit</a>' +
+                '</td>' +
+                '<td>' +
+                  '<button type="button" class="btn btn-delete btn-sm btn-delete-uct" data-id="' + tradeId + '">Delete</button>' +
+                '</td>' +
+              '</tr>'
+            );
+          });
+        }
+      });
+    }
+
+    if (!rows.length) {
+      tbody.innerHTML =
+        '<tr>' +
+          '<td colspan="8" class="text-center">No user copy trades found.</td>' +
+        '</tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.join('');
+
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-delete-uct'), function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        if (id) confirmDelete(id);
+      });
+    });
+  }
+
+  async function loadUserCopyTrades() {
+    var loading = document.getElementById('uct-loading');
+    loading.style.display = 'block';
+    var res = await api.get('/admin/user-copytrades/data');
+    var data = res.data;
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to load user copy trades');
+    }
+    renderUserCopyTrades(data.userCopyTrades || []);
+    loading.style.display = 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+      await loadUserCopyTrades();
+    } catch (err) {
+      console.error(err);
+      document.getElementById('uct-loading').style.display = 'none';
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+      document.getElementById('uct-tbody').innerHTML =
+        '<tr><td colspan="8" class="text-center">' +
+          escapeHtml(
+            (err.response && err.response.data && err.response.data.error) ||
+            err.message ||
+            'Failed to load user copy trades'
+          ) +
+        '</td></tr>';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -227,7 +227,7 @@
             var res = await api.post('/admin/deleteAffiliate/' + affiliateId);
             if (res.data && res.data.success) {
               showSuccess(res.data.message || 'Affiliate deleted successfully');
-              load load();
+               load();
             } else {
               showError((res.data && res.data.error) || 'Delete failed');
             }
