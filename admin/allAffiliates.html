@@ -2,28 +2,29 @@
 <html>
 <head>
     <title>Dashboard</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
-    <link rel="stylesheet" href="/assetss/index.css">
-    <link rel="stylesheet" href="/assets0/notify.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
     <style>
         .main-content { width: 100%; height: 100vh; margin-top: 11%; }
         @media (max-width: 576px) {
             .main-content { width: 100%; height: 100vh; margin-top: 15%; }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
 <section class="content">
-    
-    <!-- Top Navigation Bar -->
+
     <div class="d-flex justify-content-between from-top">
         <div>
-            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
+            <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU" /></a>
         </div>
         <div class="d-flex flex-column">
             <div id="google_translate_element"></div>
@@ -35,241 +36,48 @@
             <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         </div>
         <div>
-            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
+            <a href="../user/account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="PROFILE" /> </div></a>
         </div>
     </div>
 
-    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
-    <div class="main-content container-fluid " id="main-content">
+    <div class="main-content container-fluid" id="main-content">
 
-    <% if (success && success.length > 0) { %>
-        <div class="alert alert-success">
-            <%= success %>
-        </div>
-    <% } %>
+        <div id="aff-success" class="alert alert-success" style="display:none;"></div>
+        <div id="aff-error" class="alert alert-danger" style="display:none;"></div>
 
-    <% if (error && error.length > 0) { %>
-        <div class="alert alert-danger">
-            <%= error %>
-        </div>
-    <% } %>
+        <div class="card bg-dark text-white border-secondary">
 
-    <div class="card bg-dark text-white border-secondary">
+            <div class="card-header bg-primary">
+                <h5 class="mb-0">Affiliate Packages</h5>
+            </div>
 
-        <div class="card-header bg-primary">
-            <h5 class="mb-0">Affiliate Packages</h5>
-        </div>
+            <div class="card-body">
 
-        <div class="card-body">
+                <div id="aff-loading" class="text-center text-secondary mt-3 mb-3">Loading affiliates...</div>
 
-            <div class="table-responsive">
+                <div class="table-responsive">
 
-                <table class="table table-dark table-hover">
+                    <table class="table table-dark table-hover">
 
-                    <thead>
+                        <thead>
+                            <tr id="aff-thead-row"></tr>
+                        </thead>
 
-                        <tr>
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=index&order=<%= sort === 'index' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    S/N
-                                    <% if (sort === 'index') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
+                        <tbody id="aff-tbody"></tbody>
 
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=amount&order=<%= sort === 'amount' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    Amount
-                                    <% if (sort === 'amount') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
+                    </table>
 
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=type&order=<%= sort === 'type' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    Type
-                                    <% if (sort === 'type') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
+                </div>
 
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=roi&order=<%= sort === 'roi' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    ROI
-                                    <% if (sort === 'roi') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
-
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=duration&order=<%= sort === 'duration' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    Duration
-                                    <% if (sort === 'duration') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
-
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=createdAt&order=<%= sort === 'createdAt' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    Created At
-                                    <% if (sort === 'createdAt') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
-
-                            <th>
-                                <a class="text-white"
-                                   href="?page=<%= page %>&sort=updatedAt&order=<%= sort === 'updatedAt' ? (order === 'asc' ? 'desc' : 'asc') : 'asc' %>">
-                                    Updated At
-                                    <% if (sort === 'updatedAt') { %>
-                                        <%= order === 'asc' ? '↑' : '↓' %>
-                                    <% } %>
-                                </a>
-                            </th>
-
-                            <th>Action</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <% if (affiliates.length > 0) { %>
-
-                            <% affiliates.forEach((affiliate,index)=>{ %>
-
-                                <tr>
-
-                                    <td>
-                                        <%= index + 1 + (page - 1) * 10 %>
-                                    </td>
-
-                                    <td>
-                                        <%= affiliate.amount %>
-                                    </td>
-
-                                    <td>
-                                        <%= affiliate.type %>
-                                    </td>
-
-                                    <td>
-                                        <%= affiliate.roi %>
-                                    </td>
-
-                                    <td>
-                                        <%= affiliate.duration %>
-                                    </td>
-
-                                    <td>
-                                        <%= new Date(affiliate.createdAt).toLocaleString() %>
-                                    </td>
-
-                                    <td>
-                                        <%= new Date(affiliate.updatedAt).toLocaleString() %>
-                                    </td>
-
-                                    <td>
-
-                                        <form
-                                            action="/admin/deleteAffiliate/<%= affiliate._id %>"
-                                            method="POST"
-                                            class="delete-form">
-
-                                            <button
-                                                type="submit"
-                                                class="btn btn-danger btn-sm">
-
-                                                <i class="bi bi-trash"></i>
-
-                                            </button>
-
-                                        </form>
-
-                                    </td>
-
-                                </tr>
-
-                            <% }) %>
-
-                        <% } else { %>
-
-                            <tr>
-
-                                <td colspan="8" class="text-center">
-                                    No affiliates found in the database!
-                                </td>
-
-                            </tr>
-
-                        <% } %>
-
-                    </tbody>
-
-                </table>
+                <nav id="aff-pagination-wrap" style="display:none;">
+                    <ul class="pagination justify-content-center" id="aff-pagination"></ul>
+                </nav>
 
             </div>
 
-            <% if (totalPages > 1) { %>
-
-                <nav>
-
-                    <ul class="pagination justify-content-center">
-
-                        <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
-
-                            <a class="page-link"
-                               href="<%= page === 1 ? '#' : `?page=${page-1}&sort=${sort}&order=${order}` %>">
-                                Previous
-                            </a>
-
-                        </li>
-
-                        <% for(let i=1;i<=totalPages;i++){ %>
-
-                            <li class="page-item <%= page===i ? 'active' : '' %>">
-
-                                <a class="page-link"
-                                   href="?page=<%= i %>&sort=<%= sort %>&order=<%= order %>">
-                                    <%= i %>
-                                </a>
-
-                            </li>
-
-                        <% } %>
-
-                        <li class="page-item <%= page === totalPages ? 'disabled' : '' %>">
-
-                            <a class="page-link"
-                               href="<%= page === totalPages ? '#' : `?page=${page+1}&sort=${sort}&order=${order}` %>">
-                                Next
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </nav>
-
-            <% } %>
-
         </div>
 
     </div>
-
-</div>
-    <!-- ================================================================ -->
 
 </section>
 
@@ -277,46 +85,255 @@
     <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="assets0/notify.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/theme.min.js"></script>
-<script src="plugins/js/datatables.min.js"></script>
-<script src="plugins/js/summernote-bs4.min.js"></script>
-<script src="plugins/js/croppie.min.js"></script>
-<script src="plugins/js/loadingoverlay.min.js"></script>
-<script src="plugins/js/bootstrap4-toggle.min.js"></script>
-<script src="plugins/js/bootstrap-datepicker.min.js"></script>
-
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
 
 <script>
-document.querySelectorAll('.delete-form').forEach(form => {
+(function () {
+  var PER_PAGE = 10;
 
-    form.addEventListener('submit', function(e) {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
-        e.preventDefault();
+  function formatDate(value) {
+    if (!value) return '';
+    var d = new Date(value);
+    if (isNaN(d.getTime())) return escapeHtml(value);
+    return escapeHtml(d.toLocaleString());
+  }
 
+  function getQuery() {
+    var params = new URLSearchParams(window.location.search);
+    var page = parseInt(params.get('page'), 10);
+    if (!page || page < 1) page = 1;
+    var sort = params.get('sort') || 'createdAt';
+    var order = params.get('order') === 'asc' ? 'asc' : 'desc';
+    return { page: page, sort: sort, order: order };
+  }
+
+  function buildHref(page, sort, order) {
+    return '?page=' + encodeURIComponent(page) +
+      '&sort=' + encodeURIComponent(sort) +
+      '&order=' + encodeURIComponent(order);
+  }
+
+  function sortHeader(label, field, page, sort, order) {
+    var nextOrder = (sort === field && order === 'asc') ? 'desc' : 'asc';
+    var arrow = '';
+    if (sort === field) {
+      arrow = order === 'asc' ? ' ↑' : ' ↓';
+    }
+    return '<th>' +
+      '<a class="text-white" href="' + buildHref(page, field, nextOrder) + '">' +
+        escapeHtml(label) + arrow +
+      '</a>' +
+    '</th>';
+  }
+
+  function showSuccess(msg) {
+    var el = document.getElementById('aff-success');
+    var err = document.getElementById('aff-error');
+    err.style.display = 'none';
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function showError(msg) {
+    var el = document.getElementById('aff-error');
+    var ok = document.getElementById('aff-success');
+    ok.style.display = 'none';
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function renderHead(page, sort, order) {
+    document.getElementById('aff-thead-row').innerHTML =
+      sortHeader('S/N', 'index', page, sort, order) +
+      sortHeader('Amount', 'amount', page, sort, order) +
+      sortHeader('Type', 'type', page, sort, order) +
+      sortHeader('ROI', 'roi', page, sort, order) +
+      sortHeader('Duration', 'duration', page, sort, order) +
+      sortHeader('Created At', 'createdAt', page, sort, order) +
+      sortHeader('Updated At', 'updatedAt', page, sort, order) +
+      '<th>Action</th>';
+  }
+
+  function renderRows(affiliates, page) {
+    var tbody = document.getElementById('aff-tbody');
+    if (!affiliates || !affiliates.length) {
+      tbody.innerHTML =
+        '<tr>' +
+          '<td colspan="8" class="text-center">No affiliates found in the database!</td>' +
+        '</tr>';
+      return;
+    }
+
+    tbody.innerHTML = affiliates.map(function (affiliate, index) {
+      var id = escapeHtml(affiliate._id);
+      var sn = index + 1 + (page - 1) * PER_PAGE;
+      return (
+        '<tr>' +
+          '<td>' + sn + '</td>' +
+          '<td>' + escapeHtml(affiliate.amount) + '</td>' +
+          '<td>' + escapeHtml(affiliate.type) + '</td>' +
+          '<td>' + escapeHtml(affiliate.roi) + '</td>' +
+          '<td>' + escapeHtml(affiliate.duration) + '</td>' +
+          '<td>' + formatDate(affiliate.createdAt) + '</td>' +
+          '<td>' + formatDate(affiliate.updatedAt) + '</td>' +
+          '<td>' +
+            '<button type="button" class="btn btn-danger btn-sm btn-delete-affiliate" data-id="' + id + '">' +
+              '<i class="bi bi-trash"></i>' +
+            '</button>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-delete-affiliate'), function (btn) {
+      btn.addEventListener('click', function () {
+        var affiliateId = btn.getAttribute('data-id');
+        if (!affiliateId) return;
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-
-            if(result.isConfirmed){
-                this.submit();
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Yes, delete it!'
+        }).then(async function (result) {
+          if (!result.isConfirmed) return;
+          try {
+            var res = await api.post('/admin/deleteAffiliate/' + affiliateId);
+            if (res.data && res.data.success) {
+              showSuccess(res.data.message || 'Affiliate deleted successfully');
+              load load();
+            } else {
+              showError((res.data && res.data.error) || 'Delete failed');
             }
-
+          } catch (err) {
+            console.error(err);
+            if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+              localStorage.removeItem('user');
+              window.location.href = '../login.html';
+              return;
+            }
+            showError(
+              (err.response && err.response.data && err.response.data.error) ||
+              err.message ||
+              'Delete failed'
+            );
+          }
         });
+      });
+    });
+  }
 
+  function renderPagination(page, totalPages, sort, order) {
+    var wrap = document.getElementById('aff-pagination-wrap');
+    var ul = document.getElementById('aff-pagination');
+    if (!totalPages || totalPages <= 1) {
+      wrap.style.display = 'none';
+      ul.innerHTML = '';
+      return;
+    }
+
+    var html = '';
+    html += '<li class="page-item' + (page === 1 ? ' disabled' : '') + '">' +
+      '<a class="page-link" href="' + (page === 1 ? '#' : buildHref(page - 1, sort, order)) + '">Previous</a>' +
+    '</li>';
+
+    for (var i = 1; i <= totalPages; i++) {
+      html += '<li class="page-item' + (page === i ? ' active' : '') + '">' +
+        '<a class="page-link" href="' + buildHref(i, sort, order) + '">' + i + '</a>' +
+      '</li>';
+    }
+
+    html += '<li class="page-item' + (page === totalPages ? ' disabled' : '') + '">' +
+      '<a class="page-link" href="' + (page === totalPages ? '#' : buildHref(page + 1, sort, order)) + '">Next</a>' +
+    '</li>';
+
+    ul.innerHTML = html;
+    wrap.style.display = 'block';
+  }
+
+  async function loadAffiliates() {
+    var q = getQuery();
+    var loading = document.getElementById('aff-loading');
+    loading.style.display = 'block';
+
+    renderHead(q.page, q.sort, q.order);
+
+    var res = await api.get('/admin/all-affiliates/data', {
+      params: {
+        page: q.page,
+        sort: q.sort,
+        order: q.order
+      }
     });
 
-});
+    var data = res.data;
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to load affiliates');
+    }
+
+    var page = data.page || q.page;
+    var totalPages = data.totalPages || 1;
+    var sort = data.sort || q.sort;
+    var order = data.order || q.order;
+
+    renderRows(data.affiliates || [], page);
+    renderPagination(page, totalPages, sort, order);
+    loading.style.display = 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+      await loadAffiliates();
+    } catch (err) {
+      console.error(err);
+      document.getElementById('aff-loading').style.display = 'none';
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+      showError(
+        (err.response && err.response.data && err.response.data.error) ||
+        err.message ||
+        'Failed to load affiliates'
+      );
+      document.getElementById('aff-tbody').innerHTML =
+        '<tr><td colspan="8" class="text-center">No affiliates found in the database!</td></tr>';
+    }
+  });
+})();
 </script>
 
 </body>
