@@ -1,334 +1,355 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
-    <link rel="stylesheet" href="/assetss/index.css">
-    <link rel="stylesheet" href="/assets0/notify.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
+
+  <style>
+    .main-content {
+      width: 100%;
+      min-height: 100vh;
+      margin-top: 11%;
+      padding: 20px;
+    }
+    @media (max-width: 576px) {
+      .main-content { margin-top: 15%; }
+    }
+    .preview-wrap img {
+      max-width: 200px;
+    }
+  </style>
 </head>
 <body>
 
 <section class="content">
-    
-    <!-- Top Navigation Bar -->
-    <div class="d-flex justify-content-between from-top">
-        <div>
-            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
-        </div>
-        <div class="d-flex flex-column">
-            <div id="google_translate_element"></div>
-            <script type="text/javascript">
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-            }
-            </script>
-            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        </div>
-        <div>
-            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
-        </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
     </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /></div>
+      </a>
+    </div>
+  </div>
 
-    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
-    <div class="main-content" id="main-content">
-      
-      
-<div class="main-content" id="main-content">
-
+  <div class="main-content" id="main-content">
     <div class="container-fluid py-4">
 
-        <% if (messages && messages.error) { %>
-            <div class="alert alert-danger">
-                <%= messages.error %>
-            </div>
-        <% } %>
+      <div id="edit-loading" class="text-center text-secondary py-4">
+        Loading wallet...
+      </div>
 
-        <% if (messages && messages.success) { %>
-            <div class="alert alert-success">
-                <%= messages.success %>
-            </div>
-        <% } %>
-
-        <div class="card border-0 shadow">
-
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                    <i class="bi bi-wallet2"></i>
-                    Edit Wallet
-                </h4>
-            </div>
-
-            <div class="card-body">
-
-                <form
-                    action="/admin/edit-wallet/<%= wallet._id %>"
-                    method="POST"
-                    enctype="multipart/form-data"
-                >
-
-                    <!-- BTC -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>BTC Address</strong></label>
-
-                        <input
-                            type="text"
-                            name="btc_address"
-                            class="form-control"
-                            value="<%= wallet.btc_address || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>BTC QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="btc_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.btc_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.btc_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <hr>
-
-                    <!-- ETH -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>ETH Address</strong></label>
-
-                        <input
-                            type="text"
-                            name="eth_address"
-                            class="form-control"
-                            value="<%= wallet.eth_address || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>ETH QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="eth_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.eth_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.eth_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <hr>
-
-                    <!-- USDT -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>USDT Address</strong></label>
-
-                        <input
-                            type="text"
-                            name="usdt_address"
-                            class="form-control"
-                            value="<%= wallet.usdt_address || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>USDT QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="usdt_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.usdt_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.usdt_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <hr>
-
-                    <!-- USDC -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>USDC Address</strong></label>
-
-                        <input
-                            type="text"
-                            name="usdc_address"
-                            class="form-control"
-                            value="<%= wallet.usdc_address || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>USDC QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="usdc_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.usdc_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.usdc_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <hr>
-
-                    <!-- CASHAPP -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>CashApp</strong></label>
-
-                        <input
-                            type="text"
-                            name="cashapp"
-                            class="form-control"
-                            value="<%= wallet.cashapp || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>CashApp QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="cashapp_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.cashapp_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.cashapp_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <hr>
-
-                    <!-- PAYPAL -->
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>PayPal Email</strong></label>
-
-                        <input
-                            type="text"
-                            name="paypal"
-                            class="form-control"
-                            value="<%= wallet.paypal || '' %>"
-                        >
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label class="text-dark"><strong>PayPal QR/Image</strong></label>
-
-                        <input
-                            type="file"
-                            name="paypal_image"
-                            class="form-control"
-                            accept="image/*"
-                        >
-
-                        <% if(wallet.paypal_image){ %>
-                            <div class="mt-3">
-                                <img
-                                    src="<%= wallet.paypal_image %>"
-                                    class="img-thumbnail"
-                                    style="max-width:200px;"
-                                >
-                            </div>
-                        <% } %>
-                    </div>
-
-                    <div class="text-center mt-4">
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary btn-lg"
-                        >
-                            <i class="bi bi-check-circle"></i>
-                            Update Wallet
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
+      <div class="card border-0 shadow" id="edit-card" style="display:none;">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <i class="bi bi-wallet2"></i>
+            Edit Wallet
+          </h4>
+          <a href="./wallets.html" class="btn btn-light btn-sm">Back</a>
         </div>
 
+        <div class="card-body">
+          <form id="edit-wallet-form" autocomplete="off">
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>BTC Address</strong></label>
+              <input type="text" name="btc_address" id="btc_address" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>BTC QR/Image</strong></label>
+              <input type="file" name="btc_image" id="btc_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="btc_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="BTC QR">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>ETH Address</strong></label>
+              <input type="text" name="eth_address" id="eth_address" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>ETH QR/Image</strong></label>
+              <input type="file" name="eth_image" id="eth_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="eth_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="ETH QR">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>USDT Address</strong></label>
+              <input type="text" name="usdt_address" id="usdt_address" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>USDT QR/Image</strong></label>
+              <input type="file" name="usdt_image" id="usdt_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="usdt_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="USDT QR">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>USDC Address</strong></label>
+              <input type="text" name="usdc_address" id="usdc_address" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>USDC QR/Image</strong></label>
+              <input type="file" name="usdc_image" id="usdc_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="usdc_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="USDC QR">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>CashApp</strong></label>
+              <input type="text" name="cashapp" id="cashapp" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>CashApp QR/Image</strong></label>
+              <input type="file" name="cashapp_image" id="cashapp_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="cashapp_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="CashApp QR">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>PayPal Email</strong></label>
+              <input type="text" name="paypal" id="paypal" class="form-control">
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="text-dark"><strong>PayPal QR/Image</strong></label>
+              <input type="file" name="paypal_image" id="paypal_image" class="form-control" accept="image/*">
+              <div class="mt-3 preview-wrap" id="paypal_image_preview" style="display:none;">
+                <img src="" class="img-thumbnail" alt="PayPal QR">
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                <i class="bi bi-check-circle"></i>
+                Update Wallet
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
     </div>
-
-</div>
-
-
-    </div>
-    <!-- ================================================================ -->
+  </div>
 
 </section>
 
 <footer class="main-footer text-center">
-    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+  <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="assets0/notify.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/theme.min.js"></script>
-<script src="plugins/js/datatables.min.js"></script>
-<script src="plugins/js/summernote-bs4.min.js"></script>
-<script src="plugins/js/croppie.min.js"></script>
-<script src="plugins/js/loadingoverlay.min.js"></script>
-<script src="plugins/js/bootstrap4-toggle.min.js"></script>
-<script src="plugins/js/bootstrap-datepicker.min.js"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+(function () {
+  var walletId = null;
+
+  function getIdFromQuery() {
+    try {
+      return new URLSearchParams(window.location.search).get('id');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setPreview(wrapId, url) {
+    var wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    var img = wrap.querySelector('img');
+    if (url) {
+      img.src = url;
+      wrap.style.display = 'block';
+    } else {
+      img.removeAttribute('src');
+      wrap.style.display = 'none';
+    }
+  }
+
+  function fillForm(wallet) {
+    document.getElementById('btc_address').value = wallet.btc_address || '';
+    document.getElementById('eth_address').value = wallet.eth_address || '';
+    document.getElementById('usdt_address').value = wallet.usdt_address || '';
+    document.getElementById('usdc_address').value = wallet.usdc_address || '';
+    document.getElementById('cashapp').value = wallet.cashapp || '';
+    document.getElementById('paypal').value = wallet.paypal || '';
+
+    setPreview('btc_image_preview', wallet.btc_image);
+    setPreview('eth_image_preview', wallet.eth_image);
+    setPreview('usdt_image_preview', wallet.usdt_image);
+    setPreview('usdc_image_preview', wallet.usdc_image);
+    setPreview('cashapp_image_preview', wallet.cashapp_image);
+    setPreview('paypal_image_preview', wallet.paypal_image);
+  }
+
+  function appendIfFile(formData, fieldName, inputId) {
+    var input = document.getElementById(inputId);
+    if (input && input.files && input.files[0]) {
+      formData.append(fieldName, input.files[0]);
+    }
+  }
+
+  document.getElementById('edit-wallet-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!walletId) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Missing wallet id.' });
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append('btc_address', document.getElementById('btc_address').value.trim());
+    formData.append('eth_address', document.getElementById('eth_address').value.trim());
+    formData.append('usdt_address', document.getElementById('usdt_address').value.trim());
+    formData.append('usdc_address', document.getElementById('usdc_address').value.trim());
+    formData.append('cashapp', document.getElementById('cashapp').value.trim());
+    formData.append('paypal', document.getElementById('paypal').value.trim());
+
+    appendIfFile(formData, 'btc_image', 'btc_image');
+    appendIfFile(formData, 'eth_image', 'eth_image');
+    appendIfFile(formData, 'usdt_image', 'usdt_image');
+    appendIfFile(formData, 'usdc_image', 'usdc_image');
+    appendIfFile(formData, 'cashapp_image', 'cashapp_image');
+    appendIfFile(formData, 'paypal_image', 'paypal_image');
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Updating...';
+
+    try {
+      var result = await api.post('/admin/edit-wallet/' + walletId, formData, {
+        headers: { 'Content-Type': false },
+        transformRequest: [
+          function (data, headers) {
+            if (data instanceof FormData) {
+              delete headers['Content-Type'];
+            }
+            return data;
+          }
+        ]
+      });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: (result.data && result.data.message) || 'Wallet updated successfully',
+        confirmButtonText: 'OK'
+      }).then(function () {
+        window.location.href = './wallets.html';
+      });
+    } catch (err) {
+      console.error(err);
+      var msg = 'Error updating wallet';
+      if (err.response && err.response.data) {
+        msg = err.response.data.error || err.response.data.message || msg;
+      }
+      Swal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonText: 'OK' });
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-check-circle"></i> Update Wallet';
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      walletId = getIdFromQuery();
+      if (!walletId) {
+        throw new Error('Missing id in URL. Open as edit-wallet.html?id=...');
+      }
+
+      var res = await api.get('/admin/edit-wallet/' + walletId + '/data');
+      var data = res.data;
+      if (!data.success || !data.wallet) {
+        throw new Error(data.error || 'Wallet not found');
+      }
+
+      fillForm(data.wallet);
+      document.getElementById('edit-loading').style.display = 'none';
+      document.getElementById('edit-card').style.display = 'block';
+    } catch (err) {
+      console.error(err);
+      document.getElementById('edit-loading').style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text:
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to load wallet'
+      }).then(function () {
+        window.location.href = './wallets.html';
+      });
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

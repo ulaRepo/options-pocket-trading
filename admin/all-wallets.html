@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wallets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
+
+  <style>
+    .main-content {
+      width: 100%;
+      min-height: 100vh;
+      margin-top: 11%;
+      padding: 20px;
+    }
+    @media (max-width: 576px) {
+      .main-content { margin-top: 15%; }
+    }
+    #walletTable td {
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<section class="content">
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+    </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content" id="main-content">
+    <div class="container-fluid mt-4">
+      <div class="card shadow-lg border-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0 text-dark">Wallets</h4>
+          <a href="./add-wallet.html" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Wallet
+          </a>
+        </div>
+
+        <div class="card-body">
+          <div id="wallets-loading" class="text-center text-secondary py-4">
+            Loading wallets...
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle text-dark" id="walletTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>BTC Address</th>
+                  <th>ETH Address</th>
+                  <th>USDT Address</th>
+                  <th>USDC Address</th>
+                  <th>CashApp</th>
+                  <th>PayPal</th>
+                  <th>Owner</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="wallets-tbody"></tbody>
+            </table>
+          </div>
+
+          <div id="wallets-empty" class="text-center text-secondary py-4" style="display:none;">
+            No wallets found.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer class="main-footer text-center">
+  <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+(function () {
+  var dataTableInstance = null;
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function ownerLabel(wallet) {
+    if (!wallet.owner) return 'N/A';
+    if (typeof wallet.owner === 'object') {
+      return wallet.owner.username || wallet.owner.email || wallet.owner._id || 'N/A';
+    }
+    return String(wallet.owner);
+  }
+
+  function destroyDataTable() {
+    if (dataTableInstance) {
+      try {
+        dataTableInstance.destroy();
+      } catch (e) {}
+      dataTableInstance = null;
+    }
+  }
+
+  function initDataTable() {
+    if (window.jQuery && $.fn.DataTable) {
+      dataTableInstance = $('#walletTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        ordering: true,
+        searching: true,
+        lengthChange: true
+      });
+    }
+  }
+
+  function bindDeleteButtons() {
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-delete-wallet'), function (btn) {
+      btn.addEventListener('click', async function () {
+        var id = btn.getAttribute('data-id');
+        if (!id) return;
+
+        var result = await Swal.fire({
+          title: 'Delete wallet?',
+          text: 'Are you sure you want to delete this wallet?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Cancel'
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+          var res = await api.post('/admin/delete-wallet/' + id);
+          if (res.data && res.data.success) {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Deleted',
+              text: res.data.message || 'Wallet deleted',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            loadWallets();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: (res.data && res.data.error) || 'Delete failed'
+            });
+          }
+        } catch (err) {
+          console.error(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text:
+              (err.response && err.response.data && err.response.data.error) ||
+              err.message ||
+              'Delete failed'
+          });
+        }
+      });
+    });
+  }
+
+  function renderWallets(wallets) {
+    var loading = document.getElementById('wallets-loading');
+    var table = document.getElementById('walletTable');
+    var tbody = document.getElementById('wallets-tbody');
+    var empty = document.getElementById('wallets-empty');
+
+    if (loading) loading.style.display = 'none';
+    destroyDataTable();
+
+    if (!wallets || !wallets.length) {
+      if (table) table.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      tbody.innerHTML = '';
+      return;
+    }
+
+    tbody.innerHTML = wallets.map(function (wallet) {
+      var id = escapeHtml(wallet._id);
+      return (
+        '<tr data-id="' + id + '">' +
+          '<td class="text-dark" title="' + escapeHtml(wallet.btc_address) + '">' + escapeHtml(wallet.btc_address) + '</td>' +
+          '<td class="text-dark" title="' + escapeHtml(wallet.eth_address) + '">' + escapeHtml(wallet.eth_address) + '</td>' +
+          '<td class="text-dark" title="' + escapeHtml(wallet.usdt_address) + '">' + escapeHtml(wallet.usdt_address) + '</td>' +
+          '<td class="text-dark" title="' + escapeHtml(wallet.usdc_address) + '">' + escapeHtml(wallet.usdc_address) + '</td>' +
+          '<td class="text-dark">' + escapeHtml(wallet.cashapp) + '</td>' +
+          '<td class="text-dark">' + escapeHtml(wallet.paypal) + '</td>' +
+          '<td class="text-dark">' + escapeHtml(ownerLabel(wallet)) + '</td>' +
+          '<td>' +
+            '<a href="./edit-wallet.html?id=' + id + '" class="btn btn-sm btn-primary">Edit</a> ' +
+            '<button type="button" class="btn btn-sm btn-danger btn-delete-wallet" data-id="' + id + '">Delete</button>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    if (empty) empty.style.display = 'none';
+    if (table) table.style.display = 'table';
+    bindDeleteButtons();
+    initDataTable();
+  }
+
+  async function loadWallets() {
+    var loading = document.getElementById('wallets-loading');
+    if (loading) loading.style.display = 'block';
+
+    var res = await api.get('/admin/all-wallets/data');
+    var data = res.data;
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to load wallets');
+    }
+    renderWallets(data.wallets || []);
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      await loadWallets();
+    } catch (err) {
+      console.error(err);
+      var loading = document.getElementById('wallets-loading');
+      if (loading) loading.style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var empty = document.getElementById('wallets-empty');
+      if (empty) {
+        empty.style.display = 'block';
+        empty.textContent =
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to load wallets';
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,199 +1,266 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Copy Trader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
-    <link rel="stylesheet" href="/assetss/index.css">
-    <link rel="stylesheet" href="/assets0/notify.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
 
-    <style>
-.form-control{
-    background-color:#2a2a2a;
-    color:#fff;
-    border:1px solid #363636;
-}
-
-.preview-img{
-    max-width:200px;
-    margin-top:10px;
-}
-
-.form-control-file{
-    color:#fff;
-}
-
-.bg-2{
-    background:#171717;
-}
-
-.cebox{
-    color:#fff;
-}
-
-.h{
-    font-size:22px;
-    font-weight:600;
-    margin-bottom:20px;
-}
-</style>
+  <style>
+    .form-control {
+      background-color: #2a2a2a;
+      color: #fff;
+      border: 1px solid #363636;
+    }
+    .preview-img {
+      max-width: 200px;
+      margin-top: 10px;
+    }
+    .form-control-file {
+      color: #fff;
+    }
+    .bg-2 {
+      background: #171717;
+    }
+    .cebox {
+      color: #fff;
+    }
+    .h {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .main-content {
+      width: 100%;
+      min-height: 100vh;
+      margin-top: 11%;
+      padding: 20px;
+    }
+    @media (max-width: 576px) {
+      .main-content { margin-top: 15%; }
+    }
+  </style>
 </head>
 <body>
 
 <section class="content">
-    
-    <!-- Top Navigation Bar -->
-    <div class="d-flex justify-content-between from-top">
-        <div>
-            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
-        </div>
-        <div class="d-flex flex-column">
-            <div id="google_translate_element"></div>
-            <script type="text/javascript">
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-            }
-            </script>
-            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        </div>
-        <div>
-            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
-        </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
     </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /></div>
+      </a>
+    </div>
+  </div>
 
-    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
-    <div class="main-content" id="main-content">
-       <div class="ky-co">
-    <div class="bg-2 cebox" style="padding:25px;border-radius:11px;">
-        <div class="h"><%= copyTrade ? 'Edit' : 'Add' %> Copy Trader</div>
+  <div class="main-content" id="main-content">
+    <div class="ky-co">
+      <div class="bg-2 cebox" style="padding:25px;border-radius:11px;">
+        <div class="h">Add Copy Trader</div>
 
-        <form action="<%= copyTrade ? '/admin/edit-copytrader/' + copyTrade._id : '/admin/add-copytrader' %>"
-              method="POST"
-              enctype="multipart/form-data"
-              id="copyTradeForm">
+        <form id="copyTradeForm" autocomplete="off">
+          <div class="form-group">
+            <label for="traderName">Trader Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="traderName"
+                   name="traderName"
+                   required>
+          </div>
 
-            <div class="form-group">
-                <label for="traderName">Trader Name</label>
-                <input type="text"
-                       class="form-control"
-                       id="traderName"
-                       name="traderName"
-                       value="<%= copyTrade ? copyTrade.traderName : '' %>"
-                       required>
-            </div>
+          <div class="form-group">
+            <label for="traderImage">Trader Image</label>
+            <input type="file"
+                   class="form-control-file"
+                   id="traderImage"
+                   name="traderImage"
+                   accept="image/jpeg,image/jpg,image/png,image/webp">
+            <img id="imagePreview" class="preview-img" style="display:none;" alt="Preview">
+          </div>
 
-            <div class="form-group">
-                <label for="traderImage">Trader Image</label>
-                <input type="file"
-                       class="form-control-file"
-                       id="traderImage"
-                       name="traderImage"
-                       accept="image/jpeg,image/jpg,image/png">
+          <div class="form-group">
+            <label for="profitShare">Profit Share (%)</label>
+            <input type="number"
+                   class="form-control"
+                   id="profitShare"
+                   name="profitShare"
+                   min="0"
+                   max="100"
+                   step="0.01"
+                   required>
+          </div>
 
-                <% if (copyTrade && copyTrade.traderImage) { %>
-                    <img src="<%= copyTrade.traderImage %>"
-                         class="preview-img"
-                         alt="Current Image">
-                <% } %>
+          <div class="form-group">
+            <label for="winRate">Win Rate (%)</label>
+            <input type="number"
+                   class="form-control"
+                   id="winRate"
+                   name="winRate"
+                   min="0"
+                   max="100"
+                   step="0.01"
+                   required>
+          </div>
 
-                <img id="imagePreview"
-                     class="preview-img"
-                     style="display:none;">
-            </div>
+          <button type="submit" class="btn btn-primary" id="save-btn">
+            Save Copy Trader
+          </button>
 
-            <div class="form-group">
-                <label for="profitShare">Profit Share (%)</label>
-                <input type="number"
-                       class="form-control"
-                       id="profitShare"
-                       name="profitShare"
-                       min="0"
-                       max="100"
-                       step="0.01"
-                       value="<%= copyTrade ? copyTrade.profitShare : '' %>"
-                       required>
-            </div>
-
-            <div class="form-group">
-                <label for="winRate">Win Rate (%)</label>
-                <input type="number"
-                       class="form-control"
-                       id="winRate"
-                       name="winRate"
-                       min="0"
-                       max="100"
-                       step="0.01"
-                       value="<%= copyTrade ? copyTrade.winRate : '' %>"
-                       required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                Save Copy Trader
-            </button>
-
-            <a href="/all-copytrades"
-               class="btn btn-secondary ml-2">
-                Cancel
-            </a>
+          <a href="./allCopyTrades.html" class="btn btn-secondary ml-2">
+            Cancel
+          </a>
         </form>
+      </div>
     </div>
-</div>
-    </div>
-    <!-- ================================================================ -->
+  </div>
 
 </section>
 
 <footer class="main-footer text-center">
-    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+  <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-<script src="assets0/notify.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/theme.min.js"></script>
-<script src="plugins/js/datatables.min.js"></script>
-<script src="plugins/js/summernote-bs4.min.js"></script>
-<script src="plugins/js/croppie.min.js"></script>
-<script src="plugins/js/loadingoverlay.min.js"></script>
-<script src="plugins/js/bootstrap4-toggle.min.js"></script>
-<script src="plugins/js/bootstrap-datepicker.min.js"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
 
 <script>
+(function () {
+  var imageInput = document.getElementById('traderImage');
+  var imagePreview = document.getElementById('imagePreview');
 
-const successMessage =
-'<%= messages.success && messages.success.length ? messages.success[0] : "" %>';
+  imageInput.addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    if (!file) {
+      imagePreview.style.display = 'none';
+      imagePreview.removeAttribute('src');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreview.src = e.target.result;
+      imagePreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
 
-const errorMessage =
-'<%= messages.error && messages.error.length ? messages.error[0] : "" %>';
+  document.getElementById('copyTradeForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-if (successMessage) {
+    var traderName = document.getElementById('traderName').value.trim();
+    var profitShare = document.getElementById('profitShare').value;
+    var winRate = document.getElementById('winRate').value;
+    var file = imageInput.files && imageInput.files[0];
 
-    Swal.fire({
+    if (!traderName) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Trader name is required.' });
+      return;
+    }
+    if (profitShare === '' || winRate === '') {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Profit share and win rate are required.' });
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append('traderName', traderName);
+    formData.append('profitShare', profitShare);
+    formData.append('winRate', winRate);
+    if (file) {
+      formData.append('traderImage', file);
+    }
+
+    var btn = document.getElementById('save-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    try {
+      var result = await api.post('/admin/add-copytrader', formData, {
+        headers: { 'Content-Type': false },
+        transformRequest: [
+          function (data, headers) {
+            if (data instanceof FormData) {
+              delete headers['Content-Type'];
+            }
+            return data;
+          }
+        ]
+      });
+
+      Swal.fire({
         icon: 'success',
         title: 'Success',
-        text: successMessage,
+        text: (result.data && result.data.message) || 'Copy Trader created successfully!',
         confirmButtonColor: '#3085d6'
-    });
-
-}
-
-if (errorMessage) {
-
-    Swal.fire({
+      }).then(function () {
+        window.location.href = './all-copytrades.html';
+      });
+    } catch (err) {
+      console.error(err);
+      var msg = 'Failed to create Copy Trader.';
+      if (err.response && err.response.data) {
+        msg = err.response.data.error || err.response.data.message || msg;
+      }
+      Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: errorMessage,
+        text: msg,
         confirmButtonColor: '#d33'
-    });
+      });
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save Copy Trader';
+    }
+  });
 
-}
-
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+    } catch (err) {
+      console.error(err);
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+      } else {
+        window.location.href = '../login.html';
+      }
+    }
+  });
+})();
 </script>
 
 </body>
