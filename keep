@@ -94,7 +94,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
   // ************************ LOCAL ONE ***********************
 
-  const express = require('express');
+const express = require('express');
 const createHttpError = require('http-errors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');

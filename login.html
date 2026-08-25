@@ -160,6 +160,7 @@
 <script src="./public/js/convert/config.js"></script>
 <script src="./public/js/convert/auth.js"></script>
 <script>
+
 (function () {
   const form = document.getElementById('login-form');
   const messageEl = document.getElementById('login-message');
@@ -182,15 +183,18 @@
 
     try {
       const { data } = await api.post('/auth/login', { email, password });
-     if (data.success && data.user) {
-  localStorage.setItem('user', JSON.stringify(data.user));
-  showMessage('Login successful. Redirecting...', false);
-  if (data.user.role === 'ADMIN') {
-    window.location.href = './admin/adminDashboard.html'; // if you have one
-  } else {
-    window.location.href = './user/dashboard.html';
-  }
-} else {
+      if (data.success && data.user) {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
+        localStorage.setItem('user', JSON.stringify(data.user));
+        showMessage('Login successful. Redirecting...', false);
+        if (data.user.role === 'ADMIN') {
+          window.location.href = './admin/adminDashboard.html';
+        } else {
+          window.location.href = './user/dashboard.html';
+        }
+      } else {
         showMessage(data.error || 'Login failed', true);
       }
     } catch (err) {
@@ -204,6 +208,7 @@
     }
   });
 })();
+
 </script>
 </body>
 </html>
