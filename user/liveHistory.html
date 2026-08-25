@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#313131">
+  <title>Live Trading History</title>
+  <link rel="shortcut icon" href="../img/Signals-Alert-3.png" type="image/x-icon">
+  <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../public/assets/accountVerification.css">
+  <link rel="stylesheet" href="../public/assets/photoUplod.css">
+  <link rel="stylesheet" href="../public/assets/personalInformation.css">
+  <link rel="stylesheet" href="../public/css/typography.css">
+  <link rel="stylesheet" href="../public/css/style.css">
+  <link rel="stylesheet" href="../public/css/responsive.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
+  <style>
+    body { margin: 0; font-family: 'Roboto' !important; }
+  </style>
+</head>
+<body class="sidebar-main-active right-column-fixed" style="background-color:#000; color:#dbdbdb;">
+
+  <section class="navbar-top">
+    <div class="container">
+      <div class="navbar-left">
+        <a href="./navbarPage.html">
+          <img src="../public/assets/vector/hamburger.svg" alt="MENU" class="hamburger" id="btn">
+        </a>
+      </div>
+      <div class="navbar-right"></div>
+    </div>
+  </section>
+
+  <div id="loading" style="display: none;">
+    <div id="loading-center"></div>
+  </div>
+
+  <div class="wrapper">
+    <div class="iq-card-body">
+      <p class="text-center text-secondary mt-5">Recent Live Trading History</p>
+
+      <div class="table-responsive">
+        <div id="lt-loading" class="text-center text-secondary mt-4">Loading trades...</div>
+
+        <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" style="display:none;">
+          <thead>
+            <tr>
+              <th style="color:white;">Trading Type</th>
+              <th style="color:white;">Currency Pair</th>
+              <th style="color:white;">Trading Action</th>
+              <th style="color:white;">Lot Size</th>
+              <th style="color:white;">Entry Price</th>
+              <th style="color:white;">Stop Loss</th>
+              <th style="color:white;">Take Profit</th>
+              <th style="color:white;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="livetrades-tbody" style="background-color:#2A2929;"></tbody>
+        </table>
+
+        <h3 id="lt-empty" class="text-center text-secondary mt-5" style="display:none;">
+          No livetrades found!
+        </h3>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+    window.smartsupp || (function (d) {
+      var s, c, o = smartsupp = function () { o._.push(arguments) }; o._ = [];
+      s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+      c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+      c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+    })(document);
+  </script>
+  <noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+  <script src="../public/js/jquery.min.js"></script>
+  <script src="../public/js/popper.min.js"></script>
+  <script src="../public/js/bootstrap.min.js"></script>
+  <script src="../public/js/jquery.appear.js"></script>
+  <script src="../public/js/countdown.min.js"></script>
+  <script src="../public/js/waypoints.min.js"></script>
+  <script src="../public/js/jquery.counterup.min.js"></script>
+  <script src="../public/js/wow.min.js"></script>
+  <script src="../public/js/apexcharts.js"></script>
+  <script src="../public/js/slick.min.js"></script>
+  <script src="../public/js/select2.min.js"></script>
+  <script src="../public/js/owl.carousel.min.js"></script>
+  <script src="../public/js/jquery.magnific-popup.min.js"></script>
+  <script src="../public/js/smooth-scrollbar.js"></script>
+  <script src="../public/js/lottie.js"></script>
+  <script src="../public/js/core.js"></script>
+  <script src="../public/js/charts.js"></script>
+  <script src="../public/js/animated.js"></script>
+  <script src="../public/js/kelly.js"></script>
+  <script src="../public/js/maps.js"></script>
+  <script src="../public/js/worldLow.js"></script>
+  <script src="../public/js/style-customizer.js"></script>
+  <script src="../public/js/chart-custom.js"></script>
+  <script src="../public/js/custom.js"></script>
+
+  <footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions </a>. All Rights Reserved</strong>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="../public/assets0/notify.js"></script>
+  <script src="../public/assets/js/jquery.min.js"></script>
+  <script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/assets/js/theme.min.js"></script>
+  <script src="../public/plugins/js/datatables.min.js"></script>
+  <script src="../public/plugins/js/summernote-bs4.min.js"></script>
+  <script src="../public/plugins/js/croppie.min.js"></script>
+  <script src="../public/plugins/js/loadingoverlay.min.js"></script>
+  <script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+  <script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+  <script>
+  (function () {
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getUserIdFromQuery() {
+      try {
+        return new URLSearchParams(window.location.search).get('id');
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function getUserIdFromStorage() {
+      try {
+        var u = JSON.parse(localStorage.getItem('user') || 'null');
+        return u && u._id ? u._id : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function renderTrades(list) {
+      var loading = document.getElementById('lt-loading');
+      var table = document.getElementById('user-list-table');
+      var tbody = document.getElementById('livetrades-tbody');
+      var empty = document.getElementById('lt-empty');
+
+      if (loading) loading.style.display = 'none';
+
+      if (!list || !list.length) {
+        if (table) table.style.display = 'none';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+
+      tbody.innerHTML = list.map(function (t) {
+        return (
+          '<tr style="background-color:#2A2929;">' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.type) + '</td>' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.currencypair) + '</td>' +
+            '<td><span style="color:red;">' + escapeHtml(t.action) + '</span></td>' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.lotsize) + '</td>' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.entryPrice) + '</td>' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.stopLoss) + '</td>' +
+            '<td style="color:#B3B3B3;">' + escapeHtml(t.takeProfit) + '</td>' +
+            '<td class="text-center"></td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      if (empty) empty.style.display = 'none';
+      if (table) table.style.display = 'table';
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        var userId = getUserIdFromQuery() || getUserIdFromStorage();
+
+        if (!userId) {
+          var me = await api.get('/user/dashboard/data');
+          if (me.data && me.data.success && me.data.user) {
+            userId = me.data.user._id;
+            localStorage.setItem('user', JSON.stringify(me.data.user));
+          }
+        }
+
+        if (!userId) {
+          throw Object.assign(new Error('No user'), { response: { status: 401 } });
+        }
+
+        var res = await api.get('/user/tradinghistory/' + userId + '/data');
+        var data = res.data;
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load');
+        }
+
+        renderTrades(data.livetrades || []);
+      } catch (err) {
+        console.error(err);
+        var loading = document.getElementById('lt-loading');
+        if (loading) loading.style.display = 'none';
+
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('user');
+          window.location.href = '../login.html';
+          return;
+        }
+
+        var empty = document.getElementById('lt-empty');
+        if (empty) {
+          empty.style.display = 'block';
+          empty.textContent =
+            (err.response && err.response.data && err.response.data.error) ||
+            err.message ||
+            'Failed to load trading history';
+        }
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

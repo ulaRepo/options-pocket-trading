@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>MENU</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+
+
+<link rel="stylesheet" href="/assetss/index.css"> 
+
+</head>
+<body>
+    
+
+<section class="content">
+
+<div class="d-flex justify-content-between  from-top ">
+	<div class="menu">
+		MENU
+	</div> 
+	<div id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<div>
+		<a class="btn1" href="/auth/logout">logout</a>
+	</div>
+</div>
+<div style="padding: 20px;"></div>
+
+<div class="d-flex justify-content-start ">
+	<a href="#"><a href="/user/account" class="ph">
+    <img src="/assetss/img/pers.svg" alt="PROFILE" /> </a>
+	<div class="sl">
+		<div class="name">
+		<%=user.fullname%></div>
+		<div class="email">
+		<%=user.email%></div>
+	</div>
+</div>
+
+
+<div style="padding: 10px;"> </div>
+<div class="mycard " style="padding-top: 3%;">
+	<table>
+		<tr>
+			<td class="lsi">your email:</td>
+			<td><h5><%=user.email%></h5></td>
+		</tr>
+		<tr>
+			<td class="lsi">Join Date:</td>
+			<td><h6><%=user.createdAt%></h6></td>
+		</tr>
+		<tr>
+			<td class="lsi">Kyc Status:</td>
+			<td class="desc text-light">
+		<span style="color:red;"><h6><%=user.verifiedStatus%></h6></span></td>
+                                                                </td>
+		</tr>
+		<tr>
+			<td class="lsi">Account Type:</td>
+			<td><h6><%=user.role%></h6></td>
+		</tr>
+	</table>
+</div>
+ 
+<div class="d-flex flex-column " style="padding-top: 3%;">
+	<% if (user) { %>
+		<a class="div-btn" href="/user/dashboard">
+			<span class="linkcss">Dashboard</span>
+		</a>
+			<a class="div-btn" href="/user/verify">
+			<span class="linkcss">Verify Account</span>
+		</a>
+			 <a class="div-btn" href="/user/deposit">
+			<span class="linkcss">Deposit</span>
+		</a>
+		<a class="div-btn" href="/user/withdrawal">
+			<span class="linkcss">Withdrawal</span>
+		</a>
+		<!--<a class="div-btn" href="signal-package">
+			<span class="linkcss">Signal Subscribtion</span>
+		</a>-->
+		<a class="div-btn" href="/user/trading-live">
+			<span class="linkcss">Live Trades</span>
+		</a>
+		
+		<a class="div-btn" href="/user/accountUpgrade">
+			<span class="linkcss">Account Upgrade</span>
+		</a>
+	
+		<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
+			<span class="linkcss">Livetrade History</span>
+
+		</a>
+
+		<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
+			<span class="linkcss">Deposit History</span>
+		</a>
+	
+		<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
+			<span class="linkcss">Widthdraw History</span>
+		</a>
+		<!-- <a class="div-btn" href="/transactions/user._id%>">
+			<span class="linkcss">Transaction History</span>
+		</a> -->
+
+		<% if (user.role === 'ADMIN') { %>
+			<a class="div-btn" href="/adminRoute">
+				<span class="linkcss">Dashboard</span>
+			</a>
+				<a class="div-btn" href="/allVerify">
+				<span class="linkcss">All Verifications</span>
+			</a>
+				 <a class="div-btn" href="/allFunding">
+				<span class="linkcss">All Deposits</span>
+			</a>
+			<a class="div-btn" href="/allWidthdrawals">
+				<span class="linkcss">All Withdrawals</span>
+			</a>
+			<!--<a class="div-btn" href="signal-package">
+				<span class="linkcss">Signal Subscribtion</span>
+			</a>-->
+			<a class="div-btn" href="/all-livetrade">
+				<span class="linkcss">All Live Trades</span>
+			</a>
+			<!-- <a class="div-btn" href="/all-stocktrade">
+				<span class="linkcss">All Stock Trades</span>
+			</a> -->
+			<a class="div-btn" href="/all-accountUpgrade">
+				<span class="linkcss">All Accounts Upgrade</span>
+			</a>
+			<% } %>
+
+			<% } else { %>
+				
+				<% } %>
+	
+</div>
+
+</div>
+
+
+</section>
+
+  
+<footer class="main-footer text-center">
+	<strong style="color: white;">  Copyrights 2024  @ <a href="#">pocketoptions </a>. All Rights Reserved</strong> 
+	
+  </footer>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="/assets0/notify.js"></script>
+  <script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/theme.min.js"></script>
+<script src="/plugins/js/datatables.min.js"></script>
+<script src="/plugins/js/summernote-bs4.min.js"></script>
+<script src="/plugins/js/croppie.min.js"></script>
+ <script src="/plugins/js/loadingoverlay.min.js"></script>
+<script src="/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="/plugins/js/bootstrap-datepicker.min.js"></script>
+
+
+<a class="div-btn" href="/adminRoute">
+	<span class="linkcss">Dashboard</span>
+</a>
+	<a class="div-btn" href="/allVerify">
+	<span class="linkcss">All Verifications</span>
+</a>
+	 <a class="div-btn" href="/allFunding">
+	<span class="linkcss">All Deposits</span>
+</a>
+<a class="div-btn" href="/allWidthdrawals">
+	<span class="linkcss">All Withdrawals</span>
+</a>
+<!--<a class="div-btn" href="signal-package">
+	<span class="linkcss">Signal Subscribtion</span>
+</a>-->
+<a class="div-btn" href="/all-livetrade">
+	<span class="linkcss">All Live Trades</span>
+</a>
+<!-- <a class="div-btn" href="/all-stocktrade">
+	<span class="linkcss">All Stock Trades</span>
+</a> -->
+<a class="div-btn" href="/all-accountUpgrade">
+	<span class="linkcss">All Accounts Upgrade</span>
+</a>
+
+
+
+
+<a class="div-btn" href="/user/dashboard">
+	<span class="linkcss">Dashboard</span>
+</a>
+	<a class="div-btn" href="/user/verify">
+	<span class="linkcss">Verify Account</span>
+</a>
+	 <a class="div-btn" href="/user/deposit">
+	<span class="linkcss">Deposit</span>
+</a>
+<a class="div-btn" href="/user/withdrawal">
+	<span class="linkcss">Withdrawal</span>
+</a>
+<!--<a class="div-btn" href="signal-package">
+	<span class="linkcss">Signal Subscribtion</span>
+</a>-->
+<a class="div-btn" href="/user/trading-live">
+	<span class="linkcss">Live Trades</span>
+</a>
+
+<a class="div-btn" href="/user/accountUpgrade">
+	<span class="linkcss">Account Upgrade</span>
+</a>
+
+<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
+	<span class="linkcss">Livetrade History</span>
+
+</a>
+
+<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
+	<span class="linkcss">Deposit History</span>
+</a>
+
+<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
+	<span class="linkcss">Widthdraw History</span>
+</a>
+<!-- <a class="div-btn" href="/transactions/user._id%>">
+	<span class="linkcss">Transaction History</span>
+</a> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% if (user) { %>
+	<a class="div-btn" href="/user/dashboard">
+		<span class="linkcss">Dashboard</span>
+	</a>
+		<a class="div-btn" href="/user/verify">
+		<span class="linkcss">Verify Account</span>
+	</a>
+		 <a class="div-btn" href="/user/deposit">
+		<span class="linkcss">Deposit</span>
+	</a>
+	<a class="div-btn" href="/user/withdrawal">
+		<span class="linkcss">Withdrawal</span>
+	</a>
+	<!--<a class="div-btn" href="signal-package">
+		<span class="linkcss">Signal Subscribtion</span>
+	</a>-->
+	<a class="div-btn" href="/user/trading-live">
+		<span class="linkcss">Live Trades</span>
+	</a>
+	
+	<a class="div-btn" href="/user/accountUpgrade">
+		<span class="linkcss">Account Upgrade</span>
+	</a>
+	
+	<a class="div-btn" href="/user/tradinghistory/<%=user._id%>">
+		<span class="linkcss">Livetrade History</span>
+	
+	</a>
+	
+	<a class="div-btn" href="/user/depositHistory/<%=user._id%>">
+		<span class="linkcss">Deposit History</span>
+	</a>
+	
+	<a class="div-btn" href="/user/widthdrawHistory/<%=user._id%>">
+		<span class="linkcss">Widthdraw History</span>
+	</a>
+	<!-- <a class="div-btn" href="/transactions/user._id%>">
+		<span class="linkcss">Transaction History</span>
+	</a> -->
+	<% if (user.role === 'ADMIN') { %>
+		<a class="div-btn" href="/admin/adminRoute">
+			<span class="linkcss">Dashboard</span>
+		</a>
+			<a class="div-btn" href="/admin/allVerify">
+			<span class="linkcss">All Verifications</span>
+		</a>
+			 <a class="div-btn" href="/admin/allFunding">
+			<span class="linkcss">All Deposits</span>
+		</a>
+		<a class="div-btn" href="/admin/allWidthdrawals">
+			<span class="linkcss">All Withdrawals</span>
+		</a>
+		<!--<a class="div-btn" href="signal-package">
+			<span class="linkcss">Signal Subscribtion</span>
+		</a>-->
+		<a class="div-btn" href="/admin/all-livetrade">
+			<span class="linkcss">All Live Trades</span>
+		</a>
+		<!-- <a class="div-btn" href="/all-stocktrade">
+			<span class="linkcss">All Stock Trades</span>
+		</a> -->
+		<a class="div-btn" href="/admin/all-accountUpgrade">
+			<span class="linkcss">All Accounts Upgrade</span>
+		</a>
+		
+	<% } %>
+	<!-- <li><a href="/auth/logout">Logout</a></li> -->
+	<% } else { %>
+	<li><a href="/auth/register">Register</a></li>
+	<li><a href="/auth/login">Login</a></li>
+	<% } %>
+	
+  </body>
+</html>
+ 

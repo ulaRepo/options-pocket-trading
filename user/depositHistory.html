@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="investment, Forex, Trading, Bitcoin, Cryptocurrency, Global investment, Live Trade, Trading class, indics">
+  <meta name="author" content="Paul HubWeb &amp; Tech">
+  <meta name="theme-color" content="#313131">
+  <title>Deposit History</title>
+  <link rel="shortcut icon" href="../img/Signals-Alert-3.png" type="image/x-icon">
+  <link rel="apple-touch-icon-precomposed" href="../img/Signals-Alert-3.png">
+  <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../public/assets/accountVerification.css">
+  <link rel="stylesheet" href="../public/assets/photoUplod.css">
+  <link rel="stylesheet" href="../public/assets/personalInformation.css">
+  <link rel="stylesheet" href="../public/css/typography.css">
+  <link rel="stylesheet" href="../public/css/style.css">
+  <link rel="stylesheet" href="../public/css/responsive.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .header {
+      overflow: none;
+      background-color: none;
+      padding: 20px 10px;
+      padding-left: 5px;
+      position: fixed;
+    }
+    .header a.logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .header-center { float: left; }
+    @media screen and (max-width: 500px) {
+      .header a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+      .header-right { float: none; }
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto' !important; }
+  </style>
+
+  <style type="text/css">
+.apexcharts-canvas {
+position: relative;
+user-select: none;
+}
+.apexcharts-canvas ::-webkit-scrollbar {
+-webkit-appearance: none;
+width: 6px;
+}
+.apexcharts-canvas ::-webkit-scrollbar-thumb {
+border-radius: 4px;
+background-color: rgba(0,0,0,.5);
+box-shadow: 0 0 1px rgba(255,255,255,.5);
+-webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+.apexcharts-canvas.dark {
+background: #343F57;
+}
+.apexcharts-inner {
+position: relative;
+}
+.legend-mouseover-inactive {
+transition: 0.15s ease all;
+opacity: 0.20;
+}
+.apexcharts-series-collapsed {
+opacity: 0;
+}
+.apexcharts-gridline, .apexcharts-text {
+pointer-events: none;
+}
+.apexcharts-tooltip {
+border-radius: 5px;
+box-shadow: 2px 2px 6px -4px #999;
+cursor: default;
+font-size: 14px;
+left: 62px;
+opacity: 0;
+pointer-events: none;
+position: absolute;
+top: 20px;
+overflow: hidden;
+white-space: nowrap;
+z-index: 12;
+transition: 0.15s ease all;
+}
+.apexcharts-tooltip.light {
+border: 1px solid #e3e3e3;
+background: rgba(255, 255, 255, 0.96);
+}
+.apexcharts-tooltip.dark {
+color: #fff;
+background: rgba(30,30,30, 0.8);
+}
+.apexcharts-tooltip * {
+font-family: inherit;
+}
+.apexcharts-tooltip .apexcharts-marker,
+.apexcharts-area-series .apexcharts-area,
+.apexcharts-line {
+pointer-events: none;
+}
+.apexcharts-tooltip.active {
+opacity: 1;
+transition: 0.15s ease all;
+}
+.apexcharts-tooltip-title {
+padding: 6px;
+font-size: 15px;
+margin-bottom: 4px;
+}
+.apexcharts-tooltip.light .apexcharts-tooltip-title {
+background: #ECEFF1;
+border-bottom: 1px solid #ddd;
+}
+.apexcharts-tooltip.dark .apexcharts-tooltip-title {
+background: rgba(0, 0, 0, 0.7);
+border-bottom: 1px solid #333;
+}
+.apexcharts-tooltip-text-value,
+.apexcharts-tooltip-text-z-value {
+display: inline-block;
+font-weight: 600;
+margin-left: 5px;
+}
+.apexcharts-tooltip-text-z-label:empty,
+.apexcharts-tooltip-text-z-value:empty {
+display: none;
+}
+.apexcharts-tooltip-text-value,
+.apexcharts-tooltip-text-z-value {
+font-weight: 600;
+}
+.apexcharts-tooltip-marker {
+width: 12px;
+height: 12px;
+position: relative;
+top: 0px;
+margin-right: 10px;
+border-radius: 50%;
+}
+.apexcharts-tooltip-series-group {
+padding: 0 10px;
+display: none;
+text-align: left;
+justify-content: left;
+align-items: center;
+}
+.apexcharts-tooltip-series-group.active .apexcharts-tooltip-marker {
+opacity: 1;
+}
+.apexcharts-tooltip-series-group.active, .apexcharts-tooltip-series-group:last-child {
+padding-bottom: 4px;
+}
+.apexcharts-tooltip-series-group-hidden {
+opacity: 0;
+height: 0;
+line-height: 0;
+padding: 0 !important;
+}
+.apexcharts-tooltip-y-group {
+padding: 6px 0 5px;
+}
+.apexcharts-tooltip-candlestick {
+padding: 4px 8px;
+}
+.apexcharts-tooltip-candlestick > div {
+margin: 4px 0;
+}
+.apexcharts-tooltip-candlestick span.value {
+font-weight: bold;
+}
+.apexcharts-tooltip-rangebar {
+padding: 5px 8px;
+}
+.apexcharts-tooltip-rangebar .category {
+font-weight: 600;
+color: #777;
+}
+.apexcharts-tooltip-rangebar .series-name {
+font-weight: bold;
+display: block;
+margin-bottom: 5px;
+}
+.apexcharts-xaxistooltip {
+opacity: 0;
+padding: 9px 10px;
+pointer-events: none;
+color: #373d3f;
+font-size: 13px;
+text-align: center;
+border-radius: 2px;
+position: absolute;
+z-index: 10;
+background: #ECEFF1;
+border: 1px solid #90A4AE;
+transition: 0.15s ease all;
+}
+.apexcharts-xaxistooltip.dark {
+background: rgba(0, 0, 0, 0.7);
+border: 1px solid rgba(0, 0, 0, 0.5);
+color: #fff;
+}
+.apexcharts-xaxistooltip:after, .apexcharts-xaxistooltip:before {
+left: 50%;
+border: solid transparent;
+content: " ";
+height: 0;
+width: 0;
+position: absolute;
+pointer-events: none;
+}
+.apexcharts-xaxistooltip:after {
+border-color: rgba(236, 239, 241, 0);
+border-width: 6px;
+margin-left: -6px;
+}
+.apexcharts-xaxistooltip:before {
+border-color: rgba(144, 164, 174, 0);
+border-width: 7px;
+margin-left: -7px;
+}
+.apexcharts-xaxistooltip-bottom:after, .apexcharts-xaxistooltip-bottom:before {
+bottom: 100%;
+}
+.apexcharts-xaxistooltip-top:after, .apexcharts-xaxistooltip-top:before {
+top: 100%;
+}
+.apexcharts-xaxistooltip-bottom:after {
+border-bottom-color: #ECEFF1;
+}
+.apexcharts-xaxistooltip-bottom:before {
+border-bottom-color: #90A4AE;
+}
+.apexcharts-xaxistooltip-bottom.dark:after {
+border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-xaxistooltip-bottom.dark:before {
+border-bottom-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-xaxistooltip-top:after {
+border-top-color:#ECEFF1
+}
+.apexcharts-xaxistooltip-top:before {
+border-top-color: #90A4AE;
+}
+.apexcharts-xaxistooltip-top.dark:after {
+border-top-color:rgba(0, 0, 0, 0.5);
+}
+.apexcharts-xaxistooltip-top.dark:before {
+border-top-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-xaxistooltip.active {
+opacity: 1;
+transition: 0.15s ease all;
+}
+.apexcharts-yaxistooltip {
+opacity: 0;
+padding: 4px 10px;
+pointer-events: none;
+color: #373d3f;
+font-size: 13px;
+text-align: center;
+border-radius: 2px;
+position: absolute;
+z-index: 10;
+background: #ECEFF1;
+border: 1px solid #90A4AE;
+}
+.apexcharts-yaxistooltip.dark {
+background: rgba(0, 0, 0, 0.7);
+border: 1px solid rgba(0, 0, 0, 0.5);
+color: #fff;
+}
+.apexcharts-yaxistooltip:after, .apexcharts-yaxistooltip:before {
+top: 50%;
+border: solid transparent;
+content: " ";
+height: 0;
+width: 0;
+position: absolute;
+pointer-events: none;
+}
+.apexcharts-yaxistooltip:after {
+border-color: rgba(236, 239, 241, 0);
+border-width: 6px;
+margin-top: -6px;
+}
+.apexcharts-yaxistooltip:before {
+border-color: rgba(144, 164, 174, 0);
+border-width: 7px;
+margin-top: -7px;
+}
+.apexcharts-yaxistooltip-left:after, .apexcharts-yaxistooltip-left:before {
+left: 100%;
+}
+.apexcharts-yaxistooltip-right:after, .apexcharts-yaxistooltip-right:before {
+right: 100%;
+}
+.apexcharts-yaxistooltip-left:after {
+border-left-color: #ECEFF1;
+}
+.apexcharts-yaxistooltip-left:before {
+border-left-color: #90A4AE;
+}
+.apexcharts-yaxistooltip-left.dark:after {
+border-left-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-yaxistooltip-left.dark:before {
+border-left-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-yaxistooltip-right:after {
+border-right-color: #ECEFF1;
+}
+.apexcharts-yaxistooltip-right:before {
+border-right-color: #90A4AE;
+}
+.apexcharts-yaxistooltip-right.dark:after {
+border-right-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-yaxistooltip-right.dark:before {
+border-right-color: rgba(0, 0, 0, 0.5);
+}
+.apexcharts-yaxistooltip.active {
+opacity: 1;
+}
+.apexcharts-yaxistooltip-hidden {
+display: none;
+}
+.apexcharts-xcrosshairs, .apexcharts-ycrosshairs {
+pointer-events: none;
+opacity: 0;
+transition: 0.15s ease all;
+}
+.apexcharts-xcrosshairs.active, .apexcharts-ycrosshairs.active {
+opacity: 1;
+transition: 0.15s ease all;
+}
+.apexcharts-ycrosshairs-hidden {
+opacity: 0;
+}
+.apexcharts-zoom-rect {
+pointer-events: none;
+}
+.apexcharts-selection-rect {
+cursor: move;
+}
+.svg_select_points, .svg_select_points_rot {
+opacity: 0;
+visibility: hidden;
+}
+.svg_select_points_l, .svg_select_points_r {
+cursor: ew-resize;
+opacity: 1;
+visibility: visible;
+fill: #888;
+}
+.apexcharts-canvas.zoomable .hovering-zoom {
+cursor: crosshair
+}
+.apexcharts-canvas.zoomable .hovering-pan {
+cursor: move
+}
+.apexcharts-xaxis,
+.apexcharts-yaxis {
+pointer-events: none;
+}
+.apexcharts-zoom-icon,
+.apexcharts-zoom-in-icon,
+.apexcharts-zoom-out-icon,
+.apexcharts-reset-zoom-icon,
+.apexcharts-pan-icon,
+.apexcharts-selection-icon,
+.apexcharts-menu-icon,
+.apexcharts-toolbar-custom-icon {
+cursor: pointer;
+width: 20px;
+height: 20px;
+line-height: 24px;
+color: #6E8192;
+text-align: center;
+}
+.apexcharts-zoom-icon svg,
+.apexcharts-zoom-in-icon svg,
+.apexcharts-zoom-out-icon svg,
+.apexcharts-reset-zoom-icon svg,
+.apexcharts-menu-icon svg {
+fill: #6E8192;
+}
+.apexcharts-selection-icon svg {
+fill: #444;
+transform: scale(0.76)
+}
+.dark .apexcharts-zoom-icon svg,
+.dark .apexcharts-zoom-in-icon svg,
+.dark .apexcharts-zoom-out-icon svg,
+.dark .apexcharts-reset-zoom-icon svg,
+.dark .apexcharts-pan-icon svg,
+.dark .apexcharts-selection-icon svg,
+.dark .apexcharts-menu-icon svg,
+.dark .apexcharts-toolbar-custom-icon svg{
+fill: #f3f4f5;
+}
+.apexcharts-canvas .apexcharts-zoom-icon.selected svg,
+.apexcharts-canvas .apexcharts-selection-icon.selected svg,
+.apexcharts-canvas .apexcharts-reset-zoom-icon.selected svg {
+fill: #008FFB;
+}
+.light .apexcharts-selection-icon:not(.selected):hover svg,
+.light .apexcharts-zoom-icon:not(.selected):hover svg,
+.light .apexcharts-zoom-in-icon:hover svg,
+.light .apexcharts-zoom-out-icon:hover svg,
+.light .apexcharts-reset-zoom-icon:hover svg,
+.light .apexcharts-menu-icon:hover svg {
+fill: #333;
+}
+.apexcharts-selection-icon, .apexcharts-menu-icon {
+position: relative;
+}
+.apexcharts-reset-zoom-icon {
+margin-left: 5px;
+}
+.apexcharts-zoom-icon, .apexcharts-reset-zoom-icon, .apexcharts-menu-icon {
+transform: scale(0.85);
+}
+.apexcharts-zoom-in-icon, .apexcharts-zoom-out-icon {
+transform: scale(0.7)
+}
+.apexcharts-zoom-out-icon {
+margin-right: 3px;
+}
+.apexcharts-pan-icon {
+transform: scale(0.62);
+position: relative;
+left: 1px;
+top: 0px;
+}
+.apexcharts-pan-icon svg {
+fill: #fff;
+stroke: #6E8192;
+stroke-width: 2;
+}
+.apexcharts-pan-icon.selected svg {
+stroke: #008FFB;
+}
+.apexcharts-pan-icon:not(.selected):hover svg {
+stroke: #333;
+}
+.apexcharts-toolbar {
+position: absolute;
+z-index: 11;
+top: 0px;
+right: 3px;
+max-width: 176px;
+text-align: right;
+border-radius: 3px;
+padding: 0px 6px 2px 6px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.apexcharts-toolbar svg {
+pointer-events: none;
+}
+.apexcharts-menu {
+background: #fff;
+position: absolute;
+top: 100%;
+border: 1px solid #ddd;
+border-radius: 3px;
+padding: 3px;
+right: 10px;
+opacity: 0;
+min-width: 110px;
+transition: 0.15s ease all;
+pointer-events: none;
+}
+.apexcharts-menu.open {
+opacity: 1;
+pointer-events: all;
+transition: 0.15s ease all;
+}
+.apexcharts-menu-item {
+padding: 6px 7px;
+font-size: 12px;
+cursor: pointer;
+}
+.light .apexcharts-menu-item:hover {
+background: #eee;
+}
+.dark .apexcharts-menu {
+background: rgba(0, 0, 0, 0.7);
+color: #fff;
+}
+@media screen and (min-width: 768px) {
+.apexcharts-canvas:hover .apexcharts-toolbar {
+  opacity: 1;
+}
+}
+.apexcharts-datalabel.hidden {
+opacity: 0;
+}
+.apexcharts-pie-label,
+.apexcharts-datalabel, .apexcharts-datalabel-label, .apexcharts-datalabel-value {
+cursor: default;
+pointer-events: none;
+}
+.apexcharts-pie-label-delay {
+opacity: 0;
+animation-name: opaque;
+animation-duration: 0.3s;
+animation-fill-mode: forwards;
+animation-timing-function: ease;
+}
+.apexcharts-canvas .hidden {
+opacity: 0;
+}
+.apexcharts-hide .apexcharts-series-points {
+opacity: 0;
+}
+.apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
+.apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events, .apexcharts-radar-series path, .apexcharts-radar-series polygon {
+pointer-events: none;
+}
+.apexcharts-marker {
+transition: 0.15s ease all;
+}
+@keyframes opaque {
+0% { opacity: 0; }
+100% { opacity: 1; }
+}
+@keyframes resizeanim {
+from { opacity: 0; }
+to { opacity: 0; }
+}
+.resize-triggers {
+animation: 1ms resizeanim;
+visibility: hidden;
+opacity: 0;
+}
+.resize-triggers, .resize-triggers > div, .contract-trigger:before {
+content: " ";
+display: block;
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
+overflow: hidden;
+}
+.resize-triggers > div {
+background: #eee;
+overflow: auto;
+}
+.contract-trigger:before {
+width: 200%;
+height: 200%;
+}
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body class="sidebar-main-active right-column-fixed" style="background-color:#000; color:#dbdbdb;">
+  <section class="navbar-top">
+    <div class="container">
+      <div class="navbar-left">
+        <a href="./navbarPage.html">
+          <img src="../public/assets/vector/hamburger.svg" alt="MENU" class="hamburger" id="btn">
+        </a>
+      </div>
+      <div class="navbar-right"></div>
+    </div>
+  </section>
+
+  <div id="loading" style="display: none;">
+    <div id="loading-center"></div>
+  </div>
+
+  <div class="wrapper">
+    <div class="iq-card-body">
+      <p class="text-center text-secondary mt-5">
+        All Deposit Transactions are saved here for refrencing. You can also <code>print</code> Traned
+      </p>
+
+      <div class="table-responsive" id="deposit-history-wrap">
+        <div id="deposit-loading" class="text-center text-secondary mt-4">Loading deposits...</div>
+
+        <table id="datatable" class="table table-bordered" style="background-color:#131313; color:#dbdbdb; display:none;">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Narration</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="deposit-tbody">
+          </tbody>
+        </table>
+
+        <button type="button" id="print-btn" class="btn btn-primary mr-2" style="display:none;" onclick="window.print()">
+          <i class="las la-download"></i>Print Transactions
+        </button>
+
+        <h3 id="deposit-empty" class="text-center text-secondary mt-5" style="display:none;">
+          No Deposits found!
+        </h3>
+      </div>
+    </div>
+  </div>
+
+  <script src="../public/js/jquery.min.js"></script>
+  <script src="../public/js/popper.min.js"></script>
+  <script src="../public/js/bootstrap.min.js"></script>
+  <script src="../public/js/jquery.appear.js"></script>
+  <script src="../public/js/countdown.min.js"></script>
+  <script src="../public/js/waypoints.min.js"></script>
+  <script src="../public/js/jquery.counterup.min.js"></script>
+  <script src="../public/js/wow.min.js"></script>
+  <script src="../public/js/apexcharts.js"></script>
+  <script src="../public/js/slick.min.js"></script>
+  <script src="../public/js/select2.min.js"></script>
+  <script src="../public/js/owl.carousel.min.js"></script>
+  <script src="../public/js/jquery.magnific-popup.min.js"></script>
+  <script src="../public/js/smooth-scrollbar.js"></script>
+  <script src="../public/js/lottie.js"></script>
+  <script src="../public/js/core.js"></script>
+  <script src="../public/js/charts.js"></script>
+  <script src="../public/js/animated.js"></script>
+  <script src="../public/js/kelly.js"></script>
+  <script src="../public/js/maps.js"></script>
+  <script src="../public/js/worldLow.js"></script>
+  <script src="../public/js/style-customizer.js"></script>
+  <script src="../public/js/chart-custom.js"></script>
+  <script src="../public/js/custom.js"></script>
+
+  <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+    <defs id="SvgjsDefs1002"></defs>
+    <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+    <path id="SvgjsPath1004" d="M0 0 "></path>
+  </svg>
+
+ 
+
+  <footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions </a>. All Rights Reserved</strong>
+  </footer>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="../public/assets0/notify.js"></script>
+  <script src="../public/assets/js/jquery.min.js"></script>
+  <script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/assets/js/theme.min.js"></script>
+  <script src="../public/plugins/js/datatables.min.js"></script>
+  <script src="../public/plugins/js/summernote-bs4.min.js"></script>
+  <script src="../public/plugins/js/croppie.min.js"></script>
+  <script src="../public/plugins/js/loadingoverlay.min.js"></script>
+  <script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+  <script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+  <script>
+  (function () {
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getUserIdFromQuery() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        return params.get('id');
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function getUserIdFromStorage() {
+      try {
+        var u = JSON.parse(localStorage.getItem('user') || 'null');
+        return u && u._id ? u._id : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function renderDeposits(deposits) {
+      var loading = document.getElementById('deposit-loading');
+      var table = document.getElementById('datatable');
+      var tbody = document.getElementById('deposit-tbody');
+      var empty = document.getElementById('deposit-empty');
+      var printBtn = document.getElementById('print-btn');
+
+      if (loading) loading.style.display = 'none';
+
+      if (!deposits || !deposits.length) {
+        if (table) table.style.display = 'none';
+        if (printBtn) printBtn.style.display = 'none';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+
+      var rows = deposits.map(function (deposit) {
+        return (
+          '<tr>' +
+            '<td>' + escapeHtml(deposit.type) + '</td>' +
+            '<td>' + escapeHtml(deposit.amount) + '</td>' +
+            '<td>' + escapeHtml(deposit.narration) + '</td>' +
+            '<td>' + escapeHtml(deposit.status) + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+
+      if (tbody) tbody.innerHTML = rows;
+      if (empty) empty.style.display = 'none';
+      if (table) table.style.display = 'table';
+      if (printBtn) printBtn.style.display = 'inline-block';
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        var userId = getUserIdFromQuery() || getUserIdFromStorage();
+
+        if (!userId) {
+          var me = await api.get('/user/dashboard/data');
+          if (me.data && me.data.success && me.data.user) {
+            userId = me.data.user._id;
+            localStorage.setItem('user', JSON.stringify(me.data.user));
+          }
+        }
+
+        if (!userId) {
+          throw Object.assign(new Error('No user'), { response: { status: 401 } });
+        }
+
+        var res = await api.get('/user/depositHistory/' + userId + '/data');
+        var data = res.data;
+
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load history');
+        }
+
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(
+            Object.assign({}, JSON.parse(localStorage.getItem('user') || '{}'), data.user)
+          ));
+        }
+
+        renderDeposits(data.deposits || []);
+      } catch (err) {
+        console.error(err);
+        var loading = document.getElementById('deposit-loading');
+        if (loading) loading.style.display = 'none';
+
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('user');
+          window.location.href = '../login.html';
+          return;
+        }
+
+        var empty = document.getElementById('deposit-empty');
+        if (empty) {
+          empty.style.display = 'block';
+          empty.textContent = (err.response && err.response.data && err.response.data.error)
+            ? err.response.data.error
+            : 'Failed to load deposit history';
+        }
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body { background-color: #000; }
+        .main-content { width: 100%; height: 100vh; margin-top: 7%; }
+        .iq-card { background-color: #171717; color: #B3B3B3; }
+        .form-control { background-color: #2a2a2a; color: #fff; border: 1px solid #444; }
+        .form-control:focus { background-color: #2a2a2a; color: #fff; border-color: #1b55e2; }
+        .wallet-address { cursor: pointer; font-family: monospace; }
+        .wallet-address:hover { text-decoration: underline; }
+        .btn-primary { background-color: #1b55e2; border-color: #1b55e2; }
+        .btn-primary:hover { background-color: #143cb2; border-color: #143cb2; }
+        @media (max-width: 576px) {
+            .main-content { margin-top: 30%; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="content">
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="./navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="./account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /></div></a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between pt-30">
+                <div class="iq-header-title">
+                    <h4 class="card-title" style="color:#B3B3B3; font-family: 'Roboto'!important;">Complete Payment</h4>
+                </div>
+            </div>
+            <div class="iq-card-body">
+                <div class="mb-3">
+                    <h5 style="color:#B3B3B3;">Deposit Details</h5>
+                    <p>Amount: <span id="currency-prefix">$</span><span id="depositAmount">...</span></p>
+                    <p>Method: <span id="depositMethod">...</span></p>
+                </div>
+
+                <div class="mb-3">
+                    <label style="color:#B3B3B3;"><span id="method-label-qr">Wallet</span> Barcode / QR Code</label><br>
+                    <div id="qr-container"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label style="color:#B3B3B3;"><span id="method-label-addr">Wallet</span> Address</label>
+                    <input type="text" class="form-control wallet-address" id="walletAddress" value="" readonly>
+                    <button type="button" class="btn btn-primary mt-2" id="copy-btn">Copy Address</button>
+                </div>
+
+                <form id="payment-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label style="color:#B3B3B3;">Upload Proof of Payment</label>
+                        <input type="file" class="form-control" name="depositProof" id="depositProof" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="color:#B3B3B3;">Description (max 20 characters)</label>
+                        <textarea class="form-control" name="narration" id="narration" maxlength="20" placeholder="Narration"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="payment-btn">Submit Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp || (function (d) {
+  var s, c, o = smartsupp = function () { o._.push(arguments); }; o._ = [];
+  s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+  c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+  c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+})(document);
+</script>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+
+<script>
+(function () {
+  var currentUserId = null;
+  var depositType = '';
+
+  function pickWalletFields(type, wallet) {
+    if (!wallet) return { image: null, address: '' };
+    switch (type) {
+      case 'Bitcoin': return { image: wallet.btc_image, address: wallet.btc_address || '' };
+      case 'Ethereum': return { image: wallet.eth_image, address: wallet.eth_address || '' };
+      case 'USDT': return { image: wallet.usdt_image, address: wallet.usdt_address || '' };
+      case 'USDC': return { image: wallet.usdc_image, address: wallet.usdc_address || '' };
+      case 'CashApp': return { image: wallet.cashapp_image, address: wallet.cashapp || '' };
+      case 'PayPal': return { image: wallet.paypal_image, address: wallet.paypal || '' };
+      default: return { image: null, address: '' };
+    }
+  }
+
+  document.getElementById('copy-btn').addEventListener('click', function () {
+    var address = document.getElementById('walletAddress');
+    address.select();
+    document.execCommand('copy');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(address.value).catch(function () {});
+    }
+    Swal.fire({
+      icon: 'success',
+      title: 'Copied',
+      text: 'Wallet address copied to clipboard!',
+      confirmButtonColor: '#1b55e2',
+      timer: 2000
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var res = await api.get('/user/payment/data');
+      var data = res.data;
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load payment');
+      }
+
+      currentUserId = data.user._id;
+      depositType = data.depositType || '';
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      document.getElementById('depositAmount').textContent = data.depositAmount != null ? data.depositAmount : '';
+      document.getElementById('depositMethod').textContent = depositType;
+      document.getElementById('method-label-qr').textContent = depositType || 'Wallet';
+      document.getElementById('method-label-addr').textContent = depositType || 'Wallet';
+
+      var fields = pickWalletFields(depositType, data.wallet);
+      document.getElementById('walletAddress').value = fields.address || '';
+
+      var qr = document.getElementById('qr-container');
+      qr.innerHTML = '';
+      if (fields.image) {
+        var img = document.createElement('img');
+        img.src = fields.image;
+        img.alt = depositType + ' QR';
+        img.style.maxWidth = '40%';
+        qr.appendChild(img);
+      }
+    } catch (err) {
+      console.error(err);
+      var msg = (err.response && err.response.data && err.response.data.error) || err.message || 'Failed to load payment';
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+      if (err.response && err.response.status === 400) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Session expired',
+          text: msg,
+          confirmButtonColor: '#1b55e2'
+        }).then(function () {
+          window.location.href = './deposit.html';
+        });
+        return;
+      }
+      Swal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonColor: '#1b55e2' });
+    }
+  });
+
+  document.getElementById('payment-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!currentUserId) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Please login again.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+
+    var fileInput = document.getElementById('depositProof');
+    if (!fileInput.files || !fileInput.files[0]) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Payment proof image is required.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append('depositProof', fileInput.files[0]);
+    formData.append('narration', document.getElementById('narration').value.trim() || 'Payment');
+
+    var btn = document.getElementById('payment-btn');
+    btn.disabled = true;
+
+    try {
+      var result = await api.post('/user/payment/' + currentUserId, formData, {
+        headers: { 'Content-Type': false },
+        transformRequest: [
+          function (data, headers) {
+            if (data instanceof FormData) {
+              delete headers['Content-Type'];
+              if (headers.common) delete headers.common['Content-Type'];
+              if (headers.post) delete headers.post['Content-Type'];
+            }
+            return data;
+          }
+        ]
+      });
+
+      if (result.data && result.data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: result.data.message || 'Payment submitted successfully!',
+          confirmButtonColor: '#1b55e2'
+        }).then(function () {
+          window.location.href = './depositHistory.html?id=' + encodeURIComponent(currentUserId);
+        });
+      }
+    } catch (err) {
+      console.log('Payment Error:', err.response && err.response.data);
+      var msg = (err.response && err.response.data && err.response.data.error) || 'Server error. Please try again.';
+      Swal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonColor: '#1b55e2' });
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Copy Experts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../public/js/convert/config.js"></script>
+    <script src="../public/js/convert/auth.js"></script>
+
+    <style>
+        .main-content {
+            width: 100%;
+            height: 100vh;
+            margin-top: 7%;
+        }
+        @media (max-width: 576px) {
+            .main-content { margin-top: 30%; }
+        }
+        .trader-card-wrap {
+            transition: opacity 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+<section class="content">
+
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="./navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="./account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /> </div></a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div class="container-fluid mt-4">
+            <div class="card bg-dark text-white border-secondary">
+                <div class="card-body">
+
+                    <h3 class="mb-2">Copy Experts</h3>
+
+                    <p class="text-muted">
+                        In Copytrade, you invest in other users, copy their orders, and gain profit.
+                    </p>
+
+                    <p class="small text-secondary mb-3">
+                        Balance: <span id="user-balance">—</span>
+                    </p>
+
+                    <div class="form-group mb-4">
+                        <input
+                            type="search"
+                            id="filterInput"
+                            class="form-control"
+                            placeholder="Search Traders">
+                    </div>
+
+                    <div id="traders-loading" class="text-center text-muted py-4">
+                        Loading traders...
+                    </div>
+
+                    <div id="traders-empty" class="alert alert-info" style="display:none;">
+                        No copy traders available.
+                    </div>
+
+                    <div class="row" id="traders-grid">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="copyTradeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-dark">
+                    <h5 class="modal-title">Start Copy Trading</h5>
+                    <button type="button" class="close" data-dismiss="modal" id="close-copy-modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-dark">
+                    <form id="copyTradeForm">
+                        <div class="form-group">
+                            <label>Trader Name</label>
+                            <input type="text" id="traderName" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount ($)</label>
+                            <input type="number" id="amount" class="form-control" min="1" step="any" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <select id="duration" class="form-control" required>
+                                <option value="3">3 Days</option>
+                                <option value="7">7 Days</option>
+                                <option value="14">14 Days</option>
+                                <option value="30">1 Month</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated Profit</label>
+                            <div id="estimatedProfit" class="font-weight-bold text-success">$0.00</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Confirm Copy Trade
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+(function () {
+  var currentUserId = null;
+  var currentWinRate = 0;
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function showModal() {
+    var copyTradeModal = document.getElementById('copyTradeModal');
+    copyTradeModal.classList.add('show');
+    copyTradeModal.style.display = 'block';
+    document.body.classList.add('modal-open');
+    if (!document.querySelector('.modal-backdrop')) {
+      var backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      document.body.appendChild(backdrop);
+    }
+  }
+
+  function hideModal() {
+    var copyTradeModal = document.getElementById('copyTradeModal');
+    copyTradeModal.classList.remove('show');
+    copyTradeModal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+  }
+
+  function calculateProfit(amount, duration, winRate) {
+    var dailyProfitRate = 1.2;
+    var days = parseInt(duration, 10);
+    return (amount * Math.pow(dailyProfitRate, days) * (winRate / 100)).toFixed(2);
+  }
+
+  function updateProfit() {
+    var amountInput = document.getElementById('amount');
+    var durationSelect = document.getElementById('duration');
+    var estimatedProfitDisplay = document.getElementById('estimatedProfit');
+    var amount = parseFloat(amountInput.value) || 0;
+    var duration = durationSelect.value;
+    if (amount > 0 && duration && !isNaN(currentWinRate)) {
+      estimatedProfitDisplay.textContent = '$' + calculateProfit(amount, duration, currentWinRate);
+    } else {
+      estimatedProfitDisplay.textContent = '$0.00';
+    }
+  }
+
+  function bindStartButtons() {
+    document.querySelectorAll('.start-copy-btn').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var traderName = this.getAttribute('data-trader-name') || '';
+        currentWinRate = parseFloat(this.getAttribute('data-win-rate')) || 0;
+
+        document.getElementById('traderName').value = traderName;
+        document.getElementById('amount').value = '';
+        document.getElementById('estimatedProfit').textContent = '$0.00';
+        showModal();
+        updateProfit();
+      });
+    });
+  }
+
+  function renderTraders(copyTrades) {
+    var loading = document.getElementById('traders-loading');
+    var empty = document.getElementById('traders-empty');
+    var grid = document.getElementById('traders-grid');
+
+    if (loading) loading.style.display = 'none';
+    grid.innerHTML = '';
+
+    if (!copyTrades || !copyTrades.length) {
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+
+    var html = copyTrades.map(function (trade) {
+      var name = escapeHtml(trade.traderName);
+      var winRate = Number(trade.winRate) || 0;
+      var profitShare = Number(trade.profitShare) || 0;
+      var img = escapeHtml(trade.traderImage || '../public/images/default-trader.png');
+      if (trade.traderImage && String(trade.traderImage).indexOf('http') === 0) {
+        img = escapeHtml(trade.traderImage);
+      }
+
+      return (
+        '<div class="col-lg-4 col-md-6 mb-4 trader-card-wrap form1">' +
+          '<div class="card h-100 text-dark">' +
+            '<div class="card-body">' +
+              '<div class="d-flex align-items-center mb-3">' +
+                '<img src="' + img + '" alt="' + name + '" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">' +
+                '<div class="ml-3">' +
+                  '<h5 class="mb-0">' + name + '</h5>' +
+                  '<small class="text-success">Licensed Trader</small>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mb-2"><strong>Risk:</strong> Low Risk</div>' +
+              '<div class="mb-2"><strong>Win Rate:</strong> ' + escapeHtml(winRate) + '%</div>' +
+              '<div class="mb-2"><strong>Profit Share:</strong> ' + escapeHtml(profitShare) + '%</div>' +
+              '<div class="progress mb-3">' +
+                '<div class="progress-bar bg-success" style="width:' + Math.min(100, Math.max(0, winRate)) + '%"></div>' +
+              '</div>' +
+              '<button type="button" class="btn btn-primary btn-block start-copy-btn"' +
+                ' data-trader-name="' + name + '"' +
+                ' data-win-rate="' + escapeHtml(winRate) + '"' +
+                ' data-profit-share="' + escapeHtml(profitShare) + '">' +
+                'Start Copying' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    grid.innerHTML = html;
+    bindStartButtons();
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    var copyTradeModal = document.getElementById('copyTradeModal');
+    var closeModalBtn = document.getElementById('close-copy-modal');
+    var amountInput = document.getElementById('amount');
+    var durationSelect = document.getElementById('duration');
+    var copyTradeForm = document.getElementById('copyTradeForm');
+    var filterInput = document.getElementById('filterInput');
+
+    closeModalBtn.addEventListener('click', hideModal);
+    copyTradeModal.addEventListener('click', function (event) {
+      if (event.target === copyTradeModal) hideModal();
+    });
+
+    amountInput.addEventListener('input', updateProfit);
+    durationSelect.addEventListener('change', updateProfit);
+
+    filterInput.addEventListener('input', function () {
+      var filter = this.value.toLowerCase();
+      document.querySelectorAll('.trader-card-wrap').forEach(function (card) {
+        var text = card.textContent.toLowerCase();
+        card.style.display = text.indexOf(filter) !== -1 ? '' : 'none';
+      });
+    });
+
+    copyTradeForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      var traderName = document.getElementById('traderName').value.trim();
+      var amount = parseFloat(document.getElementById('amount').value);
+      var duration = document.getElementById('duration').value;
+
+      if (!currentUserId) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Not logged in.', timer: 2000 });
+        return;
+      }
+      if (!traderName) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Trader name is required.', timer: 2000 });
+        return;
+      }
+      if (!amount || amount <= 0) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Please enter a valid amount greater than 0.', timer: 2000 });
+        return;
+      }
+      if (!duration) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Please select a duration.', timer: 2000 });
+        return;
+      }
+
+      var submitBtn = copyTradeForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+
+      try {
+        var { data } = await api.post('/user/copy-expert', {
+          traderName: traderName,
+          amount: amount,
+          duration: duration,
+          user_id: currentUserId
+        });
+
+        hideModal();
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: data.message || 'Copy trade started successfully!',
+          timer: 2000
+        }).then(function () {
+          window.location.href = './ongoing-copy-trades.html?id=' + encodeURIComponent(currentUserId);
+        });
+      } catch (err) {
+        var msg = 'An error occurred while starting the copy trade.';
+        if (err.response && err.response.data) {
+          msg = err.response.data.error || err.response.data.message || msg;
+        } else if (err.message) {
+          msg = err.message;
+        }
+        Swal.fire({ icon: 'error', title: 'Error', text: msg, timer: 2500 });
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Confirm Copy Trade';
+      }
+    });
+
+    try {
+      var res = await api.get('/user/copy-expert/data');
+      var payload = res.data;
+
+      if (!payload.success) {
+        throw new Error(payload.error || 'Failed to load');
+      }
+
+      if (payload.user) {
+        currentUserId = payload.user._id;
+        localStorage.setItem('user', JSON.stringify(
+          Object.assign({}, JSON.parse(localStorage.getItem('user') || '{}'), payload.user)
+        ));
+        var balEl = document.getElementById('user-balance');
+        if (balEl) {
+          balEl.textContent = '$' + (payload.user.balance != null ? payload.user.balance : '0');
+        }
+      }
+
+      renderTraders(payload.copyTrades || []);
+    } catch (err) {
+      console.error(err);
+      var loading = document.getElementById('traders-loading');
+      if (loading) loading.style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var empty = document.getElementById('traders-empty');
+      if (empty) {
+        empty.style.display = 'block';
+        empty.className = 'alert alert-danger';
+        empty.textContent = (err.response && err.response.data && err.response.data.error)
+          ? err.response.data.error
+          : 'Failed to load copy experts';
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

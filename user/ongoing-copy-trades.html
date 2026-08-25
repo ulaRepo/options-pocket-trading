@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ongoing Copy Trades</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../public/js/convert/config.js"></script>
+    <script src="../public/js/convert/auth.js"></script>
+
+    <style>
+        .main-content{
+            width:100%;
+            min-height:100vh;
+            margin-top:7%;
+            padding:20px;
+        }
+
+        .ongoing-card{
+            background:#1f1f1f;
+            border:1px solid #333;
+            border-radius:15px;
+            padding:20px;
+            color:#fff;
+        }
+
+        .ongoing-title{
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:20px;
+        }
+
+        .table-responsive{
+            border-radius:10px;
+            overflow-x:auto;
+            overflow-y:hidden;
+            -webkit-overflow-scrolling:touch;
+            width:100%;
+        }
+
+        .table-responsive::-webkit-scrollbar{
+            height:6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb{
+            background:#555;
+            border-radius:20px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track{
+            background:#222;
+        }
+
+        .table-dark{
+            margin-bottom:0;
+            min-width:900px;
+        }
+
+        .table-dark th,
+        .table-dark td{
+            white-space:nowrap;
+            vertical-align:middle;
+        }
+
+        .profit-display{
+            color:#28a745;
+            font-weight:600;
+        }
+
+        .status-ongoing{
+            color:#ffc107;
+            font-weight:600;
+            text-transform:capitalize;
+        }
+
+        .status-completed{
+            color:#28a745;
+            font-weight:600;
+            text-transform:capitalize;
+        }
+
+        @media (max-width:576px){
+            .main-content{
+                margin-top:30%;
+            }
+
+            .ongoing-title{
+                font-size:22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<section class="content">
+
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="./navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+        </div>
+
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement(
+                { pageLanguage: 'en' },
+                'google_translate_element'
+              );
+            }
+            </script>
+
+            <script
+                type="text/javascript"
+                src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+            </script>
+        </div>
+
+        <div>
+            <a href="./account.html">
+                <div class="ph">
+                    <img src="../public/assetss/img/pers.svg" alt="account" />
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div class="container-fluid">
+            <div class="ongoing-card">
+                <div class="ongoing-title">
+                    Ongoing Copy Trades
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Trader</th>
+                                <th>Amount</th>
+                                <th>Duration</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Current Profit</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ongoingTradesBody">
+                            <tr id="trades-loading-row">
+                                <td colspan="7" class="text-center py-4">
+                                    Loading copy trades...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;">
+        Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved
+    </strong>
+</footer>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+(function () {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatMoney(val) {
+    var n = Number(val);
+    if (isNaN(n)) return '0.00';
+    return n.toFixed(2);
+  }
+
+  function formatDate(val) {
+    if (!val) return 'N/A';
+    try {
+      return new Date(val).toLocaleDateString();
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+
+  function getUserIdFromQuery() {
+    try {
+      return new URLSearchParams(window.location.search).get('id');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getUserIdFromStorage() {
+    try {
+      var u = JSON.parse(localStorage.getItem('user') || 'null');
+      return u && u._id ? u._id : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function renderTrades(copyTrades) {
+    var tbody = document.getElementById('ongoingTradesBody');
+    if (!tbody) return;
+
+    if (!copyTrades || !copyTrades.length) {
+      tbody.innerHTML =
+        '<tr>' +
+          '<td colspan="7" class="text-center py-4">No ongoing copy trades found.</td>' +
+        '</tr>';
+      return;
+    }
+
+    var rows = copyTrades.map(function (trade) {
+      var status = (trade.status || 'ongoing').toLowerCase();
+      var statusClass = status === 'completed' ? 'status-completed' : 'status-ongoing';
+      var id = escapeHtml(trade._id);
+
+      return (
+        '<tr data-trade-id="' + id + '">' +
+          '<td>' + escapeHtml(trade.traderName || 'N/A') + '</td>' +
+          '<td>$' + formatMoney(trade.amount) + '</td>' +
+          '<td>' + escapeHtml(trade.duration != null ? trade.duration : 'N/A') + ' days</td>' +
+          '<td>' + escapeHtml(formatDate(trade.startDate)) + '</td>' +
+          '<td>' + escapeHtml(formatDate(trade.endDate)) + '</td>' +
+          '<td class="profit-display">$' + formatMoney(trade.currentProfit) + '</td>' +
+          '<td><span class="' + statusClass + '">' + escapeHtml(status) + '</span></td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    tbody.innerHTML = rows;
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var userId = getUserIdFromQuery() || getUserIdFromStorage();
+
+      if (!userId) {
+        var me = await api.get('/user/dashboard/data');
+        if (me.data && me.data.success && me.data.user) {
+          userId = me.data.user._id;
+          localStorage.setItem('user', JSON.stringify(me.data.user));
+        }
+      }
+
+      if (!userId) {
+        throw Object.assign(new Error('No user'), { response: { status: 401 } });
+      }
+
+      var res = await api.get('/user/ongoing-copy-trades/' + userId + '/data');
+      var data = res.data;
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load trades');
+      }
+
+      if (data.user) {
+        localStorage.setItem(
+          'user',
+          JSON.stringify(
+            Object.assign({}, JSON.parse(localStorage.getItem('user') || '{}'), data.user)
+          )
+        );
+      }
+
+      renderTrades(data.copyTrades || []);
+    } catch (err) {
+      console.error(err);
+      var tbody = document.getElementById('ongoingTradesBody');
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var msg =
+        (err.response && err.response.data && err.response.data.error) ||
+        err.message ||
+        'Failed to load copy trades';
+
+      if (tbody) {
+        tbody.innerHTML =
+          '<tr><td colspan="7" class="text-center py-4 text-danger">' +
+          escapeHtml(msg) +
+          '</td></tr>';
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

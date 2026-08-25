@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../public/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../public/assets/depositMethod.css" />
+  <title>Account Upgrade</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../public/js/convert/config.js"></script>
+  <script src="../public/js/convert/auth.js"></script>
+  <style>
+    body { font-family: 'Roboto' !important; }
+  </style>
+</head>
+<body>
+
+  <section class="navbar-top">
+    <div class="container">
+      <div class="navbar-left">
+        <a href="./navbarPage.html">
+          <img src="../public/assets/vector/hamburger.svg" alt="hamburger" class="hamburger" id="btn" />
+        </a>
+      </div>
+      <div class="navbar-right"></div>
+    </div>
+  </section>
+
+  <section class="jumbotron" style="background-color: black;">
+    <div class="container">
+      <div class="contentUp">
+        <p class="writer">Account Upgrade</p>
+        <hr />
+        <h1 class="title mt-3 mb-2">Upgrade Plan</h1>
+
+        <form id="upgrade-form" autocomplete="off" class="was-validated">
+          <div class="dropdown mt-3">
+            <label for="amount" class="label mb-2">Upgrade Plans</label>
+            <select style="color:#000; background-color: white;" class="btn btn-secondary form-control" name="amount" id="amount" required>
+              <option value="">---Select Plan---</option>
+              <option value="gold">Gold</option>
+              <option value="premium">Premium</option>
+              <option value="daimond">Daimond</option>
+              <option value="bronze">Bronze</option>
+            </select>
+          </div>
+
+          <div class="dropdown mb-3 mt-2">
+            <label for="method" class="label mb-2">Payment Method</label>
+            <select style="color:#000; background-color: white;" class="btn btn-secondary form-control" name="method" id="method" required>
+              <option value="">---Select Method---</option>
+              <option value="Bitcoin">Bitcoin</option>
+              <option value="Ethereum">Ethereum</option>
+              <option value="Litecoin">Usdt</option>
+            </select>
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field1" style="display:none;">
+            <label class="label mb-2">Bitcoin Wallet Barcode</label><br>
+            <img id="btc-qr" src="" alt="Bitcoin QR" style="max-width:40%; padding-left:30px; display:none;">
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field12" style="display:none;">
+            <label class="label mb-2">Bitcoin Wallet Address</label>
+            <div class="input-group">
+              <input type="text" id="btcAddress" class="form-control" readonly value="">
+              <button type="button" class="btn btn-primary" onclick="copyWalletAddress('btcAddress')">Copy</button>
+            </div>
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field2" style="display:none;">
+            <label class="label mb-2">Ethereum Wallet Barcode</label><br>
+            <img id="eth-qr" src="" alt="Ethereum QR" style="max-width:40%; padding-left:30px; display:none;">
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field13" style="display:none;">
+            <label class="label mb-2">Ethereum Wallet Address</label>
+            <div class="input-group">
+              <input type="text" id="ethAddress" class="form-control" readonly value="">
+              <button type="button" class="btn btn-primary" onclick="copyWalletAddress('ethAddress')">Copy</button>
+            </div>
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field3" style="display:none;">
+            <label class="label mb-2">USDT Wallet Barcode</label><br>
+            <img id="usdt-qr" src="" alt="USDT QR" style="max-width:40%; padding-left:30px; display:none;">
+          </div>
+
+          <div class="dropdown mb-3 mt-2" id="field14" style="display:none;">
+            <label class="label mb-2">USDT Wallet Address</label>
+            <div class="input-group">
+              <input type="text" id="usdtAddress" class="form-control" readonly value="">
+              <button type="button" class="btn btn-primary" onclick="copyWalletAddress('usdtAddress')">Copy</button>
+            </div>
+          </div>
+
+          <label for="image" class="label">Upload Your Proof of payment:</label>
+          <br />
+          <div class="file">
+            <input type="file" name="image" id="image" accept="image/*" required />
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault" />
+            <label class="form-check-label" for="flexCheckDefault"> Agree to Terms & Conditions? </label>
+          </div>
+
+          <button type="submit" class="btn-main" id="upgrade-submit" name="uprequest">Submit</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+    window.smartsupp || (function (d) {
+      var s, c, o = smartsupp = function () { o._.push(arguments) }; o._ = [];
+      s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+      c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+      c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+    })(document);
+  </script>
+  <noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+  <footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">globalflextyipests </a>. All Rights Reserved</strong>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="../public/assets0/notify.js"></script>
+  <script src="../public/assets/js/jquery.min.js"></script>
+  <script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/assets/js/theme.min.js"></script>
+  <script src="../public/plugins/js/datatables.min.js"></script>
+  <script src="../public/plugins/js/summernote-bs4.min.js"></script>
+  <script src="../public/plugins/js/croppie.min.js"></script>
+  <script src="../public/plugins/js/loadingoverlay.min.js"></script>
+  <script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+  <script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+  <script>
+  function copyWalletAddress(inputId) {
+    var input = document.getElementById(inputId);
+    if (!input || !input.value) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'No address to copy', confirmButtonText: 'OK' });
+      return;
+    }
+    input.select();
+    input.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(input.value)
+      .then(function () {
+        Swal.fire({
+          icon: 'success',
+          title: 'Copied',
+          text: 'Wallet address copied successfully',
+          confirmButtonText: 'OK'
+        });
+      })
+      .catch(function () {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Unable to copy wallet address',
+          confirmButtonText: 'OK'
+        });
+      });
+  }
+
+  (function () {
+    var currentUserId = null;
+
+    function hideWalletFields() {
+      ['field1', 'field2', 'field3', 'field12', 'field13', 'field14'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+    }
+
+    function setImg(id, url) {
+      var img = document.getElementById(id);
+      if (!img) return;
+      if (url) {
+        img.src = url;
+        img.style.display = 'inline-block';
+      } else {
+        img.removeAttribute('src');
+        img.style.display = 'none';
+      }
+    }
+
+    function applyWallet(wallet) {
+      wallet = wallet || {};
+      document.getElementById('btcAddress').value = wallet.btc_address || '';
+      document.getElementById('ethAddress').value = wallet.eth_address || '';
+      document.getElementById('usdtAddress').value = wallet.usdt_address || '';
+      setImg('btc-qr', wallet.btc_image);
+      setImg('eth-qr', wallet.eth_image);
+      setImg('usdt-qr', wallet.usdt_image);
+    }
+
+    document.getElementById('method').addEventListener('change', function () {
+      hideWalletFields();
+      var selectedMethod = this.value;
+
+      if (selectedMethod === 'Bitcoin') {
+        document.getElementById('field1').style.display = 'block';
+        document.getElementById('field12').style.display = 'block';
+      } else if (selectedMethod === 'Ethereum') {
+        document.getElementById('field2').style.display = 'block';
+        document.getElementById('field13').style.display = 'block';
+      } else if (
+        selectedMethod === 'Litecoin' ||
+        selectedMethod === 'Usdt' ||
+        selectedMethod === 'USDT'
+      ) {
+        document.getElementById('field3').style.display = 'block';
+        document.getElementById('field14').style.display = 'block';
+      }
+    });
+
+    document.getElementById('upgrade-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      if (!currentUserId) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Not logged in.' });
+        return;
+      }
+
+      var terms = document.getElementById('flexCheckDefault');
+      if (!terms.checked) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Please agree to Terms & Conditions.' });
+        return;
+      }
+
+      var amount = document.getElementById('amount').value;
+      var method = document.getElementById('method').value;
+      var fileInput = document.getElementById('image');
+
+      if (!amount || !method) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Select plan and payment method.' });
+        return;
+      }
+      if (!fileInput.files || !fileInput.files[0]) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Upload proof of payment image.' });
+        return;
+      }
+
+      var formData = new FormData();
+      formData.append('amount', amount);
+      formData.append('method', method);
+      formData.append('image', fileInput.files[0]);
+
+      var btn = document.getElementById('upgrade-submit');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        var result = await api.post('/user/accountUpgrade/' + currentUserId, formData, {
+          headers: { 'Content-Type': false },
+          transformRequest: [
+            function (data, headers) {
+              if (data instanceof FormData) {
+                delete headers['Content-Type'];
+              }
+              return data;
+            }
+          ]
+        });
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: (result.data && result.data.message) || 'Upgrade request submitted',
+          confirmButtonText: 'OK'
+        }).then(function () {
+          window.location.href = './dashboard.html';
+        });
+      } catch (err) {
+        var msg = 'Unable to submit upgrade request';
+        if (err.response && err.response.data) {
+          msg = err.response.data.error || err.response.data.message || msg;
+        }
+        Swal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonText: 'OK' });
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        var res = await api.get('/user/accountUpgrade/data');
+        var data = res.data;
+        if (!data.success || !data.user) {
+          throw Object.assign(new Error('No user'), { response: { status: 401 } });
+        }
+
+        currentUserId = data.user._id;
+        localStorage.setItem('user', JSON.stringify(
+          Object.assign({}, JSON.parse(localStorage.getItem('user') || '{}'), data.user)
+        ));
+        applyWallet(data.wallet);
+      } catch (err) {
+        console.error(err);
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.removeItem('user');
+          window.location.href = '../login.html';
+          return;
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: (err.response && err.response.data && err.response.data.error) || 'Failed to load page',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

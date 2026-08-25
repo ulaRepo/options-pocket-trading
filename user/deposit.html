@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fund Account - Deposit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body { background-color: #000; }
+        .main-content { width: 100%; height: 100vh; margin-top: 10%; }
+        .iq-card { background-color: #171717; color: #B3B3B3; }
+        .form-control { background-color: #2a2a2a; color: #fff; border: 1px solid #444; }
+        .form-control:focus { background-color: #2a2a2a; color: #fff; border-color: #1b55e2; }
+        .payment-option {
+            cursor: pointer; padding: 12px 10px; border: 1px solid #444;
+            border-radius: 8px; display: flex; align-items: center; transition: all 0.3s;
+        }
+        .payment-option:hover { border-color: #1b55e2; background-color: #242424; }
+        .payment-option.selected {
+            border-color: #1b55e2; background-color: #2a2a2a;
+            box-shadow: 0 0 0 3px rgba(27, 85, 226, 0.2);
+        }
+        .payment-option img { width: 32px; height: 32px; margin-right: 12px; object-fit: contain; }
+        .btn-primary { background-color: #1b55e2; border-color: #1b55e2; }
+        .btn-primary:hover { background-color: #143cb2; border-color: #143cb2; }
+        .payment-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px; margin-bottom: 20px;
+        }
+        @media (max-width: 576px) {
+            .main-content { margin-top: 30%; }
+            .payment-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<section class="content">
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="./navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="./account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /></div></a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div class="iq-card">
+            <div class="iq-card-header d-flex justify-content-between pt-30">
+                <div class="iq-header-title">
+                    <h4 class="card-title" style="color:#B3B3B3;">Fund Account</h4>
+                </div>
+            </div>
+            <div class="iq-card-body">
+                <form id="deposit-form" autocomplete="off">
+                    <input type="hidden" name="type" id="deposit-method">
+
+                    <div class="form-group">
+                        <label style="color:#B3B3B3;">Amount (<span id="currency-label">$</span>)</label>
+                        <input type="number" class="form-control" name="amount" id="amount"
+                               placeholder="Enter amount (min $5)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color:#B3B3B3;">Select Payment Method</label>
+                        <div class="payment-grid">
+                            <div class="payment-option" data-method="Bitcoin"><img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2JpdGNvaW4tNC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgyOH19fQ==" alt="Bitcoin"> Bitcoin</div>
+                            <div class="payment-option" data-method="Ethereum"><img src="https://streetfins.com/wp-content/uploads/2021/07/ethereum-1.jpeg" alt="Ethereum"> Ethereum</div>
+                            <div class="payment-option" data-method="USDT"><img src="https://media.assettype.com/outlookindia/2025-09-05/hfusujya/USDT-Cryptocurrency-Logo.jpg?w=626&auto=format%2Ccompress&fit=max&format=webp&dpr=1.0" alt="USDT"> USDT</div>
+                            <div class="payment-option" data-method="USDC"><img src="https://public.bnbstatic.com/static/academy/uploads/ed56241a5ef84c4682170faeff21f43f.png" alt="USDC"> USDC</div>
+                            <div class="payment-option" data-method="CashApp"><img src="https://cdn.prod.website-files.com/5f6b9a421d5a61e1d0cd9e3d/672c016ecc3b97b50c0a583b_660b22d60e056339eeb0511d_mariia-shalabaieva-0KMCxhGFKvc-unsplash.jpeg" alt="CashApp"> CashApp</div>
+                            <div class="payment-option" data-method="PayPal"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo0oyD-odiDFEGqmaeNW4C6z3W_4ilnCvQ4pv-UGUV6B7dAtLROTnOw9CzznwHUU0Q0eo&usqp=CAU" alt="PayPal"> PayPal</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" style="color:#B3B3B3;" for="terms">I agree to the terms and conditions</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="deposit-btn">Proceed to Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp || (function (d) {
+  var s, c, o = smartsupp = function () { o._.push(arguments); }; o._ = [];
+  s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+  c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+  c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+})(document);
+</script>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+
+<script>
+(function () {
+  var currentUserId = null;
+
+  document.querySelectorAll('.payment-option').forEach(function (el) {
+    el.addEventListener('click', function () {
+      document.querySelectorAll('.payment-option').forEach(function (o) { o.classList.remove('selected'); });
+      el.classList.add('selected');
+      document.getElementById('deposit-method').value = el.getAttribute('data-method');
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var res = await api.get('/user/dashboard/data');
+      if (!res.data.success || !res.data.user) {
+        throw Object.assign(new Error('No user'), { response: { status: 401 } });
+      }
+      currentUserId = res.data.user._id;
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    } catch (err) {
+      console.error(err);
+      if (err.response && err.response.status === 401) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+      }
+    }
+  });
+
+  document.getElementById('deposit-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!currentUserId) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Please login again.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+
+    var amount = document.getElementById('amount').value.trim();
+    var method = document.getElementById('deposit-method').value;
+    var terms = document.getElementById('terms').checked;
+
+    if (!method) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Please select a payment method.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+    if (!amount || isNaN(amount) || parseFloat(amount) < 5) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Amount must be at least 5.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+    if (!terms) {
+      Swal.fire({ icon: 'error', title: 'Error', text: 'You must agree to the terms.', confirmButtonColor: '#1b55e2' });
+      return;
+    }
+
+    var btn = document.getElementById('deposit-btn');
+    btn.disabled = true;
+
+    try {
+      var { data } = await api.post('/user/deposit/' + currentUserId, {
+        depositmethod: method,
+        amount: amount
+      });
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: data.message || 'Deposit initiated!',
+          confirmButtonColor: '#1b55e2'
+        }).then(function () {
+          window.location.href = './payment.html';
+        });
+      } else {
+        Swal.fire({ icon: 'error', title: 'Error', text: data.error || 'Something went wrong.', confirmButtonColor: '#1b55e2' });
+      }
+    } catch (err) {
+      var msg = (err.response && err.response.data && err.response.data.error) || 'Something went wrong.';
+      Swal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonColor: '#1b55e2' });
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

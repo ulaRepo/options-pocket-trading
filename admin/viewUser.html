@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Users</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<section class="content" style="background-color: black;">
+
+  <div id="a-notification" class="notification gone d-flex justify-content-start">
+    <div class="d-flex flex-column"></div>
+  </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU"/></a>
+    </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph">
+          <img src="../public/assetss/img/pers.svg" alt="ACCOUNT" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div id="view-user-loading" class="text-center text-secondary mt-4" style="color:#dbdbdb;">
+    Loading user...
+  </div>
+
+  <div id="view-user-content" style="display:none;">
+    <div class="d-flex justify-content-evenly flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="background-color: black;">
+      <h1 class="h2" id="vu-title" style="color:#dbdbdb;">User</h1>
+      <div class="btn-toolbar mb-2 mb-md 0"></div>
+    </div>
+
+    <div class="col py-3" style="background-color: black;">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" id="vu-breadcrumb" style="color:#dbdbdb;">User</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col text-end fw-lighter" style="color:#dbdbdb;">
+          <b>Last Updated</b>
+          <span id="vu-updated-at"></span>
+          <br>
+          <b>UserId:</b> <span id="vu-id"></span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="list-group" style="background-color: black;">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Email:</b></div>
+          <div class="col" style="color: black;" id="vu-email"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Role:</b></div>
+          <div class="col" style="color: black;" id="vu-role"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Account Type:</b></div>
+          <div class="col" style="color: black;" id="vu-account"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Phone:</b></div>
+          <div class="col" style="color: black;" id="vu-tel"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Gender:</b></div>
+          <div class="col" style="color: black;" id="vu-gender"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Country:</b></div>
+          <div class="col" style="color: black;" id="vu-country"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Widthdraw ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-widthdraws"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Deposits ID:</b></div>
+          <div class="col" style="color: black;" id="vu-deposits"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Upgrades ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-upgrades"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Livetrades ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-livetrades"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Verification ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-verified"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Copy Trades ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-copytrades"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Affiliates ID:</b></div>
+          <div class="col" style="color: black; display: flex; flex-wrap: wrap;" id="vu-affliates"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Verification status:</b></div>
+          <div class="col" style="color: black;" id="vu-verified-status"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Deposit Balance:</b></div>
+          <div class="col" style="color: black;" id="vu-balance"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Widthdraw Balance:</b></div>
+          <div class="col" style="color: black;" id="vu-widthdraw-balance"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Available Balance:</b></div>
+          <div class="col" style="color: black;" id="vu-available"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Bonus:</b></div>
+          <div class="col" style="color: black;" id="vu-bonus"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Profit:</b></div>
+          <div class="col" style="color: black;" id="vu-profit"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Total Deposit:</b></div>
+          <div class="col" style="color: black;" id="vu-total-deposit"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Total Withdraw:</b></div>
+          <div class="col" style="color: black;" id="vu-total-widthdraw"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Session:</b></div>
+          <div class="col" style="color: black;" id="vu-session"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Date Created:</b></div>
+          <div class="col" style="color: black;" id="vu-created-at"></div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col" style="max-width: 140px"><b style="color: black;">Date Modified:</b></div>
+          <div class="col" style="color: black;" id="vu-updated-at-2"></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div id="view-user-error" class="text-center text-secondary mt-5" style="display:none; color:#dbdbdb;">
+    Failed to load user
+  </div>
+
+</section>
+
+<footer class="main-footer text-center">
+  <strong>Copyrights 2023 @ <a href="#">pocketoptions</a>.</strong> All Rights Reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+
+<script>
+(function () {
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatIds(arr) {
+    if (!arr || !arr.length) return 'None';
+    return arr.map(function (id) {
+      return escapeHtml(id);
+    }).join(', ');
+  }
+
+  function formatDate(value) {
+    if (!value) return '';
+    try {
+      return new Date(value).toLocaleString();
+    } catch (e) {
+      return String(value);
+    }
+  }
+
+  function getUserIdFromQuery() {
+    try {
+      return new URLSearchParams(window.location.search).get('id');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function fillUser(user) {
+    var displayName = user.fullname || user.username || user.email || 'User';
+
+    document.getElementById('vu-title').textContent = displayName;
+    document.getElementById('vu-breadcrumb').textContent = displayName;
+    document.getElementById('vu-id').textContent = user._id || '';
+    document.getElementById('vu-updated-at').textContent = formatDate(user.updatedAt);
+    document.getElementById('vu-email').textContent = user.email || '';
+    document.getElementById('vu-role').textContent = user.role || '';
+    document.getElementById('vu-account').textContent = user.account || '';
+    document.getElementById('vu-tel').textContent = user.tel || 'Not set';
+    document.getElementById('vu-gender').textContent = user.gender || 'Not set';
+    document.getElementById('vu-country').textContent = user.country || 'Not set';
+    document.getElementById('vu-widthdraws').textContent = formatIds(user.widthdraws);
+    document.getElementById('vu-deposits').textContent = formatIds(user.deposits);
+    document.getElementById('vu-upgrades').textContent = formatIds(user.upgrades);
+    document.getElementById('vu-livetrades').textContent = formatIds(user.livetrades);
+    document.getElementById('vu-verified').textContent = formatIds(user.verified);
+    document.getElementById('vu-copytrades').textContent = formatIds(user.copyTrades);
+    document.getElementById('vu-affliates').textContent = formatIds(user.affliates);
+    document.getElementById('vu-verified-status').textContent = user.verifiedStatus || '';
+    document.getElementById('vu-balance').textContent = user.balance != null ? user.balance : '0';
+    document.getElementById('vu-widthdraw-balance').textContent = user.widthdrawBalance || '$0.00';
+    document.getElementById('vu-available').textContent = user.available || '$0.00';
+    document.getElementById('vu-bonus').textContent = user.bonus || '$0.00';
+    document.getElementById('vu-profit').textContent = user.profit || '$0.00';
+    document.getElementById('vu-total-deposit').textContent = user.totalDeposit || '0';
+    document.getElementById('vu-total-widthdraw').textContent = user.totalWidthdraw || '0';
+    document.getElementById('vu-session').textContent = user.session || '0/0';
+    document.getElementById('vu-created-at').textContent = formatDate(user.createdAt);
+    document.getElementById('vu-updated-at-2').textContent = formatDate(user.updatedAt);
+
+    document.getElementById('view-user-loading').style.display = 'none';
+    document.getElementById('view-user-content').style.display = 'block';
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      var userId = getUserIdFromQuery();
+      if (!userId) {
+        throw new Error('Missing user id in URL');
+      }
+
+      var res = await api.get('/admin/viewUser/' + userId + '/data');
+      var data = res.data;
+      if (!data.success || !data.user) {
+        throw new Error(data.error || 'Failed to load user');
+      }
+
+      fillUser(data.user);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('view-user-loading').style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var errorEl = document.getElementById('view-user-error');
+      errorEl.style.display = 'block';
+      errorEl.textContent =
+        (err.response && err.response.data && err.response.data.error) ||
+        err.message ||
+        'Failed to load user';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

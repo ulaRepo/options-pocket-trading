@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="/assetss/index.css">
+    <link rel="stylesheet" href="/assets0/notify.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<section class="content">
+    
+    <!-- Top Navigation Bar -->
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+    <div class="main-content" id="main-content">
+       
+        <div class="container-fluid py-4">
+
+    <div class="card shadow-lg border-0"
+         style="background:#171717;border-radius:20px;">
+
+        <div class="card-header border-0"
+             style="background:#171717;">
+            <h3 class="text-white mb-0">
+                <i class="bi bi-pencil-square"></i>
+                Edit User Copy Trade
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form action="/admin/edit-user-copytrade/<%= copyTrade._id %>"
+                  method="POST">
+
+                <div class="row">
+
+                    <!-- User Fullname -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            User Fullname
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control bg-dark text-white"
+                            value="<%= copyTrade.owner.fullname %>"
+                            disabled>
+                    </div>
+
+                    <!-- User Email -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            User Email
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control bg-dark text-white"
+                            value="<%= copyTrade.owner.email %>"
+                            disabled>
+                    </div>
+
+                    <!-- Trader Name -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            Trader Name
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control bg-dark text-white"
+                            value="<%= copyTrade.traderName %>"
+                            disabled>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            Amount ($)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="amount"
+                            id="amount"
+                            class="form-control"
+                            value="<%= copyTrade.amount %>"
+                            required
+                            min="0"
+                            step="0.01">
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            Duration (Days)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="duration"
+                            id="duration"
+                            class="form-control"
+                            value="<%= copyTrade.duration %>"
+                            required
+                            min="1">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6 mb-3">
+                        <label class="text-white">
+                            Status
+                        </label>
+
+                        <select
+                            name="status"
+                            id="status"
+                            class="form-control"
+                            required>
+
+                            <option value="ongoing"
+                                <%= copyTrade.status === 'ongoing' ? 'selected' : '' %>>
+                                Ongoing
+                            </option>
+
+                            <option value="completed"
+                                <%= copyTrade.status === 'completed' ? 'selected' : '' %>>
+                                Completed
+                            </option>
+
+                            <option value="cancelled"
+                                <%= copyTrade.status === 'cancelled' ? 'selected' : '' %>>
+                                Cancelled
+                            </option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex flex-wrap gap-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary mr-2">
+                        <i class="bi bi-check-circle"></i>
+                        Update Copy Trade
+                    </button>
+
+                    <a href="/user-copytrades"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Back
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+    </div>
+    <!-- ================================================================ -->
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="assets0/notify.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/theme.min.js"></script>
+<script src="plugins/js/datatables.min.js"></script>
+<script src="plugins/js/summernote-bs4.min.js"></script>
+<script src="plugins/js/croppie.min.js"></script>
+<script src="plugins/js/loadingoverlay.min.js"></script>
+<script src="plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const success = params.get('success');
+const error = params.get('error');
+
+if (success) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: success
+    });
+}
+
+if (error) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error
+    });
+}
+</script>
+
+</body>
+</html>

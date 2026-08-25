@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Affiliate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+    <link rel="stylesheet" href="../public/assets0/notify.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../public/js/convert/config.js"></script>
+    <script src="../public/js/convert/auth.js"></script>
+
+    <style>
+.main-content{
+    width:100%;
+    min-height:100vh;
+    margin-top:7%;
+    padding:20px;
+}
+
+.affiliate-wrapper{
+    color:#fff;
+}
+
+.affiliate-card{
+    background:#212529;
+    border:none;
+    border-radius:12px;
+    transition:transform .3s ease;
+    overflow:hidden;
+}
+
+.affiliate-card:hover{
+    transform:translateY(-5px);
+}
+
+.affiliate-card .card-header{
+    background:#286090;
+    color:#fff;
+    font-weight:600;
+}
+
+.plan-card{
+    background:#212529;
+    border:1px solid #333;
+    border-radius:12px;
+}
+
+.plan-card .card-header{
+    background:#286090;
+    color:#fff;
+    font-weight:600;
+}
+
+.form-control{
+    border-radius:8px;
+}
+
+.table-responsive{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.table{
+    min-width:700px;
+}
+
+@media(max-width:576px){
+    .main-content{
+        margin-top:30%;
+    }
+
+    .table{
+        min-width:700px;
+    }
+}
+</style>
+</head>
+<body>
+
+<section class="content">
+
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="./navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="menu" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="./account.html"><div class="ph"><img src="../public/assetss/img/pers.svg" alt="account" /> </div></a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div class="container-fluid affiliate-wrapper">
+
+            <div class="card affiliate-card mb-4">
+                <div class="card-header">
+                    Affiliate Packages
+                </div>
+                <div class="card-body">
+                    <p>
+                        Subscribe to our Bot Affiliate Marketing Plans
+                    </p>
+                    <p>
+                        <strong>Available Balance:</strong>
+                        $<span id="availableBalance">0.00</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row" id="plans-row">
+                <!-- filled by JS -->
+            </div>
+
+            <div class="card affiliate-card mt-4">
+                <div class="card-header">
+                    Your Affiliate Plans
+                </div>
+                <div class="card-body">
+                    <div id="affiliates-loading" class="text-muted">Loading...</div>
+                    <div id="affiliates-empty" style="display:none;">
+                        <p>No affiliate plans purchased yet.</p>
+                    </div>
+                    <div class="table-responsive" id="affiliates-table-wrap" style="display:none;">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>ROI</th>
+                                    <th>Duration</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody id="affiliate-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+(function () {
+  var currentUserId = null;
+  var availableBalance = 0;
+
+  var PLANS = [
+    {
+      id: '3',
+      type: 'Affiliate Tier Bot',
+      min: 100,
+      max: 1000,
+      growth: '500% Daily Growth',
+      roi: '10550%',
+      duration: '3 days'
+    },
+    {
+      id: '4',
+      type: 'Affiliate Tier Bot Niche',
+      min: 2000,
+      max: 10000,
+      growth: '1000% Daily Growth',
+      roi: '50000%',
+      duration: '10 days'
+    },
+    {
+      id: '5',
+      type: 'Affiliate Tier Bot Ecommerce',
+      min: 5000,
+      max: 100000,
+      growth: '5000% Daily Growth',
+      roi: '5500%',
+      duration: '31 days'
+    }
+  ];
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatMoney(val) {
+    var n = parseFloat(val);
+    if (isNaN(n)) return '0.00';
+    return n.toFixed(2);
+  }
+
+  function formatDate(val) {
+    if (!val) return 'N/A';
+    try {
+      return new Date(val).toLocaleString();
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+
+  function getUserIdFromQuery() {
+    try {
+      return new URLSearchParams(window.location.search).get('id');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getUserIdFromStorage() {
+    try {
+      var u = JSON.parse(localStorage.getItem('user') || 'null');
+      return u && u._id ? u._id : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function renderPlans() {
+    var row = document.getElementById('plans-row');
+    if (!row) return;
+
+    row.innerHTML = PLANS.map(function (plan) {
+      return (
+        '<div class="col-lg-4 col-md-6 mb-4">' +
+          '<div class="card plan-card h-100">' +
+            '<div class="card-header">' + escapeHtml(plan.type) + '</div>' +
+            '<div class="card-body">' +
+              '<h5>$' + formatMoney(plan.min) + ' - $' + formatMoney(plan.max) + '</h5>' +
+              '<p>' + escapeHtml(plan.growth) + '</p>' +
+              '<p>ROI: ' + escapeHtml(plan.roi) + '</p>' +
+              '<p>Duration: ' + escapeHtml(plan.duration) + '</p>' +
+              '<form class="affiliate-form">' +
+                '<input type="hidden" name="aff_plan_id" value="' + escapeHtml(plan.id) + '">' +
+                '<div class="input-group mb-3">' +
+                  '<div class="input-group-prepend">' +
+                    '<span class="input-group-text">$</span>' +
+                  '</div>' +
+                  '<input type="number" class="form-control" name="amount" min="' + plan.min + '" max="' + plan.max + '" step="any" required placeholder="Enter Amount">' +
+                '</div>' +
+                '<button type="submit" class="btn btn-primary btn-block">Purchase Plan</button>' +
+              '</form>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    bindAffiliateForms();
+  }
+
+  function renderAffiliates(list) {
+    var loading = document.getElementById('affiliates-loading');
+    var empty = document.getElementById('affiliates-empty');
+    var wrap = document.getElementById('affiliates-table-wrap');
+    var tbody = document.getElementById('affiliate-table');
+
+    if (loading) loading.style.display = 'none';
+
+    if (!list || !list.length) {
+      if (wrap) wrap.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+    if (wrap) wrap.style.display = 'block';
+
+    tbody.innerHTML = list.map(function (aff) {
+      return (
+        '<tr>' +
+          '<td>' + escapeHtml(aff.type || 'N/A') + '</td>' +
+          '<td>$' + formatMoney(aff.amount) + '</td>' +
+          '<td>' + escapeHtml(aff.roi || 'N/A') + '</td>' +
+          '<td>' + escapeHtml(aff.duration || 'N/A') + '</td>' +
+          '<td>' + escapeHtml(formatDate(aff.createdAt)) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+  }
+
+  function setBalance(balance) {
+    availableBalance = parseFloat(balance) || 0;
+    var el = document.getElementById('availableBalance');
+    if (el) el.textContent = formatMoney(availableBalance);
+  }
+
+  function bindAffiliateForms() {
+    document.querySelectorAll('.affiliate-form').forEach(function (form) {
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        if (!currentUserId) {
+          Swal.fire('Error', 'Not logged in.', 'error');
+          return;
+        }
+
+        var affPlanId = this.querySelector('[name="aff_plan_id"]').value;
+        var amount = parseFloat(this.querySelector('[name="amount"]').value);
+        var plan = PLANS.find(function (p) { return p.id === affPlanId; });
+
+        if (!plan || isNaN(amount) || amount < plan.min || amount > plan.max) {
+          Swal.fire(
+            'Invalid Amount',
+            'Amount must be between $' + plan.min + ' and $' + plan.max,
+            'error'
+          );
+          return;
+        }
+
+        if (amount > availableBalance) {
+          Swal.fire(
+            'Insufficient Balance',
+            'You do not have enough available balance.',
+            'error'
+          );
+          return;
+        }
+
+        var result = await Swal.fire({
+          title: 'Confirm Purchase',
+          text: 'Purchase this affiliate plan for $' + amount.toFixed(2) + '?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Purchase'
+        });
+
+        if (!result.isConfirmed) return;
+
+        var submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+
+        try {
+          var { data } = await api.post('/user/page/' + currentUserId, {
+            aff_plan_id: affPlanId,
+            amount: amount
+          });
+
+          if (data.balance != null) setBalance(data.balance);
+
+          Swal.fire(
+            'Success',
+            data.message || 'Affiliate plan purchased successfully.',
+            'success'
+          ).then(function () {
+            loadPageData();
+          });
+        } catch (err) {
+          var msg = 'Failed to process request';
+          if (err.response && err.response.data) {
+            msg = err.response.data.error || err.response.data.message || msg;
+          } else if (err.message) {
+            msg = err.message;
+          }
+          Swal.fire('Error', msg, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Purchase Plan';
+        }
+      });
+    });
+  }
+
+  async function loadPageData() {
+    var userId = getUserIdFromQuery() || getUserIdFromStorage() || currentUserId;
+
+    if (!userId) {
+      var me = await api.get('/user/dashboard/data');
+      if (me.data && me.data.success && me.data.user) {
+        userId = me.data.user._id;
+        localStorage.setItem('user', JSON.stringify(me.data.user));
+      }
+    }
+
+    if (!userId) {
+      throw Object.assign(new Error('No user'), { response: { status: 401 } });
+    }
+
+    currentUserId = userId;
+
+    var res = await api.get('/user/page/' + userId + '/data');
+    var payload = res.data;
+
+    if (!payload.success) {
+      throw new Error(payload.error || 'Failed to load');
+    }
+
+    if (payload.user) {
+      localStorage.setItem(
+        'user',
+        JSON.stringify(
+          Object.assign({}, JSON.parse(localStorage.getItem('user') || '{}'), payload.user)
+        )
+      );
+      setBalance(payload.user.balance);
+    }
+
+    renderAffiliates(payload.affiliates || []);
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    renderPlans();
+
+    try {
+      await loadPageData();
+    } catch (err) {
+      console.error(err);
+      var loading = document.getElementById('affiliates-loading');
+      if (loading) loading.style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      Swal.fire(
+        'Error',
+        (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to load affiliate page',
+        'error'
+      );
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

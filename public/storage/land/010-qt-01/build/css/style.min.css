@@ -1,0 +1,2812 @@
+.container {
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    max-width: 1190px
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+::after,::before {
+    box-sizing: border-box
+}
+
+body,html {
+    height: 100%
+}
+
+html {
+    font-size: 10px
+}
+
+body {
+    min-width: 32rem;
+    background-color: #001027;
+    color: #def;
+    font-family: NunitoSans,sans-serif;
+    line-height: 1.4
+}
+
+body.locked {
+    overflow: hidden
+}
+
+body.ar-lang {
+    direction: rtl;
+    font-family: ReadexPro
+}
+
+body.ar-lang * {
+    font-family: ReadexPro
+}
+
+svg.hidden {
+    display: none
+}
+
+#layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow-x: hidden
+}
+
+.main {
+    position: relative
+}
+
+a {
+    text-decoration: none
+}
+
+.link {
+    transition: all .5s;
+    border-bottom: .1rem solid;
+    color: inherit
+}
+
+.link:hover {
+    border-color: transparent
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: linear
+    }
+
+    1% {
+        transform: rotate(0);
+        animation-timing-function: linear
+    }
+
+    100% {
+        transform: rotate(180deg);
+        animation-timing-function: linear
+    }
+}
+
+@keyframes rotating-reverse {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: linear
+    }
+
+    1% {
+        transform: rotate(0);
+        animation-timing-function: linear
+    }
+
+    100% {
+        transform: rotate(-180deg);
+        animation-timing-function: linear
+    }
+}
+
+.btn--primary::after,.btn--primary::before {
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden
+}
+
+.pro__t {
+    font-family: Montserrat,sans-serif
+}
+
+.header__login-label {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600
+}
+
+.main-section__blur,.pro__blur,.tabs__list::after,.traders::after,.traders__info-inner::after {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    width: 120rem;
+    height: 120rem;
+    pointer-events: none;
+    background-size: cover
+}
+
+.main-section__t[data-name=splitText],.pro__t[data-name=splitText] {
+    pointer-events: none;
+    color: transparent;
+    font-weight: 800
+}
+
+.main-section__t[data-name=splitText] [data-title],.pro__t[data-name=splitText] [data-title] {
+    display: flex;
+    flex-wrap: wrap;
+    width: -moz-fit-content;
+    width: fit-content
+}
+
+.main-section__t[data-name=splitText] [data-letter],.pro__t[data-name=splitText] [data-letter] {
+    position: relative
+}
+
+.main-section__t[data-name=splitText] [data-letter] .fill,.main-section__t[data-name=splitText] [data-letter] .outline,.pro__t[data-name=splitText] [data-letter] .fill,.pro__t[data-name=splitText] [data-letter] .outline {
+    display: block
+}
+
+.main-section__t[data-name=splitText] [data-letter] .outline,.pro__t[data-name=splitText] [data-letter] .outline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    -webkit-text-stroke: .2rem #01a5f4
+}
+
+.main-section__t[data-name=splitText] [data-letter] .fill,.pro__t[data-name=splitText] [data-letter] .fill {
+    position: relative;
+    color: #01a5f4
+}
+
+.main-section__t,h1 {
+    font-family: Montserrat;
+    font-size: 13rem;
+    line-height: 13rem;
+    letter-spacing: .39rem;
+    text-transform: uppercase
+}
+
+[data-size=lg].main-section__t,h1[data-size=lg] {
+    font-size: 12rem;
+    line-height: 12rem;
+    letter-spacing: .35rem
+}
+
+[data-size=md].main-section__t,h1[data-size=md] {
+    font-size: 11rem;
+    line-height: 11rem;
+    letter-spacing: .25rem
+}
+
+.about__t,h2 {
+    color: #b8e8ff;
+    font-family: Montserrat;
+    font-size: 4.2rem;
+    font-weight: 600;
+    line-height: 5.1rem;
+    text-transform: uppercase
+}
+
+.about__table-t,.about__text,.tabs__content-t,.tabs__content-text,.traders__info-text,.traders__list-text {
+    font-size: 1.7rem;
+    line-height: 2.7rem
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 6rem;
+    padding: 0 3.4rem;
+    border-radius: 1rem;
+    transition: all .5s;
+    color: #def;
+    font-family: Montserrat;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap
+}
+
+.btn__icon,.btn__text {
+    position: relative;
+    z-index: 10
+}
+
+.btn__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: .4rem;
+    background-color: #fff
+}
+
+.btn__icon svg {
+    width: 2rem;
+    height: 2rem
+}
+
+.btn__icon+.btn__text {
+    margin-right: 1.8rem
+}
+
+.btn__text+.btn__icon {
+    margin-left: 1.8rem
+}
+
+.btn--primary {
+    position: relative
+}
+
+.btn--primary::after,.btn--primary::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity .5s ease;
+    border-radius: 1rem
+}
+
+.btn--primary::after {
+    opacity: 1;
+    background-image: linear-gradient(256deg,#004ada 13%,#0099fa 89%)
+}
+
+.btn--primary::before {
+    z-index: 1;
+    opacity: 0;
+    background-color: #0099fa
+}
+
+.no-webp .btn--primary .btn__shadow {
+    background-image: url(../img/btn-shadow.png)
+}
+
+.btn--primary .btn__shadow {
+    position: absolute;
+    right: -3rem;
+    top: -3rem;
+    z-index: -1;
+    pointer-events: none;
+    width: 32rem;
+    height: 12rem;
+    transition: opacity .5s ease;
+    opacity: 1
+}
+
+.btn--primary .btn__text {
+    color: #fff
+}
+
+.btn--primary:hover .btn__shadow {
+    opacity: 0
+}
+
+.btn--primary:hover::before {
+    opacity: 1
+}
+
+.btn--black {
+    background-color: #000
+}
+
+.btn--black:hover {
+    opacity: .8
+}
+
+.header__login {
+    height: auto;
+    padding: 0;
+    border-radius: 1.2rem
+}
+
+.header__login-label {
+    border-bottom: .2rem solid #0099fa;
+    color: #fff
+}
+
+.header__login-icon {
+    color: #fff
+}
+
+.header__login:hover .header__login-label {
+    border-color: transparent
+}
+
+.languages__link {
+    color: #3c0000
+}
+
+.languages__title {
+    color: #fff
+}
+
+.footer__risk a {
+    color: #fff
+}
+
+.footer__risk-t {
+    color: #cadaea
+}
+
+.footer__risk-icon {
+    color: #0099fa
+}
+
+.footer__risk-text {
+    color: #cadaea
+}
+
+.footer__risk-link {
+    border-color: #0099fa
+}
+
+.footer__logo {
+    color: #cadaea
+}
+
+.footer__socials-item svg {
+    color: #0099fa
+}
+
+.footer__text {
+    color: #cadaea
+}
+
+.footer__links-item {
+    border-color: #0099fa;
+    color: #fff
+}
+
+.footer__copy {
+    color: #cadaea
+}
+
+section [class*=__t--center] {
+    text-align: center
+}
+
+.main-section {
+    position: relative;
+    height: 117rem
+}
+
+.main-section::after {
+    right: calc((100vw - 116rem)/ 2 + 5rem);
+    content: " ";
+    position: absolute;
+    top: 68.2rem;
+    z-index: 5;
+    width: 16rem;
+    height: .1rem;
+    background-color: #00cefd
+}
+
+.no-webp .main-section__blur {
+    background-image: url(../img/main-blur.png)
+}
+
+.main-section__blur {
+    left: calc((100vw - 116rem)/ 2 - 40.4rem);
+    top: 1rem;
+    z-index: 1
+}
+
+.main-section__blur,.main-section__candles,.main-section__img,.main-section__lines,.main-section__markers {
+    position: absolute
+}
+
+.main-section__lines {
+    top: 29.2rem;
+    left: calc((100vw - 116rem)/ 2 - 26rem);
+    z-index: 2;
+    width: 168rem
+}
+
+.main-section__candles {
+    left: calc((100vw - 116rem)/ 2 - 29.4rem);
+    top: 22rem;
+    z-index: 3;
+    max-width: 160rem
+}
+
+.main-section__markers {
+    right: calc((100vw - 116rem)/ 2 - 8rem);
+    top: 40.6rem;
+    z-index: 4
+}
+
+.main-section__markers:not([data-position]) {
+    max-width: 57rem
+}
+
+.main-section__markers[data-position=top] {
+    right: calc((100vw - 116rem)/ 2 - 5.6rem);
+    top: 14.8rem;
+    max-width: 20rem
+}
+
+.main-section__markers[data-position=bottom] {
+    right: calc((100vw - 116rem)/ 2 + 13.4rem);
+    top: 65.2rem;
+    max-width: 34rem
+}
+
+.main-section__img {
+    left: calc((100vw - 116rem)/ 2 - 11.4rem);
+    top: 16rem;
+    z-index: 5;
+    max-width: 80rem
+}
+
+.main-section__info {
+    margin-left: calc((100vw - 116rem)/ 2 + 0rem);
+    padding-top: 41rem
+}
+
+.main-section__t {
+    max-width: 100rem
+}
+
+.main-section__t:not([data-name=splitText]) {
+    position: relative;
+    z-index: 5;
+    color: #01a5f4;
+    font-weight: 700
+}
+
+.main-section__t[data-name=splitText] [data-letter] .outline {
+    z-index: 5
+}
+
+.main-section__t[data-name=splitText] [data-letter] .fill {
+    z-index: 4
+}
+
+[lang=ko] .main-section__t,[lang=vt] .main-section__t {
+    display: flex;
+    flex-wrap: wrap
+}
+
+.main-section__text {
+    margin: 3.6rem 0 4.8rem;
+    max-width: 60rem;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(90deg,#53b1dd,#b9e8ff);
+    color: transparent;
+    font-size: 3rem;
+    line-height: 4rem
+}
+
+.main-section__btn,.main-section__text {
+    position: relative;
+    z-index: 10
+}
+
+.ar-lang .main-section__info {
+    margin-right: calc((100vw - 116rem)/ 2 + 58rem);
+    margin-left: 0
+}
+
+.ar-lang .main-section__t {
+    letter-spacing: 0
+}
+
+.about {
+    position: relative;
+    padding-bottom: 16.4rem
+}
+
+.about__text {
+    margin: 2.8rem auto 1.8rem;
+    max-width: 106rem;
+    text-align: center
+}
+
+.about__img {
+    margin-left: calc((100vw - 116rem)/ 2 - 1.2rem);
+    position: relative;
+    width: 85rem;
+    height: 72.5rem
+}
+
+.about__img-pic {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover
+}
+
+.about__img-pic img {
+    max-width: 100%
+}
+
+.about__img-pic:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%
+}
+
+.about__table {
+    position: absolute;
+    bottom: 3.2rem;
+    left: 100%;
+    z-index: 2;
+    width: 36rem;
+    margin-left: -3.8rem
+}
+
+.about__table-item {
+    padding: 2rem 0 1.4rem;
+    border-radius: 1.2rem;
+    border: 2px solid #01a5f4;
+    background: #001027;
+    text-align: center
+}
+
+.about__table-item:not(:last-child) {
+    margin-bottom: 2rem
+}
+
+.about__table-t {
+    margin-bottom: .5rem;
+    color: #b8e8ff;
+    font-weight: 600;
+    line-height: 2.7rem;
+    text-transform: uppercase
+}
+
+.about__table-t .br {
+    display: block
+}
+
+.about__table-pic {
+    display: block;
+    margin: 0 auto;
+    max-width: 30rem;
+    pointer-events: none
+}
+
+.ar-lang .about__img {
+    margin-right: calc((100vw - 116rem)/ 2 - 1.2rem);
+    margin-left: 0
+}
+
+.ar-lang .about__table {
+    right: 100%;
+    left: auto;
+    margin-right: -3.8rem;
+    margin-left: 0
+}
+
+.traders {
+    position: relative;
+    padding-bottom: 19.6rem
+}
+
+.no-webp .traders::after {
+    background-image: url(../img/traders-blur.png)
+}
+
+.traders::after {
+    left: calc((100vw - 116rem)/ 2 - 4rem);
+    top: -45rem
+}
+
+.traders__t {
+    margin: 0 auto;
+    max-width: 76rem
+}
+
+.traders__list {
+    margin-top: 5.6rem
+}
+
+.traders__list-inner {
+    position: relative;
+    height: 100%;
+    border-radius: 1.2rem;
+    background-color: rgba(115,185,250,.1)
+}
+
+.traders__list-inner::after {
+    content: " ";
+    position: absolute;
+    width: 2.4rem;
+    height: 2.4rem;
+    pointer-events: none;
+    background-image: url(../img/icon-check.svg)
+}
+
+.traders__list-t {
+    font-family: Montserrat;
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 3.2rem;
+    text-transform: uppercase
+}
+
+.traders__info {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 14rem -2rem 0
+}
+
+.traders__info-item {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 2rem;
+    position: relative
+}
+
+.traders__info-item::after {
+    content: " ";
+    position: absolute;
+    top: 4.4rem;
+    left: 100%;
+    width: 7rem;
+    height: 6rem;
+    margin-left: -3.6rem;
+    background-image: url(../img/icon-arrow.svg)
+}
+
+.traders__info-item:last-child::after {
+    display: none
+}
+
+.traders__info-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative
+}
+
+.no-webp .traders__info-inner::after {
+    background-image: url(../img/traders-item-blur.png)
+}
+
+.traders__info-inner::after {
+    top: -5.2rem;
+    left: 0;
+    width: 25rem;
+    height: 25rem;
+    transition: transform .5s,opacity .5s;
+    transform: scale(0);
+    opacity: 0
+}
+
+.traders__info-icon {
+    display: block;
+    margin: 0 auto;
+    max-width: 14rem
+}
+
+.traders__info-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    margin-top: 5.8rem;
+    color: #b8e8ff;
+    font-weight: 600;
+    line-height: 2.7rem;
+    text-align: center
+}
+
+.traders__btn {
+    margin-top: 8rem;
+    text-align: center
+}
+
+.ar-lang .traders__info-item::after {
+    right: 100%;
+    left: auto;
+    margin-right: -3.6rem;
+    margin-left: 0;
+    transform: rotate(180deg)
+}
+
+.tabs {
+    position: relative;
+    padding-bottom: 13.4rem
+}
+
+.tabs__list {
+    position: relative
+}
+
+.no-webp .tabs__list::after {
+    background-image: url(../img/tabs-blur.png)
+}
+
+.tabs__list::after {
+    bottom: -35rem;
+    left: -41.6rem
+}
+
+.tabs__list-item {
+    display: none
+}
+
+.tabs__list-item .br {
+    display: block
+}
+
+.tabs__list-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-left: 1rem;
+    pointer-events: none
+}
+
+.tabs__content {
+    width: 100%;
+    border-radius: 1.2rem;
+    border: .2rem solid #01a5f4
+}
+
+.tabs__content:nth-of-type(1) {
+    background-color: #072041
+}
+
+.tabs__content:nth-of-type(2) {
+    background-color: #001027
+}
+
+.tabs__t-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-left: 1rem
+}
+
+.tabs__content-icon {
+    flex-shrink: 0
+}
+
+.tabs__content-t {
+    color: #01a5f4;
+    font-weight: 700;
+    text-transform: uppercase
+}
+
+.tabs__content-text {
+    margin-top: .9rem;
+    max-width: 32rem
+}
+
+.ar-lang .tabs__list::after {
+    right: -41.6rem;
+    left: auto
+}
+
+.ar-lang .tabs__list-icon,.ar-lang .tabs__t-icon {
+    margin-right: 1rem;
+    margin-left: 0
+}
+
+.pro {
+    position: relative;
+    z-index: 5
+}
+
+.no-webp .pro__blur {
+    background-image: url(../img/main-blur.png)
+}
+
+.pro__blur {
+    left: calc((100vw - 116rem)/ 2 - 12.4rem);
+    top: -21.8rem
+}
+
+.pro__candles,.pro__info {
+    position: absolute
+}
+
+.pro__candles {
+    left: calc((100vw - 116rem)/ 2 - 10.8rem);
+    top: 1.2rem;
+    z-index: 1;
+    width: 160rem
+}
+
+.pro__img {
+    margin-left: calc((100vw - 116rem)/ 2 + 18rem);
+    display: block;
+    position: relative;
+    z-index: 2;
+    max-width: 80rem
+}
+
+.pro__info {
+    left: calc((100vw - 116rem)/ 2 + 8rem);
+    top: 36.4rem
+}
+
+.pro__t {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 100rem;
+    font-size: 8.6rem;
+    line-height: 9.6rem;
+    letter-spacing: .258rem;
+    text-transform: uppercase
+}
+
+.pro__t:not([data-name=splitText]) {
+    position: relative;
+    z-index: 5;
+    color: #01a5f4;
+    font-weight: 800
+}
+
+.pro__t[data-name=splitText] [data-title] {
+    justify-content: center
+}
+
+.pro__t[data-name=splitText] [data-letter] .outline {
+    z-index: 2
+}
+
+.pro__t[data-name=splitText] [data-letter] .fill {
+    z-index: 1
+}
+
+.pro__t[data-name=splitText][data-size=md] {
+    font-size: 7.8rem;
+    line-height: 8.2rem;
+    letter-spacing: .218rem
+}
+
+.pro__t[data-name=splitText][data-size=sm] {
+    font-size: 6.6rem;
+    line-height: 7rem;
+    letter-spacing: .159rem
+}
+
+.pro__btn {
+    position: relative;
+    z-index: 5;
+    margin-top: 6.6rem;
+    text-align: center
+}
+
+.ar-lang .pro::after {
+    right: calc((100vw - 116rem)/ 2 - 12.4rem);
+    left: auto
+}
+
+.ar-lang .pro__candles {
+    right: calc((100vw - 116rem)/ 2 - 10.8rem);
+    left: auto
+}
+
+.ar-lang .pro__img {
+    margin-right: calc((100vw - 116rem)/ 2 + 18rem);
+    margin-left: auto
+}
+
+.ar-lang .pro__info {
+    right: calc((100vw - 116rem)/ 2 + 16.4rem);
+    left: auto
+}
+
+.ar-lang .pro__t {
+    letter-spacing: 0;
+    text-align: center
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 5000;
+    padding: 3rem 0
+}
+
+.nav__item {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    margin: 0 .5rem;
+    padding: 0 1rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    border-radius: 1.2rem;
+    background-color: rgba(255,255,255,.25)
+}
+
+.nav__item._active {
+    background-color: #fff;
+    color: #333
+}
+
+.nav__item._disabled {
+    opacity: .5;
+    pointer-events: none
+}
+
+@media (min-width: 480px) {
+    .tabs__content-item {
+        display:flex;
+        align-items: flex-start
+    }
+
+    .tabs__content-icon {
+        margin-right: 2.4rem
+    }
+
+    .tabs__content-t {
+        line-height: 2rem
+    }
+
+    .ar-lang .tabs__content-icon {
+        margin-right: 0;
+        margin-left: 2.4rem
+    }
+}
+
+@media (min-width: 640px) {
+    .traders__t .br {
+        display:block
+    }
+
+    .tabs__content-text {
+        margin-top: .4rem
+    }
+}
+
+@media (min-width: 960px) {
+    .main-section::after {
+        width:25rem;
+        opacity: 1
+    }
+
+    .about__text .br {
+        display: block
+    }
+
+    .traders__info-inner:hover::after {
+        transform: scale(1);
+        opacity: 1
+    }
+
+    .tabs__list {
+        display: flex;
+        flex-wrap: wrap
+    }
+
+    .tabs__list input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0)
+    }
+
+    .tabs__list input:checked+.tabs__list-item {
+        position: relative;
+        z-index: 1;
+        border-radius: 1.2rem 1.2rem 0 0;
+        border-color: #01a5f4;
+        border-style: solid;
+        border-width: .2rem .2rem 0;
+        color: #fff
+    }
+
+    .tabs__list input:checked+.tabs__list-item:nth-of-type(1) {
+        background-color: #072041
+    }
+
+    .tabs__list input:checked+.tabs__list-item:nth-of-type(2) {
+        background-color: #001027
+    }
+
+    .tabs__list input:checked:nth-of-type(1)~.tabs__content:nth-of-type(1) {
+        display: block;
+        border-top-left-radius: 0
+    }
+
+    .tabs__list input:checked:nth-of-type(2)~.tabs__content:nth-of-type(2) {
+        display: block;
+        border-top-right-radius: 0
+    }
+
+    .tabs__list-item {
+        display: flex;
+        flex: 0 0 50%;
+        align-items: center;
+        justify-content: center;
+        max-width: 50%;
+        height: 9rem;
+        color: #576a82;
+        cursor: pointer;
+        font-family: Montserrat;
+        font-size: 2.6rem;
+        font-weight: 600;
+        line-height: 3.2rem;
+        text-align: center;
+        text-transform: uppercase
+    }
+
+    [lang=vt] .tabs__list-item {
+        font-size: 2.2rem
+    }
+
+    .tabs__content:nth-of-type(1) .tabs__content-item:nth-child(-n+4) {
+        border-bottom: .1rem solid #173e6f
+    }
+
+    .tabs__content:nth-of-type(1) .tabs__content-item:nth-child(n+3):nth-child(-n+4) {
+        padding-bottom: 5rem
+    }
+
+    .tabs__content:nth-of-type(2) .tabs__content-item:nth-child(-n+2) {
+        border-bottom: .1rem solid #173e6f
+    }
+
+    .tabs__content {
+        display: none;
+        margin-top: -.2rem
+    }
+
+    .tabs__t {
+        display: none
+    }
+
+    .tabs__content-list {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 5.6rem 3rem 6rem
+    }
+
+    .tabs__content-item {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-top: 3.6rem;
+        padding-bottom: 1.6rem
+    }
+
+    .tabs__content-item:nth-child(odd) {
+        padding-left: 1.4rem;
+        border-right: .1rem solid #173e6f
+    }
+
+    .tabs__content-item:nth-child(even) {
+        padding-left: 5rem
+    }
+
+    .tabs__content-item:nth-child(n+3) {
+        padding-top: 5rem
+    }
+
+    .tabs__content-t {
+        line-height: 2.7rem
+    }
+
+    .tabs__content-text .br {
+        display: block
+    }
+
+    .ar-lang .tabs__list input:checked:nth-of-type(1)~.tabs__content:nth-of-type(1) {
+        display: block;
+        border-top-right-radius: 0
+    }
+
+    .ar-lang .tabs__list input:checked:nth-of-type(2)~.tabs__content:nth-of-type(2) {
+        display: block;
+        border-top-left-radius: 0
+    }
+
+    .ar-lang .tabs__content-item:nth-child(odd) {
+        padding-right: 1.4rem;
+        padding-left: 0;
+        border-left: .1rem solid #173e6f;
+        border-right: 0
+    }
+
+    .ar-lang .tabs__content-item:nth-child(even) {
+        padding-right: 5rem;
+        padding-left: 0
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-section[data-aos]::after {
+        width:0;
+        opacity: 0;
+        transition: width 1s ease .4s,opacity 1s ease .4s
+    }
+
+    .main-section.aos-animate::after {
+        width: 25rem;
+        opacity: 1
+    }
+
+    [lang=en] .main-section__text {
+        max-width: 70rem
+    }
+
+    [lang=ko] .main-section__text {
+        max-width: 65rem
+    }
+
+    [lang=zh] .main-section__text {
+        max-width: 63rem
+    }
+
+    .main-section__text .br {
+        display: block
+    }
+
+    .traders__list {
+        display: flex;
+        margin-left: -2rem;
+        margin-right: -2rem
+    }
+
+    .traders__list-item {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+        padding: 0 2rem
+    }
+
+    .traders__list-inner {
+        padding: 2.4rem 2rem 3.4rem
+    }
+
+    .traders__list-inner::after {
+        top: 2.4rem
+    }
+
+    .traders__list-t .br {
+        display: block
+    }
+
+    .traders__list-t {
+        margin-top: 4.6rem
+    }
+
+    .traders__list-text {
+        margin-top: 1.4rem
+    }
+
+    .traders__list-text .br {
+        display: block
+    }
+
+    .traders__info-item.aos-init::after {
+        transform: translate3d(100px,0,0);
+        transition: opacity 1s ease,transform 1s ease;
+        opacity: 0
+    }
+
+    .traders__info-item.aos-animate::after {
+        transform: translateZ(0);
+        opacity: 1
+    }
+
+    .traders__info-item:nth-child(1)::after {
+        transition-delay: .2s
+    }
+
+    .traders__info-item:nth-child(2)::after {
+        transition-delay: .3s
+    }
+
+    .traders__info-item:nth-child(3)::after {
+        transition-delay: .5s
+    }
+
+    .ar-lang .traders__info-item.aos-init::after {
+        margin-right: 6.4rem;
+        transform: rotate(180deg);
+        transition-property: opacity,margin
+    }
+
+    .ar-lang .traders__info-item.aos-animate::after {
+        margin-right: -3.6rem
+    }
+
+    .tabs__content-list {
+        padding: 8.4rem 6rem 5.4rem
+    }
+
+    .tabs__content-item {
+        padding-top: 2rem;
+        padding-bottom: 3rem
+    }
+
+    .tabs__content-item:nth-child(odd) {
+        padding-left: 2rem
+    }
+
+    .tabs__content-item:nth-child(even) {
+        padding-left: 8rem
+    }
+
+    .tabs__content-icon {
+        margin-right: 3rem
+    }
+
+    [lang=de] .tabs__content-text {
+        max-width: 33rem
+    }
+
+    [lang=th] .tabs__content-text {
+        max-width: 34rem
+    }
+
+    .ar-lang .tabs__content-item:nth-child(odd) {
+        padding-right: 2rem;
+        padding-left: 0
+    }
+
+    .ar-lang .tabs__content-item:nth-child(even) {
+        padding-right: 8rem;
+        padding-left: 0
+    }
+
+    .ar-lang .tabs__content-icon {
+        margin-right: 0;
+        margin-left: 3rem
+    }
+}
+
+@media (max-width: 1199px) {
+    .container {
+        max-width:970px
+    }
+
+    .main-section__t,h1 {
+        font-size: 9rem;
+        line-height: 9.6rem;
+        letter-spacing: .27rem
+    }
+
+    [data-size=lg].main-section__t,h1[data-size=lg] {
+        font-size: 9rem;
+        line-height: 9.6rem;
+        letter-spacing: .27rem
+    }
+
+    [data-size=md].main-section__t,h1[data-size=md] {
+        font-size: 9rem;
+        line-height: 9.6rem;
+        letter-spacing: .2rem
+    }
+
+    .about__t,h2 {
+        font-size: 3.8rem;
+        line-height: 4.6rem
+    }
+
+    .about__table-t,.about__text,.tabs__content-t,.tabs__content-text,.traders__info-text,.traders__list-text {
+        font-size: 1.6rem;
+        line-height: 2.5rem
+    }
+
+    .main-section {
+        height: 94.4rem
+    }
+
+    .main-section::after {
+        right: calc((100vw - 94rem)/ 2 + 6rem);
+        top: 54.3rem
+    }
+
+    .main-section__blur {
+        left: calc((100vw - 94rem)/ 2 - 29.8rem);
+        width: 88.6rem;
+        height: 88.6rem
+    }
+
+    .main-section__lines {
+        display: none
+    }
+
+    .main-section__candles {
+        left: calc((100vw - 94rem)/ 2 - 52.4rem);
+        top: 8.6rem
+    }
+
+    .main-section__markers {
+        right: calc((100vw - 94rem)/ 2 - 7rem);
+        top: 26.8rem
+    }
+
+    .main-section__markers[data-position=top] {
+        right: calc((100vw - 94rem)/ 2 - 4.6rem);
+        top: 1.4rem
+    }
+
+    .main-section__markers[data-position=bottom] {
+        right: calc((100vw - 94rem)/ 2 + 14.4rem);
+        top: 51.4rem
+    }
+
+    .main-section__img {
+        left: calc((100vw - 94rem)/ 2 - 15.4rem);
+        top: 11.6rem;
+        max-width: 66.6rem
+    }
+
+    .main-section__info {
+        margin-left: calc((100vw - 94rem)/ 2 + 0rem);
+        padding-top: 33.4rem
+    }
+
+    .main-section__t {
+        max-width: 78rem
+    }
+
+    .main-section__text {
+        margin-top: 2.6rem;
+        margin-bottom: 4rem;
+        max-width: 46rem;
+        font-size: 2.6rem;
+        line-height: 3.4rem
+    }
+
+    .ar-lang .main-section__info {
+        margin-right: calc((100vw - 94rem)/ 2 + 47rem)
+    }
+
+    .about {
+        padding-bottom: 16rem
+    }
+
+    .about__text {
+        margin-top: 3.4rem;
+        margin-bottom: 6.2rem;
+        max-width: 94rem
+    }
+
+    .about__img {
+        margin-left: calc((100vw - 94rem)/ 2 - 3.6rem);
+        width: 65.8rem;
+        height: 56rem
+    }
+
+    .no-webp .about__img::after {
+        background-image: url(../img/about-blur.png)
+    }
+
+    .about__img::after {
+        content: " ";
+        position: absolute;
+        top: 17rem;
+        right: -6rem;
+        width: 18rem;
+        height: 22rem
+    }
+
+    .about__table {
+        bottom: -2.4rem;
+        margin-left: -4rem;
+        max-width: 65.8rem
+    }
+
+    .ar-lang .about__img {
+        margin-right: calc((100vw - 94rem)/ 2 - 3.6rem)
+    }
+
+    .ar-lang .about__img::after {
+        right: -6rem
+    }
+
+    .ar-lang .about__table {
+        margin-right: -4rem;
+        margin-left: 0
+    }
+
+    .traders {
+        padding-bottom: 17.4rem
+    }
+
+    .traders::after {
+        left: calc((100vw - 94rem)/ 2 - 13rem);
+        top: -40.4rem
+    }
+
+    .traders__t {
+        max-width: 100%
+    }
+
+    .traders__list {
+        margin-top: 5.8rem
+    }
+
+    .traders__list-item:not(:last-child) {
+        margin-bottom: 2rem
+    }
+
+    .traders__list-inner {
+        padding: 2.4rem 5rem 2.4rem 9rem
+    }
+
+    .traders__list-inner::after {
+        top: 3rem;
+        left: 3rem
+    }
+
+    .traders__list-t {
+        font-size: 2.4rem;
+        line-height: 2.9rem
+    }
+
+    .traders__list-text {
+        margin-top: 1.8rem
+    }
+
+    .traders__info {
+        margin: 13rem -1rem 0
+    }
+
+    .traders__info-item {
+        padding: 0 1rem
+    }
+
+    .traders__info-item::after {
+        top: 4.2rem;
+        margin-left: -3.2rem
+    }
+
+    .traders__info-text {
+        margin-top: 6.2rem
+    }
+
+    .traders__btn {
+        margin-top: 9.6rem
+    }
+
+    .ar-lang .traders__list-inner {
+        padding: 2.4rem 9rem 2.4rem 5rem
+    }
+
+    .ar-lang .traders__list-inner::after {
+        right: 3rem;
+        left: auto
+    }
+
+    .ar-lang .traders__info-item::after {
+        margin-right: -3.2rem;
+        margin-left: 0
+    }
+
+    .tabs {
+        padding-bottom: 11.4rem
+    }
+
+    .tabs__list::after {
+        bottom: -40.4rem;
+        left: -46.4rem
+    }
+
+    .tabs__content-text {
+        max-width: 30rem
+    }
+
+    .ar-lang .tabs__list::after {
+        right: -46.4rem;
+        left: auto
+    }
+
+    .pro__blur {
+        left: calc((100vw - 94rem)/ 2 - 7.2rem);
+        top: -18.5rem
+    }
+
+    .pro__candles {
+        left: calc((100vw - 94rem)/ 2 - 21.6rem);
+        top: -2.4rem
+    }
+
+    .pro__img {
+        margin-left: calc((100vw - 94rem)/ 2 + 7.2rem)
+    }
+
+    .pro__info {
+        left: calc((100vw - 94rem)/ 2 + 8rem);
+        top: 37rem
+    }
+
+    .pro__t {
+        max-width: 78rem;
+        font-size: 7rem;
+        line-height: 8rem;
+        letter-spacing: .21rem
+    }
+
+    .pro__t[data-name=splitText][data-size=md] {
+        font-size: 6.6rem;
+        line-height: 7rem;
+        letter-spacing: .21rem
+    }
+
+    .pro__t[data-name=splitText][data-size=sm] {
+        font-size: 5.2rem;
+        line-height: 6rem;
+        letter-spacing: .159rem
+    }
+
+    .pro__btn {
+        margin-top: 6.2rem
+    }
+
+    .ar-lang .pro::after {
+        right: calc((100vw - 94rem)/ 2 - 7.2rem);
+        left: auto
+    }
+
+    .ar-lang .pro__candles {
+        right: calc((100vw - 94rem)/ 2 - 21.6rem);
+        left: auto
+    }
+
+    .ar-lang .pro__img {
+        margin-right: calc((100vw - 94rem)/ 2 + 7.2rem);
+        margin-left: auto
+    }
+
+    .ar-lang .pro__info {
+        right: calc((100vw - 94rem)/ 2 + 13rem);
+        left: auto
+    }
+}
+
+@media (max-width: 959px) {
+    .container {
+        max-width:650px
+    }
+
+    .main-section__t[data-name=splitText] [data-letter] .outline,.pro__t[data-name=splitText] [data-letter] .outline {
+        -webkit-text-stroke-width: .1rem
+    }
+
+    .main-section__t,h1 {
+        font-size: 6.2rem;
+        line-height: 7rem;
+        letter-spacing: .248rem
+    }
+
+    [data-size=lg].main-section__t,h1[data-size=lg] {
+        font-size: 6.2rem;
+        line-height: 7rem;
+        letter-spacing: .248rem
+    }
+
+    [data-size=md].main-section__t,h1[data-size=md] {
+        font-size: 5.4rem;
+        line-height: 5.8rem;
+        letter-spacing: .184rem
+    }
+
+    .about__t,h2 {
+        font-size: 3rem;
+        line-height: 3.6rem
+    }
+
+    .main-section {
+        height: 84.2rem
+    }
+
+    .main-section::after {
+        right: calc((100vw - 62rem)/ 2 + 5.2rem);
+        top: 45.8rem
+    }
+
+    .main-section__blur {
+        left: calc((100vw - 62rem)/ 2 - 33.8rem);
+        top: -2rem
+    }
+
+    .main-section__candles {
+        left: calc((100vw - 62rem)/ 2 - 77rem);
+        top: 7.6rem;
+        max-width: 152.6rem
+    }
+
+    .main-section__markers {
+        right: calc((100vw - 62rem)/ 2 - 77rem)
+    }
+
+    .main-section__markers:not([data-position]) {
+        display: none
+    }
+
+    .main-section__markers[data-position=top] {
+        right: calc((100vw - 62rem)/ 2 - 4.2rem);
+        top: 3.6rem;
+        max-width: 17.4rem
+    }
+
+    .main-section__markers[data-position=bottom] {
+        right: calc((100vw - 62rem)/ 2 + 8.4rem);
+        top: 43.6rem;
+        z-index: 6;
+        max-width: 26.3rem
+    }
+
+    .main-section__img {
+        left: calc((100vw - 62rem)/ 2 - 22.8rem);
+        top: 10.8rem;
+        max-width: 59.2rem
+    }
+
+    .main-section__info {
+        margin-left: calc((100vw - 62rem)/ 2 + 0rem);
+        padding-top: 30.8rem
+    }
+
+    .main-section__t {
+        max-width: 48rem
+    }
+
+    .main-section__text {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+        max-width: 30rem;
+        font-size: 2.2rem;
+        line-height: 3rem
+    }
+
+    .ar-lang .main-section__info {
+        margin-right: calc((100vw - 62rem)/ 2 + 31rem)
+    }
+
+    .about {
+        padding-bottom: 15rem
+    }
+
+    .about__text {
+        margin-top: 3.4rem;
+        margin-bottom: -1.4rem;
+        max-width: 62rem
+    }
+
+    .about__img {
+        margin-left: calc((100vw - 62rem)/ 2 - 4rem);
+        width: 71rem;
+        height: auto
+    }
+
+    .about__img::after {
+        top: 65.8rem;
+        right: 20.5rem;
+        width: 25.4rem;
+        height: 31rem;
+        transform: rotate(90deg);
+        transform-origin: 100% 0
+    }
+
+    .about__img-pic {
+        height: 60.6rem
+    }
+
+    .about__img-pic:nth-child(2) {
+        height: 60.6rem
+    }
+
+    .about__table {
+        display: flex;
+        position: relative;
+        bottom: 0;
+        left: 0;
+        width: auto;
+        margin-top: -9.2rem;
+        margin-left: 2rem
+    }
+
+    .about__table-item {
+        width: 32rem;
+        padding: 1.4rem 0
+    }
+
+    .about__table-item:not(:last-child) {
+        margin-right: 2rem;
+        margin-bottom: 0
+    }
+
+    .ar-lang .about__img {
+        margin-right: calc((100vw - 62rem)/ 2 - 4rem);
+        width: 71rem;
+        height: auto
+    }
+
+    .ar-lang .about__img::after {
+        top: 65.8rem;
+        right: 20.5rem;
+        width: 25.4rem;
+        height: 31rem;
+        transform: rotate(90deg);
+        transform-origin: 100% 0
+    }
+
+    .ar-lang .about__table {
+        right: auto;
+        left: 0;
+        margin-right: 2rem;
+        margin-left: 0
+    }
+
+    .ar-lang .about__table-item:not(:last-child) {
+        margin-right: 0;
+        margin-left: 2rem
+    }
+
+    .traders {
+        padding-bottom: 18.2rem
+    }
+
+    .traders::after {
+        left: calc((100vw - 62rem)/ 2 - 23.4rem);
+        top: -40.6rem;
+        width: 106.5rem;
+        height: 106.5rem
+    }
+
+    .traders__list {
+        margin-top: 6rem
+    }
+
+    .traders__list-item {
+        margin: 0 -2rem
+    }
+
+    .traders__list-inner {
+        padding: 2.2rem 2rem 2.6rem 6.6rem
+    }
+
+    .traders__list-inner::after {
+        top: 2.4rem;
+        left: 2.4rem
+    }
+
+    .traders__list-text {
+        margin-top: 1.2rem
+    }
+
+    .traders__info {
+        margin: 9rem 0 0
+    }
+
+    .traders__info-item {
+        flex: 0 0 22rem;
+        max-width: 22rem;
+        margin-bottom: 7.6rem;
+        padding: 0
+    }
+
+    .traders__info-item::after {
+        top: 4rem
+    }
+
+    .traders__info-item:nth-child(odd) {
+        margin-right: 8rem
+    }
+
+    .traders__info-item:nth-child(1) {
+        margin-left: 2rem
+    }
+
+    .traders__info-item:nth-child(1)::after {
+        margin-left: -.5rem
+    }
+
+    .traders__info-item:nth-child(2)::after {
+        margin-left: -2rem
+    }
+
+    .traders__info-item:nth-child(3) {
+        margin-left: 6.6rem
+    }
+
+    .traders__info-item:nth-child(3)::after {
+        margin-left: -.7rem
+    }
+
+    .traders__info-item:nth-child(3)::before {
+        content: " ";
+        position: absolute;
+        top: 4.4rem;
+        left: 0;
+        width: 7rem;
+        height: 6rem;
+        margin-left: -4.4rem;
+        background-image: url(../img/icon-arrow.svg)
+    }
+
+    .traders__info-inner::after {
+        top: -6rem;
+        left: -2rem;
+        transform: scale(1);
+        opacity: 1
+    }
+
+    .traders__info-icon {
+        max-width: 11rem
+    }
+
+    .traders__info-text {
+        margin-top: 2.8rem
+    }
+
+    .traders__btn {
+        margin-top: 1rem
+    }
+
+    .ar-lang .traders__list-inner {
+        padding: 2.2rem 6.6rem 2.6rem 2.2rem
+    }
+
+    .ar-lang .traders__list-inner::after {
+        right: 2.4rem;
+        left: auto
+    }
+
+    .ar-lang .traders__info-item:nth-child(odd) {
+        margin-right: 0;
+        margin-left: 8rem
+    }
+
+    .ar-lang .traders__info-item:nth-child(1) {
+        margin-right: 2rem
+    }
+
+    .ar-lang .traders__info-item:nth-child(1)::after {
+        margin-right: -.5rem;
+        margin-left: 0
+    }
+
+    .ar-lang .traders__info-item:nth-child(2)::after {
+        margin-right: -2rem;
+        margin-left: 0
+    }
+
+    .ar-lang .traders__info-item:nth-child(3) {
+        margin-right: 6.6rem
+    }
+
+    .ar-lang .traders__info-item:nth-child(3)::after {
+        margin-right: -.7rem;
+        margin-left: 0
+    }
+
+    .ar-lang .traders__info-item:nth-child(3)::before {
+        right: 0;
+        left: auto;
+        margin-right: -4.4rem;
+        margin-left: 0;
+        transform: rotate(180deg)
+    }
+
+    .tabs {
+        padding-bottom: 9.2rem
+    }
+
+    .tabs__list::after {
+        top: 12.4rem;
+        left: -57.6rem;
+        width: 143.3rem;
+        height: 143.3rem
+    }
+
+    .tabs__list {
+        width: 66rem;
+        margin-left: -2rem
+    }
+
+    .tabs__list input {
+        display: none
+    }
+
+    .tabs__content:not(:last-child) {
+        margin-bottom: 2rem
+    }
+
+    .tabs__t {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4.6rem;
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 2.4rem;
+        font-weight: 600;
+        line-height: 2.9rem;
+        text-align: center
+    }
+
+    .tabs__content-list {
+        padding: 5rem 2rem 5.6rem
+    }
+
+    .tabs__content-item {
+        padding: 3.4rem 1.6rem 2.8rem 0
+    }
+
+    .tabs__content-item:not(:last-child) {
+        border-bottom: .1rem solid #173e6f
+    }
+
+    .tabs__content-item:first-child {
+        padding-top: 0
+    }
+
+    .tabs__content-item:last-child {
+        padding-bottom: 0
+    }
+
+    .tabs__content-text {
+        max-width: 100%
+    }
+
+    .ar-lang .tabs__list::after {
+        right: -57.6rem;
+        left: auto
+    }
+
+    .ar-lang .tabs__list {
+        width: 66rem;
+        margin-left: -2rem
+    }
+
+    .ar-lang .tabs__list input {
+        display: none
+    }
+
+    .ar-lang .tabs__content-item {
+        padding: 3.4rem 0 2.8rem 1.6rem
+    }
+
+    .pro__blur {
+        left: calc((100vw - 62rem)/ 2 - 7.2rem);
+        top: -23.6rem;
+        width: 90.3rem;
+        height: 90.3rem
+    }
+
+    .pro__candles {
+        left: calc((100vw - 62rem)/ 2 - 32.2rem);
+        top: -2.2rem;
+        width: 126.6rem
+    }
+
+    .pro__img {
+        margin-left: calc((100vw - 62rem)/ 2 + .2rem);
+        max-width: 61.4rem
+    }
+
+    .pro__info {
+        left: calc((100vw - 62rem)/ 2 + 7rem);
+        top: 26.4rem
+    }
+
+    .pro__t {
+        max-width: 48rem;
+        font-size: 4.6rem;
+        line-height: 5.4rem;
+        letter-spacing: .138rem
+    }
+
+    .pro__t[data-name=splitText][data-size=md] {
+        font-size: 4rem;
+        line-height: 4.8rem;
+        letter-spacing: .138rem
+    }
+
+    .pro__t[data-name=splitText][data-size=sm] {
+        font-size: 3.2rem;
+        line-height: 4rem;
+        letter-spacing: .138rem
+    }
+
+    .pro__btn {
+        margin-top: 5rem
+    }
+
+    .ar-lang .pro::after {
+        right: calc((100vw - 62rem)/ 2 - 7.2rem);
+        left: auto
+    }
+
+    .ar-lang .pro__candles {
+        right: calc((100vw - 62rem)/ 2 - 32.2rem);
+        left: auto
+    }
+
+    .ar-lang .pro__img {
+        margin-right: calc((100vw - 62rem)/ 2 + .2rem);
+        margin-left: auto
+    }
+
+    .ar-lang .pro__info {
+        right: calc((100vw - 62rem)/ 2 + 8.6rem);
+        left: auto
+    }
+}
+
+@media (max-width: 639px) {
+    .container {
+        max-width:490px
+    }
+
+    .main-section__t,h1 {
+        font-size: 5.8rem;
+        line-height: 6.2rem;
+        letter-spacing: .23rem
+    }
+
+    [data-size=lg].main-section__t,h1[data-size=lg] {
+        font-size: 5.4rem;
+        line-height: 5.8rem;
+        letter-spacing: .23rem
+    }
+
+    [data-size=md].main-section__t,h1[data-size=md] {
+        font-size: 3.8rem;
+        line-height: 4.2rem;
+        letter-spacing: .15rem
+    }
+
+    .about__t,h2 {
+        font-size: 2.8rem;
+        line-height: 3.4rem
+    }
+
+    .about__table-t,.about__text,.tabs__content-t,.tabs__content-text,.traders__info-text,.traders__list-text {
+        font-size: 1.5rem
+    }
+
+    .btn {
+        height: 5rem;
+        padding: 0 2rem;
+        font-size: 1.5rem
+    }
+
+    .main-section {
+        height: auto;
+        padding-bottom: 11.8rem
+    }
+
+    .main-section::after {
+        right: calc((100vw - 46rem)/ 2 + 4.8rem);
+        top: 26.2rem;
+        z-index: 4;
+        width: 34.8rem
+    }
+
+    .main-section__blur {
+        left: calc((100vw - 46rem)/ 2 - 31.2rem);
+        top: -10.2rem;
+        width: 81.6rem;
+        height: 81.6rem
+    }
+
+    .main-section__candles {
+        left: calc((100vw - 46rem)/ 2 - 29rem);
+        top: 8.4rem;
+        max-width: 113.1rem
+    }
+
+    .main-section__markers[data-position=top] {
+        right: calc((100vw - 46rem)/ 2 - 4.4rem);
+        top: -8.6rem
+    }
+
+    .main-section__markers[data-position=bottom] {
+        right: calc((100vw - 46rem)/ 2 + 26.8rem);
+        top: 24rem
+    }
+
+    .main-section__img {
+        left: calc((100vw - 46rem)/ 2 - 1.5rem);
+        top: 7.4rem;
+        max-width: 47.5rem
+    }
+
+    .main-section__info {
+        margin-left: calc((100vw - 46rem)/ 2 + 0rem);
+        max-width: 46rem;
+        padding-top: 42.6rem;
+        text-align: center
+    }
+
+    .main-section__t {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 34rem
+    }
+
+    .main-section__t [data-title] {
+        justify-content: center
+    }
+
+    .main-section__t [data-title]>span:last-child:not([data-letter]) {
+        display: none
+    }
+
+    .main-section__text {
+        margin-top: 1.6rem;
+        margin-bottom: 2.2rem;
+        max-width: 100%
+    }
+
+    .ar-lang .main-section__info {
+        margin-right: calc((100vw - 46rem)/ 2 + 0rem);
+        max-width: 46rem
+    }
+
+    .about {
+        padding-bottom: 11.8rem
+    }
+
+    .about__t {
+        margin: 0 auto;
+        max-width: 46rem
+    }
+
+    .about__text {
+        margin-top: 2.4rem;
+        margin-bottom: 1rem;
+        max-width: 46rem
+    }
+
+    .about__img {
+        margin-left: calc((100vw - 46rem)/ 2 - 3.2rem);
+        width: 56rem
+    }
+
+    .about__img::after {
+        top: 56.6rem;
+        right: 14rem
+    }
+
+    .about__img-pic {
+        height: 47.6rem
+    }
+
+    .about__img-pic:nth-child(2) {
+        height: 47.6rem
+    }
+
+    .about__table {
+        margin-top: -5.4rem
+    }
+
+    .about__table-item {
+        width: 23.2rem
+    }
+
+    .about__table-t {
+        margin: 0 auto .6rem;
+        max-width: 18.8rem;
+        line-height: 2rem
+    }
+
+    .about__table-pic {
+        max-width: 22rem
+    }
+
+    .ar-lang .about__img {
+        margin-right: calc((100vw - 46rem)/ 2 - 3.2rem);
+        width: 56rem
+    }
+
+    .ar-lang .about__img::after {
+        top: 56.6rem;
+        right: 14rem
+    }
+
+    .ar-lang .about__table {
+        right: auto;
+        left: 0
+    }
+
+    .traders {
+        padding-bottom: 14.2rem
+    }
+
+    .traders::after {
+        left: calc((100vw - 46rem)/ 2 - 22.4rem);
+        top: -29.6rem;
+        width: 90.7rem;
+        height: 90.7rem
+    }
+
+    .traders__list {
+        margin-top: 5.4rem
+    }
+
+    .traders__list-item {
+        margin: 0 -1.2rem
+    }
+
+    .traders__list-inner {
+        padding: 5.4rem 2rem 2.4rem
+    }
+
+    .traders__list-inner::after {
+        top: 2rem;
+        left: 2rem
+    }
+
+    .traders__list-t {
+        font-size: 2.2rem;
+        line-height: 2.7rem
+    }
+
+    .traders__list-text {
+        margin-top: .6rem
+    }
+
+    .traders__info {
+        margin-top: 7.4rem
+    }
+
+    .traders__info-item {
+        flex: 0 0 100%;
+        max-width: 100%
+    }
+
+    .traders__info-item::after {
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) rotate(90deg)
+    }
+
+    .traders__info-item:nth-child(1),.traders__info-item:nth-child(2),.traders__info-item:nth-child(3),.traders__info-item:nth-child(4) {
+        margin: 0 0 10.6rem
+    }
+
+    .traders__info-item:nth-child(1)::after,.traders__info-item:nth-child(2)::after,.traders__info-item:nth-child(3)::after,.traders__info-item:nth-child(4)::after {
+        margin: 1.6rem 0 0
+    }
+
+    .traders__info-item:nth-child(3)::before {
+        display: none
+    }
+
+    .traders__info-inner {
+        width: 30rem;
+        margin: 0 auto
+    }
+
+    .traders__info-inner::after {
+        top: -6rem;
+        left: 50%;
+        transform: translateX(-50%)
+    }
+
+    .traders__btn {
+        margin-top: -1.2rem
+    }
+
+    .ar-lang .traders__list-inner {
+        padding: 5.4rem 2rem 2.4rem
+    }
+
+    .ar-lang .traders__list-inner::after {
+        right: 2rem;
+        left: auto
+    }
+
+    .ar-lang .traders__info-item:nth-child(1),.ar-lang .traders__info-item:nth-child(2),.ar-lang .traders__info-item:nth-child(3),.ar-lang .traders__info-item:nth-child(4) {
+        margin: 0 0 10.6rem
+    }
+
+    .ar-lang .traders__info-item:nth-child(1)::after,.ar-lang .traders__info-item:nth-child(2)::after,.ar-lang .traders__info-item:nth-child(3)::after,.ar-lang .traders__info-item:nth-child(4)::after {
+        margin: 1.6rem 0 0
+    }
+
+    .ar-lang .traders__info-item::after {
+        right: 50%;
+        left: auto;
+        transform: translateX(50%) rotate(90deg)
+    }
+
+    .tabs__list::after {
+        top: 4.6rem;
+        left: -54.6rem
+    }
+
+    .tabs__list {
+        width: 48.4rem;
+        margin-left: -1.8rem
+    }
+
+    .tabs__t {
+        margin-top: 4rem;
+        font-size: 2.2rem;
+        line-height: 2.7rem
+    }
+
+    [lang=vt] .tabs__t .br {
+        display: block
+    }
+
+    .tabs__content-list {
+        padding: 4rem 2rem 3.6rem
+    }
+
+    .tabs__content-item {
+        padding: 3.2rem .4rem 2.2rem 0
+    }
+
+    .tabs__content-text {
+        max-width: 34.6rem
+    }
+
+    .ar-lang .tabs__list::after {
+        right: -54.6rem;
+        left: auto
+    }
+
+    .ar-lang .tabs__list {
+        width: 48.4rem;
+        margin-left: -1.8rem
+    }
+
+    .ar-lang .tabs__content-item {
+        padding: 3.2rem 0 2.2rem .4rem
+    }
+
+    .pro__blur {
+        left: calc((100vw - 46rem)/ 2 - 20.8rem);
+        top: -17.8rem;
+        width: 73.7rem;
+        height: 73.7rem
+    }
+
+    .pro__candles {
+        left: calc((100vw - 46rem)/ 2 - 39.2rem);
+        top: -3.8rem;
+        width: 107.4rem
+    }
+
+    .pro__img {
+        margin-left: calc((100vw - 46rem)/ 2 - 1.6rem);
+        max-width: 48.4rem
+    }
+
+    .pro__info {
+        left: calc((100vw - 46rem)/ 2 + 0rem);
+        top: 20.8rem;
+        width: 46rem
+    }
+
+    .pro__t {
+        max-width: 34rem;
+        font-size: 3.2rem;
+        line-height: 4rem;
+        letter-spacing: .108rem
+    }
+
+    .pro__t[data-name=splitText][data-size=md] {
+        font-size: 2.8rem;
+        line-height: 3.4rem;
+        letter-spacing: .108rem
+    }
+
+    .pro__t[data-name=splitText][data-size=sm] {
+        font-size: 2.3rem;
+        line-height: 3rem;
+        letter-spacing: .108rem
+    }
+
+    .pro__btn {
+        margin-top: 3.4rem
+    }
+
+    .ar-lang .pro::after {
+        right: calc((100vw - 46rem)/ 2 - 20.8rem);
+        left: auto
+    }
+
+    .ar-lang .pro__candles {
+        right: calc((100vw - 46rem)/ 2 - 39.2rem);
+        left: auto
+    }
+
+    .ar-lang .pro__img {
+        margin-right: calc((100vw - 46rem)/ 2 - 1.6rem);
+        margin-left: auto
+    }
+
+    .ar-lang .pro__info {
+        right: calc((100vw - 46rem)/ 2 + 0rem);
+        left: auto
+    }
+}
+
+@media (max-width: 479px) {
+    .container {
+        max-width:330px
+    }
+
+    .main-section__t,h1 {
+        font-size: 5.4rem;
+        line-height: 5.8rem;
+        letter-spacing: .17rem
+    }
+
+    [data-size=lg].main-section__t,h1[data-size=lg] {
+        font-size: 4.8rem;
+        line-height: 5.4rem;
+        letter-spacing: .17rem
+    }
+
+    [data-size=md].main-section__t,h1[data-size=md] {
+        font-size: 3.2rem;
+        line-height: 3.6rem;
+        letter-spacing: .15rem
+    }
+
+    .about__t,h2 {
+        font-size: 2.6rem;
+        line-height: 3.2rem
+    }
+
+    .btn {
+        height: 4.4rem;
+        font-size: 1.4rem
+    }
+
+    .main-section::after {
+        right: calc((100vw - 30rem)/ 2 + 4.6rem);
+        top: 28.6rem;
+        z-index: 6;
+        width: 19.8rem
+    }
+
+    .main-section__blur {
+        left: calc((100vw - 30rem)/ 2 - 21.8rem);
+        top: -1.6rem;
+        width: 58.6rem;
+        height: 58.6rem
+    }
+
+    .main-section__candles {
+        left: calc((100vw - 30rem)/ 2 - 36rem);
+        top: 10.2rem;
+        max-width: 98.9rem
+    }
+
+    .main-section__markers[data-position=top] {
+        right: calc((100vw - 30rem)/ 2 - 3.8rem);
+        top: -6rem;
+        max-width: 16.1rem
+    }
+
+    .main-section__markers[data-position=bottom] {
+        right: calc((100vw - 30rem)/ 2 + 12.6rem);
+        top: 26.6rem;
+        max-width: 24.4rem
+    }
+
+    .main-section__img {
+        left: calc((100vw - 30rem)/ 2 - 9rem);
+        top: 8.2rem;
+        max-width: 40.4rem
+    }
+
+    .main-section__info {
+        margin-left: calc((100vw - 30rem)/ 2 + 0rem);
+        max-width: 30rem;
+        padding-top: 43.6rem
+    }
+
+    .main-section__t {
+        max-width: 30rem
+    }
+
+    .main-section__text {
+        margin-bottom: 2.8rem;
+        font-size: 2rem;
+        line-height: 2.4rem
+    }
+
+    .ar-lang .main-section__info {
+        margin-right: calc((100vw - 30rem)/ 2 + 0rem);
+        max-width: 30rem
+    }
+
+    .about {
+        padding-bottom: 11.6rem
+    }
+
+    .about__t {
+        max-width: 30rem
+    }
+
+    .about__text {
+        margin-top: 1.6rem;
+        margin-bottom: .4rem;
+        max-width: 30rem
+    }
+
+    .about__img {
+        margin-left: calc((100vw - 30rem)/ 2 - 2.6rem);
+        width: 37.6rem
+    }
+
+    .about__img::after {
+        top: 35.4rem;
+        right: 14rem;
+        width: 13.8rem;
+        height: 16.8rem
+    }
+
+    .about__img-pic {
+        height: 32rem
+    }
+
+    .about__img-pic:nth-child(2) {
+        height: 32rem
+    }
+
+    .about__table {
+        flex-direction: column;
+        margin-top: -3.8rem;
+        margin-left: 1.5rem
+    }
+
+    .about__table-item {
+        width: 32rem;
+        padding: 2rem 0 1.2rem
+    }
+
+    .about__table-item:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: 2rem
+    }
+
+    .about__table-t {
+        margin-bottom: .8rem;
+        max-width: 100%
+    }
+
+    .about__table-pic {
+        max-width: 24rem
+    }
+
+    .ar-lang .about__img {
+        margin-right: calc((100vw - 30rem)/ 2 - 2.6rem);
+        width: 37.6rem
+    }
+
+    .ar-lang .about__img::after {
+        top: 35.4rem;
+        right: 14rem;
+        width: 13.8rem;
+        height: 16.8rem
+    }
+
+    .ar-lang .about__table-item:not(:last-child) {
+        margin-left: 0
+    }
+
+    .traders {
+        padding-bottom: 15rem
+    }
+
+    .traders::after {
+        left: calc((100vw - 30rem)/ 2 - 40.2rem);
+        top: -43.4rem;
+        width: 110.5rem;
+        height: 110.5rem
+    }
+
+    .traders__list-item {
+        margin: 0 -1rem
+    }
+
+    .traders__list-item:not(:last-child) {
+        margin-bottom: 1rem
+    }
+
+    .traders__list-inner {
+        padding: 6rem 3rem 2rem
+    }
+
+    .traders__list-inner::after {
+        top: 2.6rem;
+        left: 3rem
+    }
+
+    .traders__list-t {
+        font-size: 2rem;
+        line-height: 2.4rem
+    }
+
+    .traders__info {
+        margin-top: 6.8rem
+    }
+
+    .traders__btn {
+        margin-top: -2.2rem
+    }
+
+    .ar-lang .traders__list-inner {
+        padding: 6rem 3rem 2rem
+    }
+
+    .ar-lang .traders__list-inner::after {
+        right: 3rem;
+        left: auto
+    }
+
+    .tabs {
+        padding-bottom: 9.4rem
+    }
+
+    .tabs__list::after {
+        top: 60.2rem
+    }
+
+    .tabs__list {
+        width: 32rem;
+        margin-left: -1rem
+    }
+
+    .tabs__t {
+        font-size: 2rem;
+        line-height: 2.4rem
+    }
+
+    [lang=de] .tabs__t .br,[lang=el] .tabs__t .br,[lang=fr] .tabs__t .br,[lang=pl] .tabs__t .br,[lang=ro] .tabs__t .br,[lang=tr] .tabs__t .br,[lang=uk] .tabs__t .br {
+        display: block
+    }
+
+    .tabs__content-list {
+        padding: 4.2rem 2rem 3.6rem
+    }
+
+    .tabs__content-item {
+        padding: 2.2rem 0 2.4rem;
+        text-align: center
+    }
+
+    .tabs__content-icon {
+        display: block;
+        margin: 0 auto 1.6rem
+    }
+
+    .tabs__content-text {
+        max-width: 100%
+    }
+
+    .ar-lang .tabs__list {
+        width: 32rem;
+        margin-left: -1rem
+    }
+
+    .ar-lang .tabs__content-item {
+        padding: 2.2rem 0 2.4rem
+    }
+
+    .pro__blur {
+        left: calc((100vw - 30rem)/ 2 - 18.8rem);
+        top: -15.8rem;
+        width: 63.2rem;
+        height: 63.2rem
+    }
+
+    .pro__candles {
+        left: calc((100vw - 30rem)/ 2 - 32.2rem);
+        top: -2.4rem;
+        width: 84.4rem
+    }
+
+    .pro__img {
+        margin-left: calc((100vw - 30rem)/ 2 + 2.5rem);
+        max-width: 37.2rem
+    }
+
+    .pro__info {
+        left: calc((100vw - 30rem)/ 2 + 0rem);
+        top: 18.4rem;
+        width: 30rem
+    }
+
+    .pro__t {
+        max-width: 30rem;
+        font-size: 2.4rem;
+        line-height: 2.8rem;
+        letter-spacing: .072rem
+    }
+
+    .pro__t[data-name=splitText][data-size=md] {
+        font-size: 2rem;
+        line-height: 2.4rem;
+        letter-spacing: .072rem
+    }
+
+    .pro__t[data-name=splitText][data-size=sm] {
+        font-size: 2rem;
+        line-height: 2.6rem;
+        letter-spacing: .108rem
+    }
+
+    .ar-lang .pro::after {
+        right: calc((100vw - 30rem)/ 2 - 18.8rem);
+        left: auto
+    }
+
+    .ar-lang .pro__candles {
+        right: calc((100vw - 30rem)/ 2 - 32.2rem);
+        left: auto
+    }
+
+    .ar-lang .pro__img {
+        margin-right: calc((100vw - 30rem)/ 2 + 2.5rem);
+        margin-left: auto
+    }
+
+    .ar-lang .pro__info {
+        right: calc((100vw - 30rem)/ 2 + 0rem);
+        left: auto
+    }
+}
+
+@media (min-width: 960px) and (max-width:1199px) {
+    [lang=vt] .main-section__t {
+        max-width:72rem
+    }
+}
+
+.webp .btn--primary .btn__shadow {
+    background-image: url(../img/btn-shadow.webp)
+}
+
+.webp .main-section__blur {
+    background-image: url(../img/main-blur.webp)
+}
+
+.webp .traders::after {
+    background-image: url(../img/traders-blur.webp)
+}
+
+.webp .traders__info-inner::after {
+    background-image: url(../img/traders-item-blur.webp)
+}
+
+.webp .tabs__list::after {
+    background-image: url(../img/tabs-blur.webp)
+}
+
+.webp .pro__blur {
+    background-image: url(../img/main-blur.webp)
+}
+
+@media (max-width: 1199px) {
+    .webp .about__img::after {
+        background-image:url(../img/about-blur.webp)
+    }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="/assetss/index.css">
+    <link rel="stylesheet" href="/assets0/notify.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<section class="content">
+    
+    <!-- Top Navigation Bar -->
+    <div class="d-flex justify-content-between from-top">
+        <div>
+            <a href="/user/navbarPage"><img src="/assetss/img/ham.svg" /></a>
+        </div>
+        <div class="d-flex flex-column">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+            </script>
+            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+        <div>
+            <a href="/user/account"><div class="ph"><img src="/assetss/img/pers.svg" /> </div></a>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+    <div class="main-content" id="main-content">
+        
+        <div class="container-fluid mt-4">
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 text-dark">Wallets</h4>
+
+            <a href="/admin/add-wallet" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add Wallet
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            <% if (messages && messages.length > 0) { %>
+                <div class="alert alert-success">
+                    <%= messages %>
+                </div>
+            <% } %>
+
+            <div class="table-responsive ">
+
+                <table class="table table-striped table-bordered align-middle text-dark" id="walletTable">
+
+                    <thead>
+                        <tr>
+                            <th>BTC Address</th>
+                            <th>ETH Address</th>
+                            <th>USDT Address</th>
+                            <th>USDC Address</th>
+                            <th>USDT Address</th>
+                            <th>CashApp</th>
+                            <th>PayPal</th>
+                            <th>Owner</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody >
+
+                        <% wallets.forEach(wallet => { %>
+
+                            <tr >
+
+                                <td class="text-dark"><%= wallet.btc_address %></td>
+
+                                <td class="text-dark"><%= wallet.eth_address %></td>
+
+                                <td class="text-dark"><%= wallet.usdt_address %></td>
+
+                                <td class="text-dark"><%= wallet.usdc_address %></td>
+
+                                <td class="text-dark"><%= wallet.usdt_address %></td>
+
+                                <td class="text-dark"><%= wallet.cashapp %></td>
+
+                                <td class="text-dark"><%= wallet.paypal %></td>
+
+                                <td class="text-dark">
+                                    <%= wallet.owner ? wallet.owner.username : 'N/A' %>
+                                </td>
+
+                                <td>
+
+                                    <a href="/admin/edit-wallet/<%= wallet._id %>"
+                                       class="btn btn-sm btn-primary">
+                                        Edit
+                                    </a>
+
+                                    <form action="/admin/delete-wallet/<%= wallet._id %>"
+                                          method="POST"
+                                          style="display:inline;">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this wallet?')">
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        <% }) %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+    </div>
+    <!-- ================================================================ -->
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;"> Copyrights 2024 @ <a href="#">pocketoptions</a>. All Rights Reserved</strong>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="assets0/notify.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/theme.min.js"></script>
+<script src="plugins/js/datatables.min.js"></script>
+<script src="plugins/js/summernote-bs4.min.js"></script>
+<script src="plugins/js/croppie.min.js"></script>
+<script src="plugins/js/loadingoverlay.min.js"></script>
+<script src="plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    if ($.fn.DataTable) {
+
+        $('#walletTable').DataTable({
+            responsive: true,
+            pageLength: 10,
+            ordering: true,
+            searching: true,
+            lengthChange: true
+        });
+
+    }
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+  <link rel="stylesheet" href="../public/assetss/index.css">
+  <link rel="stylesheet" href="../public/assets0/notify.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<section class="content" style="background-color: black;">
+
+  <div id="a-notification" class="notification gone d-flex justify-content-start">
+    <div class="d-flex flex-column"></div>
+  </div>
+
+  <div class="d-flex justify-content-between from-top">
+    <div>
+      <a href="../user/navbarPage.html"><img src="../public/assetss/img/ham.svg" alt="MENU" /></a>
+    </div>
+    <div class="d-flex flex-column">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+      </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <div>
+      <a href="../user/account.html">
+        <div class="ph">
+          <img src="../public/assetss/img/pers.svg" alt="PROFILE" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div id="edit-user-loading" class="text-center text-secondary mt-4" style="color:#dbdbdb;">
+    Loading user...
+  </div>
+
+  <div id="edit-user-error" class="text-center text-secondary mt-5" style="display:none; color:#dbdbdb;">
+    Failed to load user
+  </div>
+
+  <div id="edit-user-content" style="display:none;">
+    <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2 text-gray" style="color:#dbdbdb;">Editing: <span id="eu-title">User</span></h1>
+      <div class="btn-toolbar mb-2 mb-md 0"></div>
+    </div>
+
+    <div class="col py-3">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" id="eu-breadcrumb" style="color:#dbdbdb;">User</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col text-end fw-lighter" style="color:#dbdbdb;">
+          <b>UserId:</b> <span id="eu-id"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="eu-message" class="alert" style="display:none;"></div>
+
+    <form id="edit-user-form">
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="balance" style="color:#dbdbdb;">Deposit</label>
+          <input type="text" class="form-control" id="balance" name="balance" placeholder="balance" required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="widthdrawBalance" style="color:#dbdbdb;">Widthdraw</label>
+          <input type="text" class="form-control" id="widthdrawBalance" name="widthdrawBalance" placeholder="balance" required>
+        </div>
+        <div class="col">
+          <label for="bonus" style="color:#dbdbdb;">Bonus</label>
+          <input type="text" class="form-control" id="bonus" name="bonus" placeholder="bonus" required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="email" style="color:#dbdbdb;">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email" readonly required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="available" style="color:#dbdbdb;">Available Balance</label>
+          <input type="text" class="form-control" id="available" name="available" placeholder="Available balance" required>
+        </div>
+        <div class="col">
+          <label for="session" style="color:#dbdbdb;">Trade sessions</label>
+          <input type="text" class="form-control" id="session" name="session" placeholder="0/0" required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="profit" style="color:#dbdbdb;">Profit</label>
+          <input type="text" class="form-control" id="profit" name="profit" placeholder="Profit" required>
+        </div>
+        <div class="col">
+          <label for="totalDeposit" style="color:#dbdbdb;">Total Deposit</label>
+          <input type="text" class="form-control" id="totalDeposit" name="totalDeposit" placeholder="Total Deposit" required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="verifiedStatus" style="color:#dbdbdb;">Verification status</label>
+          <input type="text" class="form-control" id="verifiedStatus" name="verifiedStatus" placeholder="Verification status" required>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="role" style="color:#dbdbdb;">Role</label>
+          <select name="role" id="role" class="form-control">
+            <option value="ADMIN">Admin</option>
+            <option value="MODERATOR">Moderator</option>
+            <option value="CLIENT">Client</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row form-group mb-4">
+        <div class="col">
+          <label for="totalWidthdraw" style="color:#dbdbdb;">Total Widthdraw</label>
+          <input type="text" class="form-control" id="totalWidthdraw" name="totalWidthdraw" placeholder="Total widthdraw" required>
+        </div>
+        <div class="col">
+          <label for="account" style="color:#dbdbdb;">Account Level</label>
+          <input type="text" class="form-control" id="account" name="account" placeholder="Account level" required>
+        </div>
+      </div>
+
+      <div class="form-group mb-4">
+        <button type="submit" class="btn btn-primary" id="eu-submit-btn">Update User</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" id="deleteButton" data-bs-target="#deleteModal">Delete User</button>
+        <a href="./adminDashboard.html" class="btn btn-secondary">Back</a>
+      </div>
+    </form>
+  </div>
+
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">You are about to remove a user record.</div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          This will remove the User record of <b class="fw-bold" id="eu-delete-email"></b><br/>
+          Are you sure?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="eu-confirm-delete">Yes, Remove User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="main-footer text-center">
+  <strong>Copyrights 2023 @ <a href="#">pocketoptions</a>.</strong> All Rights Reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+
+<script>
+(function () {
+  var currentUserId = null;
+
+  function getUserIdFromQuery() {
+    try {
+      return new URLSearchParams(window.location.search).get('id');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showMessage(text, isError) {
+    var el = document.getElementById('eu-message');
+    el.style.display = 'block';
+    el.className = isError ? 'alert alert-danger' : 'alert alert-success';
+    el.textContent = text;
+  }
+
+  function fillForm(user) {
+    var displayName = user.fullname || user.username || user.email || 'User';
+    currentUserId = user._id;
+
+    document.getElementById('eu-title').textContent = displayName;
+    document.getElementById('eu-breadcrumb').textContent = displayName;
+    document.getElementById('eu-id').textContent = user._id || '';
+    document.getElementById('eu-delete-email').textContent = user.email || '';
+
+    document.getElementById('balance').value = user.balance != null ? user.balance : '0';
+    document.getElementById('widthdrawBalance').value = user.widthdrawBalance != null ? user.widthdrawBalance : '$0.00';
+    document.getElementById('bonus').value = user.bonus != null ? user.bonus : '$0.00';
+    document.getElementById('email').value = user.email || '';
+    document.getElementById('available').value = user.available != null ? user.available : '$0.00';
+    document.getElementById('session').value = user.session != null ? user.session : '0/0';
+    document.getElementById('profit').value = user.profit != null ? user.profit : '$0.00';
+    document.getElementById('totalDeposit').value = user.totalDeposit != null ? user.totalDeposit : '0';
+    document.getElementById('verifiedStatus').value = user.verifiedStatus != null ? user.verifiedStatus : 'Account not yet Verified!';
+    document.getElementById('totalWidthdraw').value = user.totalWidthdraw != null ? user.totalWidthdraw : '0';
+    document.getElementById('account').value = user.account != null ? user.account : 'basic';
+
+    var roleSelect = document.getElementById('role');
+    var role = user.role || 'CLIENT';
+    roleSelect.value = role;
+    if (roleSelect.value !== role) {
+      var opt = document.createElement('option');
+      opt.value = role;
+      opt.textContent = role;
+      opt.selected = true;
+      roleSelect.insertBefore(opt, roleSelect.firstChild);
+    }
+
+    document.getElementById('edit-user-loading').style.display = 'none';
+    document.getElementById('edit-user-content').style.display = 'block';
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    try {
+      var me = await api.get('/auth/me');
+      if (!me.data || me.data.role !== 'ADMIN') {
+        window.location.href = '../index.html';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify(me.data));
+
+      var userId = getUserIdFromQuery();
+      if (!userId) {
+        throw new Error('Missing user id in URL');
+      }
+
+      var res = await api.get('/admin/editUser/' + userId + '/data');
+      var data = res.data;
+      if (!data.success || !data.user) {
+        throw new Error(data.error || 'Failed to load user');
+      }
+
+      fillForm(data.user);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('edit-user-loading').style.display = 'none';
+
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('user');
+        window.location.href = '../login.html';
+        return;
+      }
+
+      var errorEl = document.getElementById('edit-user-error');
+      errorEl.style.display = 'block';
+      errorEl.textContent =
+        (err.response && err.response.data && err.response.data.error) ||
+        err.message ||
+        'Failed to load user';
+    }
+
+    document.getElementById('edit-user-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!currentUserId) return;
+
+      var submitBtn = document.getElementById('eu-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Updating...';
+
+      try {
+        var payload = {
+          balance: document.getElementById('balance').value,
+          widthdrawBalance: document.getElementById('widthdrawBalance').value,
+          bonus: document.getElementById('bonus').value,
+          email: document.getElementById('email').value,
+          available: document.getElementById('available').value,
+          session: document.getElementById('session').value,
+          profit: document.getElementById('profit').value,
+          totalDeposit: document.getElementById('totalDeposit').value,
+          verifiedStatus: document.getElementById('verifiedStatus').value,
+          role: document.getElementById('role').value,
+          totalWidthdraw: document.getElementById('totalWidthdraw').value,
+          account: document.getElementById('account').value
+        };
+
+        var res = await api.post('/admin/editUser/' + currentUserId, payload);
+        var data = res.data;
+
+        if (!data.success) {
+          throw new Error(data.error || 'Update failed');
+        }
+
+        showMessage(data.message || 'User updated successfully', false);
+        if (data.user) {
+          fillForm(data.user);
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage(
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to update user',
+          true
+        );
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Update User';
+      }
+    });
+
+    document.getElementById('eu-confirm-delete').addEventListener('click', async function () {
+      if (!currentUserId) return;
+      if (!window.confirm('Delete this user permanently?')) return;
+
+      try {
+        var res = await api.post('/admin/deleteUser/' + currentUserId);
+        if (res.data && res.data.success) {
+          window.location.href = './adminDashboard.html';
+        } else {
+          showMessage((res.data && res.data.error) || 'Delete failed', true);
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage(
+          (err.response && err.response.data && err.response.data.error) ||
+          err.message ||
+          'Failed to delete user',
+          true
+        );
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

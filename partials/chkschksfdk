@@ -1,0 +1,114 @@
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KBDR983M"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ========== MOBILE SIDE MENU ========== -->
+<div class="mobile-block js-mobile-block">
+    <div class="container mobile-block__container">
+        <div class="mobile-block__in">
+            <div class="">
+                <div class="mobile-block__mob">
+                    <div class="mobile-block__lang">
+                        <div class="languages js-languages">
+                            <p class="languages__title">
+                                <span class="languages__flag">
+                                    <img src="https://m.pocketoption.com/images/flags-svg/gb.svg" alt="English">
+                                </span>
+                                <span class="languages__title-text">En</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mobile-block__title">Menu</p>
+            </div>
+            <nav class="mobile-nav">
+                <!-- start of it  -->
+                    <div class="mobile-nav__col mobile-nav__col_2">
+                        <div class="mb-block">
+                            <div class="mb-block__in">
+                                <div class="mb-block__title">How it works</div>
+                                <ul>
+                                                                        <li><a class="mb-block__link" href="/auth/register">Free demo</a></li>
+                                                                        <li><a class="mb-block__link" href="/quick-start">Quick start</a></li>
+                                                                        <li><a class="mb-block__link" href="/auth/register">Education</a></li>
+                                                                    </ul>
+                            </div>
+                        </div>
+                        <div class="mb-block">
+                            <div class="mb-block__in">
+                                <div class="mb-block__title">Why Pocket Option</div>
+                                <ul>
+                                    <li><a class="mb-block__link" href="/assets-current">100+ trading instruments</a></li>
+                                    <li><a class="mb-block__link" href="/payment-methods">Instant Deposits and Withdrawals</a></li>
+                                                                            <li><a class="mb-block__link" href="/auth/register">Promo & Bonuses</a></li>
+                                                                        <li><a class="mb-block__link" target="_blank" href="/land">Social Trading</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mobile-nav__col mobile-nav__col_2">
+                        <div class="mb-block">
+                            <div class="mb-block__in">
+                                <div class="mb-block__title">About us</div>
+                                <ul>
+                                    <li><a class="mb-block__link" href="/about-us">About the Company</a></li>
+                                    <li><a class="mb-block__link" href="/contacts">Contacts</a></li>
+                                    <li><a class="mb-block__link" href="/reviews">Reviews</a></li>
+                                    <li><a class="mb-block__link" href="cabinet/support">Support Service</a></li>
+                                    <li><a class="mb-block__link" href="/regulatory-environment">Regulation</a></li>
+                                    <li><a class="mb-block__link" target="_blank" href="/public-offer">Terms and Conditions</a></li>
+                                    <li><a class="mb-block__link" href="/aml-policy">AML and KYC policy</a></li>
+                                    <li><a class="mb-block__link" href="https://m.pocketoption.com/pdf/po_trade/po_privacy_en.pdf">Privacy policy</a></li>
+                                    <li><a class="mb-block__link" href="/payment-policy">Payment policy</a></li>
+                                    <li><a class="mb-block__link" href="/responsibility-disclosure">Information disclosure</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of it  -->
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- ========== DESKTOP HEADER ========== -->
+<header class="header">
+    <div class="header__container">
+        <a href="/" class="logo">
+            <img src="../public/themes/2017-09/img/logo.svg" alt="Pocket Option">
+        </a>
+        <nav class="nav">
+            <a href="/try-demo">Quick start</a>
+            <a href="/try-demo">Free demo</a>
+            <a href="/about-us">About us</a>
+        </nav>
+        <div class="header__right">
+            <div class="languages js-languages">
+                <p class="languages__title">
+                    <span class="languages__flag">
+                        <img src="https://m.pocketoption.com/images/flags-svg/gb.svg" alt="English">
+                    </span>
+                    <span class="languages__title-text">En</span>
+                </p>
+            </div>
+            <a href="/auth/login" class="btn btn_white btn_small">Log In</a>
+            <a href="/auth/register" class="btn btn_blue btn_small">Registration</a>
+        </div>
+    </div>
+</header>
+
+<!-- ========== MOBILE HEADER (hamburger) ========== -->
+<header class="header-mobile">
+    <div class="header-mobile__container">
+        <a href="/" class="logo">
+            <img src="../public/themes/2017-09/img/logo.svg" alt="Pocket Option">
+        </a>
+        <div class="header-mobile__right">
+            <a href="/auth/login" class="btn btn_white btn_small">Log In</a>
+            <button class="js-trigger-btn header-mobile__burger" type="button" aria-label="Menu">
+                <span></span><span></span>
+            </button>n><span></span
+        </div>
+    </div>
+</header>

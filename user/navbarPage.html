@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MENU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.7.0/remixicon.min.css">
+    <link rel="stylesheet" href="../public/assetss/index.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<section class="content">
+
+    <div class="d-flex justify-content-between from-top">
+        <div class="menu">MENU</div>
+        <div id="google_translate_element"></div>
+        <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+        }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <div>
+            <a class="btn1" href="#" id="logout-btn">logout</a>
+        </div>
+    </div>
+
+    <div style="padding: 20px;"></div>
+
+    <div class="d-flex justify-content-start">
+        <a href="./account.html" class="ph">
+            <img src="../public/assetss/img/pers.svg" alt="PROFILE" />
+        </a>
+        <div class="sl">
+            <div class="name" id="nav-fullname">Loading...</div>
+            <div class="email" id="nav-email-top">...</div>
+        </div>
+    </div>
+
+    <div style="padding: 10px;"></div>
+
+    <div class="mycard" style="padding-top: 3%;">
+        <table>
+            <tr>
+                <td class="lsi">your email:</td>
+                <td><h5 id="nav-email">...</h5></td>
+            </tr>
+            <tr>
+                <td class="lsi">Join Date:</td>
+                <td><h6 id="nav-createdAt">...</h6></td>
+            </tr>
+            <tr>
+                <td class="lsi">Kyc Status:</td>
+                <td class="desc text-light">
+                    <span style="color:red;"><h6 id="nav-verifiedStatus">...</h6></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="lsi">Account Type:</td>
+                <td><h6 id="nav-account">...</h6></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="d-flex flex-column" style="padding-top: 3%;" id="nav-links">
+        <!-- filled by JS -->
+    </div>
+
+</section>
+
+<footer class="main-footer text-center">
+    <strong style="color: white;">  Copyrights 2024  @ <a href="#">pocketoptions </a>. All Rights Reserved</strong>
+</footer>
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '1770e8d133765ec88e3814a930d240c0b3c1feb1';
+window.smartsupp || (function (d) {
+    var s, c, o = smartsupp = function () { o._.push(arguments); }; o._ = [];
+    s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+    c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+    c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+<script src="../public/js/convert/config.js"></script>
+<script src="../public/js/convert/auth.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="../public/assets0/notify.js"></script>
+<script src="../public/assets/js/jquery.min.js"></script>
+<script src="../public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../public/assets/js/theme.min.js"></script>
+<script src="../public/plugins/js/datatables.min.js"></script>
+<script src="../public/plugins/js/summernote-bs4.min.js"></script>
+<script src="../public/plugins/js/croppie.min.js"></script>
+<script src="../public/plugins/js/loadingoverlay.min.js"></script>
+<script src="../public/plugins/js/bootstrap4-toggle.min.js"></script>
+<script src="../public/plugins/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+function linkBtn(href, label) {
+    return '<a class="div-btn" href="' + href + '"><span class="linkcss">' + label + '</span></a>';
+}
+
+function formatDate(value) {
+    if (!value) return '—';
+    try {
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return String(value);
+        return d.toLocaleString();
+    } catch (e) {
+        return String(value);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
+    document.getElementById('logout-btn').addEventListener('click', function (e) {
+        e.preventDefault();
+        if (typeof logout === 'function') {
+            logout();
+        } else {
+            window.location.href = '../login.html';
+        }
+    });
+
+    try {
+        const { data } = await api.get('/user/dashboard/data');
+        if (!data.success || !data.user) {
+            throw Object.assign(new Error('No user'), { response: { status: 401 } });
+        }
+
+        const u = data.user;
+        localStorage.setItem('user', JSON.stringify(u));
+
+        const fullname = u.fullname || u.username || u.email || 'User';
+        const email = u.email || '';
+        const id = u._id;
+
+        document.getElementById('nav-fullname').textContent = fullname;
+        document.getElementById('nav-email-top').textContent = email;
+        document.getElementById('nav-email').textContent = email;
+        document.getElementById('nav-createdAt').textContent = formatDate(u.createdAt);
+        document.getElementById('nav-verifiedStatus').textContent = u.verifiedStatus || 'Account not yet Verified!';
+        document.getElementById('nav-account').textContent = u.account || 'basic';
+
+        let html = '';
+
+        if (u.role === 'ADMIN') {
+            html += linkBtn('../admin/adminDashboard.html', 'Dashboard');
+            html += linkBtn('../admin/allVerify.html', 'All Verifications');
+            html += linkBtn('../admin/allFunding.html', 'All Deposits');
+            html += linkBtn('../admin/allWidthdrawals.html', 'All Withdrawals');
+            html += linkBtn('../admin/all-affiliates.html', 'all affiliates');
+            html += linkBtn('../admin/all-livetrade.html', 'All Live Trades');
+            html += linkBtn('../admin/user-copytrades.html', 'users-Copytrade');
+            html += linkBtn('../admin/all-accountUpgrade.html', 'All Accounts Upgrade');
+            html += linkBtn('../admin/all-copytrades.html', 'created-Experts');
+            html += linkBtn('../admin/all-wallets.html', 'wallet Addresses');
+        }
+
+        html += linkBtn('./dashboard.html', 'Dashboard');
+        html += linkBtn('./verify.html', 'Verify Account');
+        html += linkBtn('./deposit.html', 'Deposit');
+        html += linkBtn('./copy-expert.html', 'Copy Experts');
+        html += linkBtn('./ongoing-copy-trades.html?id=' + encodeURIComponent(id), 'ongoing-copytrades');
+        html += linkBtn('./affiliate.html?id=' + encodeURIComponent(id), 'Affiliate Packages');
+        html += linkBtn('./widthdrawFunds.html', 'Withdrawal');
+        html += linkBtn('./live.html', 'Live Trades');
+        html += linkBtn('./accountUpgrade.html', 'Account Upgrade');
+        html += linkBtn('./liveHistory.html?id=' + encodeURIComponent(id), 'Livetrade History');
+        html += linkBtn('./depositHistory.html?id=' + encodeURIComponent(id), 'Deposit History');
+        html += linkBtn('./widthdrawHistory.html?id=' + encodeURIComponent(id), 'Widthdraw History');
+
+        document.getElementById('nav-links').innerHTML = html;
+    } catch (err) {
+        console.error('Navbar auth/data error:', err);
+        if (err.response && err.response.status === 401) {
+            localStorage.removeItem('user');
+            window.location.href = '../login.html';
+        } else {
+            document.getElementById('nav-fullname').textContent = 'Failed to load';
+            document.getElementById('nav-email-top').textContent = '';
+        }
+    }
+});
+</script>
+
+</body>
+</html>
